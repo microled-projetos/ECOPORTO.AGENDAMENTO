@@ -66,7 +66,7 @@ Public Class Banco
             Using Cmd As New OleDbCommand(SQL, Con)
                 'Try
                 Con.Open()
-                Result = Cmd.ExecuteScalar()
+                    Result = Cmd.ExecuteScalar()
                 Con.Close()
                 'Catch ex As Exception
                 'Result = Nothing
@@ -113,11 +113,11 @@ Public Class Banco
         Using Con As New OleDbConnection(ConnectionString())
             Using Adp As New OleDbDataAdapter(New OleDbCommand(SQL, Con))
 
-                'Try
-                Adp.Fill(Ds)
-                'Catch generatedExceptionName As Exception
-                'Return Nothing
-                'End Try
+                Try
+                    Adp.Fill(Ds)
+                Catch generatedExceptionName As Exception
+                    Return Nothing
+                End Try
 
                 Return Ds.Tables(0)
 
@@ -191,7 +191,7 @@ Public Class Banco
             Senha = My.Settings.Senha
         End Try
 
-        Return String.Format("Provider=MSDAORA.1;Data Source={0};User ID={1};Password={2};Unicode=True", Servidor, Usuario, Senha)
+        Return String.Format("Provider=OraOLEDB.Oracle;Data Source={0};User ID={1};Password={2};Unicode=True", Servidor, Usuario, Senha)
 
     End Function
 

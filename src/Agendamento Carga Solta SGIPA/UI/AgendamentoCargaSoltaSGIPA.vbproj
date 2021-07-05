@@ -312,13 +312,7 @@
       <DependentUpon>CadastrarVeiculos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="classes\Agendamento.vb" />
-=======
-    <Compile Include="classes\Agendamento.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
->>>>>>> dev-kleiton
     <Compile Include="classes\Banco.vb" />
     <Compile Include="classes\Documento.vb" />
     <Compile Include="classes\Email.vb" />

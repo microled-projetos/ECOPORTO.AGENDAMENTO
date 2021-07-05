@@ -8,19 +8,51 @@
     <meta http-equiv="content-language" content="pt-BR" />
     <!-- CSS -->
     <link href="jqueryUI/jquery-ui.css" rel="stylesheet" type="text/css" />
+    
     <link href="css/ecoporto.css" rel="stylesheet" type="text/css" />
     <link href="css/_CssReset.css" type="text/css" rel="stylesheet">
     <link href="css/Botoes.css" type="text/css" rel="stylesheet">
     <link href="css/Default.Master.css" type="text/css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="Stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- JS -->
     <script src="jqueryUI/external/jquery/jquery.js" type="text/javascript"></script>
     <script src="jqueryUI/jquery-ui.js" type="text/javascript"></script>
     <script src="js/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
     <script type="text/javascript" src="js/Master.js"></script>
+    <script type="text/javascript" src="/js/email_validator.js"></script>
     <link href="css/botoes.css" rel="stylesheet" type="text/css" />
+    <style>
+        #toast-container > div {
+            width: 600px;
+            font-size: 20px;
+             opacity: 1.0;
+        }
+    </style>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $(".ContentPlaceHolder").css("height", ($(window).height() - 176) + "px");
+            toastr.options = {
+                //"closeButton": true,
+                //"debug": false,
+                //"newestOnTop": false,
+                //"progressBar": false,
+                
+                //"preventDuplicates": false,
+                //"onclick": null,
+                //"showDuration": "300",
+                //"hideDuration": "1000",
+                //"timeOut": "5000",
+                //"extendedTimeOut": "1000",
+                //"showEasing": "swing",
+                //"hideEasing": "linear",
+                //"showMethod": "fadeIn",
+                //"hideMethod": "fadeOut"
+                "positionClass": "toast-top-full-width",
+            }
         });
         //        $(function () {
         //            $(".calendario").datepicker();
@@ -102,18 +134,22 @@
 <body>
     <form id="Form1" runat="server">
     <div class="Geral">
-        <div class="BgTop">
+        <div class="BgTop padding-bottom">
             <div class="Header">
                 <table width="100%">
                     <tr>
+                        <td colspan="3" height="20"></td>
+                    </tr>
+                    <tr>
                         <td width="200px">
                             <h1>
-                                <a id="lnkHome" href="http://op.ecoportosantos.com.br/icc/">Ecoporto :: Agendamento
+                                <a id="lnkHome" class="logo" href="http://op.ecoportosantos.com.br/icc/">Ecoporto :: Agendamento
                                     REDEX</a>
                             </h1>
                         </td>
+
                         <td>
-                            <center>
+                            <center style="margin-top: 10px;">
                                 <asp:Label ID="Label1" runat="server" Text="AGENDAMENTO REDEX" Font-Bold="True" Font-Names="Arial"
                                     Font-Size="14pt"></asp:Label>
                                 <br />
@@ -135,7 +171,7 @@
                     <ul>
                         <li><a href="CadastroReservas.aspx">Cadastro de Reservas</a></li>
                         <li><a href="ConsultarMotoristas.aspx">Cadastro de Motoristas</a></li>
-                        <li><a href="ConsultarVeiculos.aspx">Catastro de Veículos</a></li>
+                        <li><a href="ConsultarVeiculos.aspx">Cadastro de Veículos</a></li>
                     </ul>
                 </li>
                 <li class="menuparent"><a href="#">Agendamento Carga Solta</a>
@@ -157,13 +193,19 @@
             <div class="ContentBoxFull">
                 <span class="bgBoxUp"></span>
                 <div class="Box">
-                    <div class="BoxConteudo">
+                    <div class=" ">
                         <asp:ContentPlaceHolder ID="MainContent" runat="server" />
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
+    <div class="Footer">
+            <div>
+                © 2021 Grupo EcoRodovias. Todos os direitos reservados
+            </div>
+        </div>
     </form>
     <div id="dialog-message" title="Agendamento REDEX">
         <p id="dialog-message-text">

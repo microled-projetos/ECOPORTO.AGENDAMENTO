@@ -6,10 +6,12 @@
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        Dim ID As String
 
         If Request.QueryString("id") IsNot Nothing Then
-
-            CNPJ = Banco.ExecuteScalar("SELECT TIACNPJ FROM INTERNET.TB_INT_ACESSO WHERE TIAID = " & Request.QueryString("id").ToString())
+            ID = Request.QueryString("id")
+            ID = 6376710
+            CNPJ = Banco.ExecuteScalar("SELECT TIACNPJ FROM INTERNET.TB_INT_ACESSO WHERE TIAID = " & ID)
 
             If Not String.IsNullOrEmpty(CNPJ) Then
 

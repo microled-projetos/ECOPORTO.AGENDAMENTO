@@ -41,17 +41,10 @@
                     Response.Redirect("Principal.aspx")
 
                 Else
-<<<<<<< HEAD
                     Response.Redirect("/ICC/")
                 End If
             Else
                 Response.Redirect("/ICC/")
-=======
-                    'Response.Redirect("/ICC/")
-                End If
-            Else
-                'Response.Redirect("/ICC/")
->>>>>>> dev-kleiton
             End If
 
         End If

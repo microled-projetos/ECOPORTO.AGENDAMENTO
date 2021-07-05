@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class Site
-    
+
     '''<summary>
     '''Head1 control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class Site
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Head1 As Global.System.Web.UI.HtmlControls.HtmlHead
-    
+
     '''<summary>
     '''Form1 control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class Site
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
-    
+
     '''<summary>
     '''Label1 control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class Site
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label3 control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class Site
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label4 control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class Site
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''lblVersao control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class Site
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblVersao As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''MainContent control.
     '''</summary>

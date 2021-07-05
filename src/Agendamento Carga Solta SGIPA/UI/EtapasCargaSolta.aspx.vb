@@ -182,7 +182,12 @@ Public Class EtapasCargaSolta
                     End If
 
                     If HeaderText = "MAPA MADEIRA" Then
-                        e.Row.Cells(index).BackColor = Color.LightGreen
+                        If e.Row.Cells(index).Text.ToUpper() <> MAPA_MADEIRA Then
+                            e.Row.Cells(index).BackColor = Color.Red
+                            e.Row.Cells(index).ForeColor = Color.White
+                        Else
+                            e.Row.Cells(index).BackColor = Color.LightGreen
+                        End If
                     End If
 
                     If HeaderText = "SISCARGA" Then

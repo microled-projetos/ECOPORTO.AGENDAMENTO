@@ -23,12 +23,17 @@
         <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
             bgcolor="#F8FFDE" width="1000px">
             <tr>
+                <td colspan="2" height="10">
+                </td>
+                
+            </tr>
+            <tr>
                 <td colspan="2" style="border-style: solid; border-width: 1px; border-color: Black;
-                    color: White; font-family: tahoma; font-size: 13px; font-weight: bold;" bgcolor="#B3C63C">
+                    color: White; font-family: tahoma; font-size: 18px; font-weight: bold;" bgcolor="#076703">
                     Consulta de Reserva
                 </td>
                 <td style="padding: 0px; margin: 0px; border-color: Black; color: White; font-family: tahoma;
-                    font-size: 13px; font-weight: bold; border-left-style: solid; border-left-width: 1px;
+                    font-size: 16px; font-weight: bold; border-left-style: solid; border-left-width: 1px;
                     padding-left: 4px;" align="left" rowspan="2" colspan="2">
                     <asp:Button ID="btnSalvar" runat="server" Height="44px" Text="Salvar" Width="78px"
                         CssClass="Botao" Visible="false" />
@@ -39,7 +44,7 @@
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px">
+                <td style="border-style: solid; border-width: 1px; font-style: 14px;">
                     Informe a Reserva:
                 </td>
                 <td style="border-style: solid; border-width: 1px; width: 406px;">
@@ -268,7 +273,7 @@
                                 </Columns>
                                 <EditRowStyle BackColor="#999999" />
                                 <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#076703" Font-Bold="True" ForeColor="White" />
                                 <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                                 <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                 <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
@@ -283,7 +288,7 @@
             </table>
         </div>
         </div>
-          <div style="width:1000px; background-color:coral; color: white; height:20px;line-height:20px;">
+          <div style="width:1000px; background-color:red; color: white; height:20px;line-height:20px; font-size:14px;">
             <p>Atenção: É necessário apresentar 03 vias do CTE e Danfe no Gate!</p>
         </div>
     </center>

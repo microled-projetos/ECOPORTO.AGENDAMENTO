@@ -1,6 +1,7 @@
 ﻿Imports System.Data.OleDb
 Imports System.IO
 Imports System.Xml
+Imports System.Web.Services
 
 Public Class AgendarCNTR
     Inherits System.Web.UI.Page
@@ -421,6 +422,7 @@ Public Class AgendarCNTR
                 SQL.Append("        OBS, ")
                 SQL.Append("        NUM_PROTOCOLO, ")
                 SQL.Append("        ANO_PROTOCOLO, ")
+
                 SQL.Append("        USRID ")
                 SQL.Append("    ) ")
                 SQL.Append("VALUES ")
@@ -471,6 +473,7 @@ Public Class AgendarCNTR
                 SQL.Append("     '',  ")
                 SQL.Append("    REDEX.SEQ_GD_PROT_" & Now.Year & ".NEXTVAL, ")
                 SQL.Append("    " & Now.Year & " ,")
+
                 SQL.Append("    0")
                 SQL.Append("    ) ")
 
@@ -775,6 +778,7 @@ Public Class AgendarCNTR
                 Return False
             End If
         End If
+
 
         'If Me.lblCodigoPeriodo.Text = String.Empty Then
         '    'ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Nenhum período foi selecionado.');</script>", False)

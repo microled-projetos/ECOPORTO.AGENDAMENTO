@@ -5,64 +5,82 @@
     <center>
         <asp:Panel ID="pnFiltro" runat="server" Visible="false">
         
-    <table id="tbpes" align="center" width="500px" bgcolor="#999999" border="0" cellpadding="1"
+    <table id="tbpes" align="center" width="1000px" bgcolor="#999999" border="0" cellpadding="1"
                 cellspacing="0" style="border-style: solid; border-width: 1px; border-color: #999999">
+                 <tr>
+                    <td colspan="2" height="10">
+                    </td>
+                
+                </tr>
                 <tr>
-                    <td align="center" colspan="3" style="font-family: verdana; font-size: 11px; font-weight: bold;
-                        color: #FFFFFF;" bgcolor="#B3C63C">
-                        Pesquisar Agendamento
+                    <td align="center" colspan="3" style="font-family: verdana; font-size: 18px; font-weight: bold;
+                        color: #FFFFFF;" bgcolor="#076703">
+                        <i class="fa fa-search"></i> Pesquisar Agendamento
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
+                        border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
+                        border-right-width: 1px; border-right-color: #999999">
+                        
+                        <span style="font-size: 14px;">
+                            Reserva:
+                        </span>
+                    </td>
+                    <td cssClass="input-group" width="100px" align="left" bgcolor="White" colspan="2" style="border-bottom-style: dotted;
+                        border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
+                        border-right-width: 1px; border-right-color: #999999">
+                        <asp:TextBox ID="txtReserva" runat="server" Style="margin-left: 0px" Width="500px"
+                            Font-Names="Verdana" Font-Size="14px"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        Reserva:
+                        <span style="font-size: 14px;">
+                            Placa Cavalo:
+                        </span>
+                        
                     </td>
                     <td width="100px" align="left" bgcolor="White" colspan="2" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        <asp:TextBox ID="txtReserva" runat="server" Style="margin-left: 0px" Width="140px"
-                            Font-Names="Verdana" Font-Size="11px"></asp:TextBox>
+                        <asp:TextBox ID="txtPlacaCV" runat="server" Width="500px" Font-Names="Verdana"
+                            Font-Size="14px" MaxLength="8"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        Placa Cavalo:
+                        <span style="font-size: 14px;">
+                            Placa Carreta:
+                        </span>
+                        
                     </td>
                     <td width="100px" align="left" bgcolor="White" colspan="2" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        <asp:TextBox ID="txtPlacaCV" runat="server" Width="140px" Font-Names="Verdana"
-                            Font-Size="11px" MaxLength="8"></asp:TextBox>
+                        <asp:TextBox ID="txtPlacaCR" runat="server" Width="500px" Font-Names="Verdana"
+                            Font-Size="14px" MaxLength="8"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        Placa Carreta:
-                    </td>
-                    <td width="100px" align="left" bgcolor="White" colspan="2" style="border-bottom-style: dotted;
-                        border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
-                        border-right-width: 1px; border-right-color: #999999">
-                        <asp:TextBox ID="txtPlacaCR" runat="server" Width="140px" Font-Names="Verdana"
-                            Font-Size="11px" MaxLength="8"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
-                        border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
-                        border-right-width: 1px; border-right-color: #999999">
-                        Navio:
+                        
+                        <span style="font-size: 14px;">
+                            Navio:
+                        </span>
                     </td>
                     <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        <asp:DropDownList ID="cbFiltro1" runat="server" Width="142px" Font-Names="Verdana"
-                            Font-Size="11px">
+                        <asp:DropDownList ID="cbFiltro1" runat="server" Width="500px" Font-Names="Verdana"
+                            Font-Size="14px">
                             <asp:ListItem Value="0">Exatamente Igual</asp:ListItem>
                             <asp:ListItem Value="1">Contém</asp:ListItem>
                         </asp:DropDownList>
@@ -71,20 +89,24 @@
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
                         <asp:TextBox ID="txtNavio" runat="server" Style="margin-left: 0px" Width="250px"
-                            Font-Names="Verdana" Font-Size="11px"></asp:TextBox>
+                            Font-Names="Verdana" Font-Size="14px"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        Motorista:
+
+                        <span style="font-size: 14px;">
+                            Motorista:
+                        </span>
+                        
                     </td>
                     <td width="100px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                         border-bottom-width: 1px; border-bottom-color: #999999; border-right-style: dotted;
                         border-right-width: 1px; border-right-color: #999999">
-                        <asp:DropDownList ID="cbFiltro2" runat="server" Width="142px" Font-Names="Verdana"
-                            Font-Size="11px">
+                        <asp:DropDownList ID="cbFiltro2" runat="server" Width="500px" Font-Names="Verdana"
+                            Font-Size="14px">
                             <asp:ListItem Value="0">Exatamente Igual</asp:ListItem>
                             <asp:ListItem Value="1">Contém</asp:ListItem>
                         </asp:DropDownList>
@@ -92,17 +114,17 @@
                     <td width="240px" align="left" bgcolor="White" style="border-right: 1px dotted #999999;
                         border-bottom: 1px dotted #999999; margin-left: 80px;">
                         <asp:TextBox ID="txtMotorista" runat="server" Style="margin-left: 0px" Width="250px"
-                            Font-Names="Verdana" Font-Size="11px"></asp:TextBox>
+                            Font-Names="Verdana" Font-Size="14px"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td align="center" bgcolor="White" style="border-right: 1px dotted #999999; border-bottom: 1px dotted #999999;"
                         colspan="3">
-                        <asp:Button ID="btRetornar" runat="server" Font-Names="Verdana" Font-Size="10px"
+                        <asp:Button ID="btRetornar" runat="server" Font-Names="Verdana" Font-Size="14px"
                             Text="Retornar" Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
-                        <asp:Button ID="btLimpar" runat="server" Font-Names="Verdana" Font-Size="10px" Text="Limpar"
+                        <asp:Button ID="btLimpar" runat="server" Font-Names="Verdana" Font-Size="14px" Text="Limpar"
                             Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
-                        <asp:Button ID="btPesquisar2" runat="server" Font-Names="Verdana" Font-Size="10px"
+                        <asp:Button ID="btPesquisar2" runat="server" Font-Names="Verdana" Font-Size="14px"
                             Text="Pesquisar" Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
                     </td>
                 </tr>
@@ -114,9 +136,14 @@
 
         <table style="width: 98%">
             <tr>
+                <td colspan="2" height="10">
+                </td>
+                
+            </tr>
+            <tr>
                 <td align="left">
                     <asp:Button ID="btnAgendar" runat="server" Text="Agendar Carga Solta" />
-                    <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" />
+                    <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar"  />
                 </td>
                 <td>
                 </td>
@@ -130,7 +157,7 @@
         </table>
         <asp:GridView ID="dgConsulta" runat="server" AutoGenerateColumns="False" CellPadding="4"
             EmptyDataText="Nenhum registro encontrado." ForeColor="#333333" ShowHeaderWhenEmpty="True"
-            Font-Size="11px" DataKeyNames="AUTONUM" Width="98%">
+            Font-Size="14px" DataKeyNames="AUTONUM" Width="98%">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>                
                 <asp:BoundField HeaderText="Reserva" DataField="RESERVA" />
@@ -142,7 +169,7 @@
                         <%--<asp:ImageButton runat="server" ID="cmdProtocolo"  CommandName="EDITAR"
                             CommandArgument="<%# Container.DataItemIndex %>" />--%>
                         
-                        <asp:button text='<%# Eval("NUM_PROTOCOLO").ToString() & "/" & Eval("ANO_PROTOCOLO").ToString() %>' runat="server" CommandName="PROTOCOLO" CommandArgument="<%# Container.DataItemIndex %>" />
+                        <asp:button text='<%# Eval("NUM_PROTOCOLO").ToString() & "/" & Eval("ANO_PROTOCOLO").ToString() %>' runat="server" CommandName="PROTOCOLO" CommandArgument="<%# Container.DataItemIndex %>" CssClass="btn btn-default" />
                     </ItemTemplate>
                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" />
                 </asp:TemplateField>
@@ -169,7 +196,7 @@
             </Columns>
             <EditRowStyle BackColor="#999999" />
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-            <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#076703" Font-Bold="True" ForeColor="White" />
             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
