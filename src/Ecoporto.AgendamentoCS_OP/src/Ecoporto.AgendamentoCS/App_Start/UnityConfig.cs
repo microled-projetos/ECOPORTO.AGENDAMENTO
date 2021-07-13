@@ -31,6 +31,7 @@ namespace Ecoporto.AgendamentoCS
             container.RegisterType<IReservaRepositorio, ReservaRepositorio>();
             container.RegisterType<IEmpresaRepositorio, EmpresaRepositorio>();
             container.RegisterType<IUploadRepositorio, UploadRepositorio>();
+            container.RegisterType<IUploadXMLNfeRepositorio, UploadXMLNfeRepositorio>();
         }
     }
 }

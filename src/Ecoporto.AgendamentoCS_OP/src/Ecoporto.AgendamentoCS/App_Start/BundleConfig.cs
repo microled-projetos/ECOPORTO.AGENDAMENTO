@@ -7,11 +7,17 @@ namespace Ecoporto.AgendamentoCS
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery")
-                .Include("~/Content/js/jquery-3.3.1.js",
-                         "~/Content/js/jquery.unobtrusive-ajax.js"));
+                .Include(
+                        "~/Content/js/upload/jquery-1.8.3.js",
+                        //"~/Content/js/jquery-3.3.1.js",                        
+                        "~/Content/js/upload/jquery-ui-1.8.3.js",
+                        "~/Content/js/upload/bootstrap.js",
+                         "~/Content/js/jquery.unobtrusive-ajax.js"
+                         
+                         ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jquery-url")
-               .Include("~/Content/plugins/jquery-url/jquery-url.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/jquery-url")
+            //   .Include("~/Content/plugins/jquery-url/jquery-url.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui")
                .Include("~/Content/plugins/jquery-ui/js/jquery-ui.js"));
@@ -42,8 +48,10 @@ namespace Ecoporto.AgendamentoCS
                         "~/Content/css/login.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap")
-                .Include("~/Content/js/popper.min.js",
-                         "~/Content/js/bootstrap.js"));
+                .Include(
+                //"~/Content/js/bootstrap.js",
+                "~/Content/js/popper.min.js"
+                         ));
 
             bundles.Add(new StyleBundle("~/bundles/datatablesCSS")
                 .Include("~/Content/plugins/datatables/css/dataTables.bootstrap4.min.css"));

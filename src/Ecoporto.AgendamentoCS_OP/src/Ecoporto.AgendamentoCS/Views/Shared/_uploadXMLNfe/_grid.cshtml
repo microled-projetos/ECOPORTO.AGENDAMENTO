@@ -1,0 +1,32 @@
+﻿<div class="card-body">
+    <div class="table-responsive">
+        <table id="datatables" class="table table-hover table-sm" cellspacing="0">
+            <thead>
+                <tr>
+
+                    @*<th class="td-icone">&nbsp;</th>*@
+                    <th scope="col">ID</th>
+                    <th scope="col">Transportadora</th>
+                    <th scope="col">Danfe</th>
+                    @*<th scope="col" width="200">Arquivo</th>*@
+                    <th scope="col">Data Cadastro</th>
+                    <th class="campo-acao">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.ListarXmlDocs)
+                {
+                <tr id="item-@item.ID">
+                    <td>@item.ID</td>
+                    <td>@item.Razao</td>
+                    <td>@item.Danfe</td>
+                    @*<td width="200">@item.Arquivo_XML</td>*@
+                    <td>@item.DataCadastro</td>
+                    
+                    <td class="campo-acao"><a href="#" onclick="Excluir(@item.ID)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i>&nbsp;Excluir</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
