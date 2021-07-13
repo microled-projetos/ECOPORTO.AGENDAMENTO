@@ -71,11 +71,7 @@
         If e.CommandName = "EDITAR" Then
             If Not String.IsNullOrEmpty(ID) Or
                 Not String.IsNullOrWhiteSpace(ID) Then
-                If Banco.ExecuteScalar("SELECT STATUS FROM REDEX.TB_GD_CONTEINER WHERE AUTONUM_GD_CNTR = " & ID) = "GE" Then
-                    Response.Redirect("AgendarCNTR.aspx?id=" & ID)
-                Else
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "alert('O Agendamento não pode ser excluído pois já foi impresso.');", True)
-                End If
+                Response.Redirect("AgendarCNTR.aspx?id=" & ID)
             End If
         End If
 

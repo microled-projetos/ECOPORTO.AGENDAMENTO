@@ -7,7 +7,7 @@
 
             ConsultarCavalos()
             ConsultarTransportadora()
-            ConsultarPeriodos()
+
 
             If Request.QueryString("id") IsNot Nothing Then
 

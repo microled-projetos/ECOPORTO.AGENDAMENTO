@@ -545,9 +545,8 @@ Public Class AgendarCNTR
                 SQL.Append("  WHERE AUTONUM_GD_CNTR = " & Me.lblCodigoAgendamento.Text)
 
                 If Banco.BeginTransaction(SQL.ToString()) Then
-                    'If Agendamento.InsereAgendamentoNaFila(Val(Me.lblCodigoAgendamento.Text), Val(Me.lblCodigoPeriodo.Text), Val(Me.lblCodigoBooking.Text), Val(Me.lblCodigoAgendamento.Text), TipoAgendamento.CONTEINER_DESCARGA) Then
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Agendamento alterado com sucesso!','ConsultarAgendamentosCNTR.aspx');", True)
-                    'End If
+
                 Else
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao alterar o agendamento. Tente Novamente.');", True)
                 End If
