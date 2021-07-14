@@ -816,6 +816,7 @@ function loadFile() {
         var doc = parser.parseFromString(fr.result, "text/xml");
         //document.getElementById("xmlDanfeCompleta").innerHTML = fr.result;
         $('#xml').val(fr.result);
+        console.log(fr.result);
         shownode(doc.childNodes[0]);
     }
 }
