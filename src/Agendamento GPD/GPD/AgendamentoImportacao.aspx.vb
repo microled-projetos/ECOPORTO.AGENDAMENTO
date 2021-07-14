@@ -476,13 +476,12 @@ Public Class AgendamentoImportacao
 
     Protected Sub btSalvar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btSalvar.Click
 
-        Dim Autonomo As Integer = 0
-
         Me.pnlMsgErro.Visible = False
         Me.lblMsgErro.Text = ""
 
         If Validar() Then
 
+            Dim Autonomo As Integer = 0
 
             If chAutonomo.Checked Then
                 Autonomo = 1

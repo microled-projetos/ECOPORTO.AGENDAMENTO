@@ -1,7 +1,0 @@
-alter table REDEX.TB_AGENDAMENTO_WEB_Cs add EMAIL_FAT varchar(200);
-
-alter table REDEX.TB_AGENDAMENTO_WEB_Cs add CLIENTE_FAT number(9);
-
-alter table REDEX.TB_Booking add FLAG_RETIRADA_CARGA varchar(5);
-
-commit;

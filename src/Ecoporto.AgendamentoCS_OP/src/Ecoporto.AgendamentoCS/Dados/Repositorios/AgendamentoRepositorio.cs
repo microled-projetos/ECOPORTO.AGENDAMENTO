@@ -262,7 +262,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                                 param2.Value = itemId;
                                 param3.Value = nota.Danfe;
                                 param4.Value = nota.CFOP;
-                                param5.Value = nota.xml.ToString();
+                                param5.Value = nota.xml;
                                 cmd.ExecuteNonQuery();
                             }
                             //parametros = new DynamicParameters();

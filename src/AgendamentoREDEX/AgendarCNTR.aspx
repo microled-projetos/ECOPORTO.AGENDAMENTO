@@ -21,19 +21,17 @@
                     $('#<%=AccordionIndex.ClientID %>').val(index);
                 }
             });
+
         });
     </script>
-   
+
     <center>
         <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
             bgcolor="#F8FFDE" width="1000px">
             <tr>
-                <td colspan="2" height="10"></td>
-            </tr>
-            <tr>
                 <td colspan="2" style="border-style: solid; border-width: 1px; border-color: Black;
-                    color: White; font-family: tahoma; font-size: 18px; font-weight: bold;" 
-                    bgcolor="#076703">
+                    color: White; font-family: tahoma; font-size: 13px; font-weight: bold;" 
+                    bgcolor="#B3C63C">
                     Consulta de Reserva
                 </td>
                 <td style="padding: 0px; margin: 0px; border-color: Black; color: White; font-family: tahoma;
@@ -48,7 +46,7 @@
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                <td style="border-style: solid; border-width: 1px">
                     Informe a Reserva:
                 </td>
                 <td style="border-style: solid; border-width: 1px; width: 406px;">
@@ -58,140 +56,140 @@
         </table>
         <br />
         <div id="accordion" style="width: 1000px; text-align: left; display: none;">
-            <h3 style="font-size: 16px;">
+            <h3>
                 1. Informações da Reserva</h3>
             <div>
                 <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
                     bgcolor="#F8FFDE" width="100%">
                     <tr>
                         <td colspan="4" style="border-color: Black; border-style: solid; border-width: 1px;
-                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#076703">
+                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#B3C63C">
                             Informações da Reserva
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Navio:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblNavio" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblNavio" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             Viagem:
                         </td>
                         <td style="border-style: solid; border-width: 1px" align="left">
-                            <asp:Label ID="lblViagem" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblViagem" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Exportador:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblExportador" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblExportador" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             Dead Line:
                         </td>
                         <td style="border-style: solid; border-width: 1px" align="left">
-                            <asp:Label ID="lblDeadLine" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblDeadLine" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             NVOCC:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblNVOCC" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblNVOCC" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             POD:
                         </td>
                         <td align="left" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblPortoDescarga" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblPortoDescarga" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4" style="border-color: Black; border-style: solid; border-width: 1px;
-                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#076703">
+                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#B3C63C">
                             Informações da Carga
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Tipo:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblTipo" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblTipo" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             Total:
                         </td>
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
-                            <asp:Label ID="lblTotal" runat="server" Font-Size="14px"></asp:Label>
+                        <td style="border-style: solid; border-width: 1px">
+                            <asp:Label ID="lblTotal" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Status:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblStatus" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblStatus" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             M3:
                         </td>
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
-                            <asp:Label ID="lblM3" runat="server" Font-Size="14px"></asp:Label>
+                        <td style="border-style: solid; border-width: 1px">
+                            <asp:Label ID="lblM3" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Utilizados:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblUtilizados" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblUtilizados" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             Peso Bruto:
                         </td>
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
-                            <asp:Label ID="lblPesoBruto" runat="server" Font-Size="14px"></asp:Label>
+                        <td style="border-style: solid; border-width: 1px">
+                            <asp:Label ID="lblPesoBruto" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Disponíveis:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:Label ID="lblDisponiveis" runat="server" Font-Size="14px"></asp:Label>
+                            <asp:Label ID="lblDisponiveis" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                         <td align="right" style="border-style: solid; border-width: 1px">
                             Volumes:
                         </td>
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
-                            <asp:Label ID="lblVolumes" runat="server" Font-Size="14px"></asp:Label>
+                        <td style="border-style: solid; border-width: 1px">
+                            <asp:Label ID="lblVolumes" runat="server" Font-Size="11px"></asp:Label>
                         </td>
                     </tr>
                 </table>
             </div>
-            <h3 style="font-size: 16px;">
+            <h3>
                 2. Motorista / Veículo</h3>
             <div>
                 <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
                     bgcolor="#F8FFDE" width="100%">
                     <tr>
                         <td colspan="4" style="border-color: Black; border-style: solid; border-width: 1px;
-                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#076703">
+                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#B3C63C">
                             Motorista / Veículo
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Nome Motorista / CNH:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
-                            <asp:TextBox ID="txtMotorista" runat="server" Width="300px" AutoPostBack="True" Font-Size="14px"></asp:TextBox>
+                            <asp:TextBox ID="txtMotorista" runat="server" Width="300px" AutoPostBack="True" Font-Size="11px"></asp:TextBox>
                         </td>
                         <td width="100px" align="right" style="border-style: solid; border-width: 1px">
                             Placa Cavalo:
@@ -203,7 +201,7 @@
                         </td>
                     </tr>
                     <tr bgcolor="White">
-                        <td style="border-style: solid; border-width: 1px; font-size: 14px;">
+                        <td style="border-style: solid; border-width: 1px">
                             Transportadora:
                         </td>
                         <td width="300px" style="border-style: solid; border-width: 1px">
@@ -219,8 +217,8 @@
                         </td>
                     </tr>
                 </table>
-            </div>            
-            <h3 style="font-size: 16px;">
+            </div>
+            <h3>
                 3. Informações do Contêiner</h3>
             <div>
                 <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
@@ -230,23 +228,23 @@
                             <table border="1" style="font-family: tahoma; font-size: 11px; outline-width: 0;
                                 outline-style: none; outline-color: invert;" width="100%">
                                 <tr>
-                                    <td bgcolor="#076703" style="font-family: tahoma; font-size: 16px; font-weight: bold;
+                                    <td bgcolor="#B3C63C" style="font-family: tahoma; font-size: 13px; font-weight: bold;
                                         color: #FFFFFF">
                                         Contêiner
                                     </td>
-                                    <td colspan="2" bgcolor="#076703" style="font-family: tahoma; font-size: 16px; font-weight: bold;
+                                    <td colspan="2" bgcolor="#B3C63C" style="font-family: tahoma; font-size: 13px; font-weight: bold;
                                         color: #FFFFFF">
                                         ONU
                                     </td>
-                                    <td bgcolor="#076703" style="font-family: tahoma; font-size: 16px; font-weight: bold;
+                                    <td bgcolor="#B3C63C" style="font-family: tahoma; font-size: 13px; font-weight: bold;
                                         color: #FFFFFF">
                                         IMO
                                     </td>
-                                    <td bgcolor="#076703" style="font-family: tahoma; font-size: 16px; font-weight: bold;
+                                    <td bgcolor="#B3C63C" style="font-family: tahoma; font-size: 13px; font-weight: bold;
                                         color: #FFFFFF">
                                         Refrigeração
                                     </td>
-                                    <td bgcolor="#076703" style="font-family: tahoma; font-size: 16px; font-weight: bold;
+                                    <td bgcolor="#B3C63C" style="font-family: tahoma; font-size: 13px; font-weight: bold;
                                         color: #FFFFFF">
                                         Excessos CM
                                     </td>
@@ -424,7 +422,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td bgcolor="#076703" colspan="5" style="font-family: tahoma; font-size: 13px; font-weight: bold;
+                                    <td bgcolor="#B3C63C" colspan="5" style="font-family: tahoma; font-size: 13px; font-weight: bold;
                                         color: #FFFFFF">
                                         Lacres
                                     </td>
@@ -508,7 +506,7 @@
                     </tr>
                 </table>
             </div>
-            <h3 style="font-size: 16px;">
+            <h3>
                 4. Informações das Notas Fiscais</h3>
             <div>
                 <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
@@ -526,7 +524,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="border-color: Black; border-style: solid; border-width: 1px;
-                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#076703">
+                            font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#B3C63C">
                             Notas Fiscais
                         </td>
                     </tr>
@@ -625,7 +623,7 @@
                                     <td colspan="6">
                                         <asp:GridView ID="dgConsultaNF" runat="server" AutoGenerateColumns="False" CellPadding="4"
                                             EmptyDataText="Nenhuma NF encontrada." ForeColor="#333333" ShowHeaderWhenEmpty="True"
-                                            Width="100%" Font-Size="14px" DataKeyNames="AUTONUM">
+                                            Width="100%" Font-Size="11px" DataKeyNames="AUTONUM">
                                             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                             <Columns>
                                                 <asp:BoundField HeaderText="DANFE" DataField="DANFE">
@@ -678,7 +676,7 @@
                                             </Columns>
                                             <EditRowStyle BackColor="#999999" />
                                             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                            <HeaderStyle BackColor="#076703" Font-Bold="True" ForeColor="White" />
+                                            <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
                                             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                                             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
@@ -694,7 +692,7 @@
                     </tr>
                 </table>
             </div>
-            <h3 style="font-size: 16px;">
+            <h3>
                 5. Escolha do Período</h3>
             <div>
                 <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
@@ -704,7 +702,7 @@
                             <asp:Panel ID="pnGrid" runat="server" Height="150px" ScrollBars="Vertical" BorderStyle="None">
                                 <asp:GridView ID="dgConsultaPeriodos" runat="server" AutoGenerateColumns="False"
                                     BorderStyle="None" EmptyDataText="Nenhum período encontrado." ForeColor="#333333"
-                                    ShowHeaderWhenEmpty="True" Width="100%" Font-Size="16px" DataKeyNames="AUTONUM_GD_RESERVA">
+                                    ShowHeaderWhenEmpty="True" Width="100%" Font-Size="11px" DataKeyNames="AUTONUM_GD_RESERVA">
                                     <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                     <Columns>
                                         <asp:BoundField DataField="AUTONUM_GD_RESERVA" HeaderText="Codigo" Visible="False" />
@@ -727,7 +725,7 @@
                                     </Columns>
                                     <EditRowStyle BackColor="#999999" />
                                     <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                                    <HeaderStyle BackColor="#076703" Font-Bold="True" ForeColor="White" />
+                                    <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
                                     <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                                     <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                                     <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
