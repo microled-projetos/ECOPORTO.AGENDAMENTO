@@ -11,5 +11,6 @@ namespace Ecoporto.AgendamentoCS.Dados.Interfaces
         bool InsertDocXML(string danfe, string arquivo, int id_transportadora);
         IEnumerable<UploadXMLNfeDTO> GetListarRegistros(int id);
         UploadXMLNfeDTO GetExcluirRegistro(int id);        
+
     }
 }

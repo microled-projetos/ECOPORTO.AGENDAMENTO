@@ -33,6 +33,10 @@ namespace Ecoporto.AgendamentoCS.Controllers
 
             ViewBag.ListarXmlDocs = _uploadXMLNfeRepositorio.GetListarRegistros(UploadXMLNfeDTO.id_transportadora);
 
+            int countReg = _uploadXMLNfeRepositorio.GetListarRegistros(UploadXMLNfeDTO.id_transportadora).Count();
+
+            ViewBag.CountListarXmlDocs = countReg;
+
             return View();
         }
         public JsonResult GetDeleteFiles(int id)
@@ -46,7 +50,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     possuiDados = true,                     
                     Mensagem = "Dados excluídos com successo", 
                     statusRetorno = "200"
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -55,7 +59,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     possuiDados = true,
                     Mensagem = "Os dados não foram excluídos",
                     statusRetorno = "500"
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
         }
     }

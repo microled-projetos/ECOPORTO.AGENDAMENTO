@@ -33,7 +33,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                     sb.AppendLine(" BEGIN ");
 
-                    sb.AppendLine(" INSERT INTO SGIPA.TB_UPLOAD_XML ");
+                    sb.AppendLine(" INSERT INTO sgipa.TB_UPLOAD_XML ");
                     sb.AppendLine(" (   ");
                     sb.AppendLine(" AUTONUM,  ");
                     sb.AppendLine(" DANFE, ");
@@ -78,8 +78,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                     sb.AppendLine(" A.AUTONUM_TRANSPORTADORA as TransportadoraID, ");
                     sb.AppendLine(" B.RAZAO as Razao ");
                     sb.AppendLine(" FROM  ");
-                    sb.AppendLine(" SGIPA.TB_UPLOAD_XML A ");
-                    sb.AppendLine(" INNER JOIN SGIPA.TB_CAD_TRANSPORTADORAS B ");
+                    sb.AppendLine(" sgipa.TB_UPLOAD_XML A ");
+                    sb.AppendLine(" INNER JOIN OPERADOR.TB_CAD_TRANSPORTADORAS B ");
                     sb.AppendLine(" ON (A.AUTONUM_TRANSPORTADORA =  B.AUTONUM )  ");
                     sb.AppendLine(" WHERE  ");
                     sb.AppendLine(" AUTONUM_TRANSPORTADORA = " + id);
@@ -103,7 +103,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" DELETE FROM SGIPA.TB_UPLOAD_XML  WHERE AUTONUM = " + id);
+                    sb.AppendLine(" DELETE FROM sgipa.TB_UPLOAD_XML  WHERE AUTONUM = " + id);
 
                     con.Query<UploadXMLNfeDTO>(sb.ToString()).FirstOrDefault();
 

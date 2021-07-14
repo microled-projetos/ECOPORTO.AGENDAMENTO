@@ -14,18 +14,34 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ViewBag.ListarXmlDocs)
-                {
-                <tr id="item-@item.ID">
-                    <td>@item.ID</td>
-                    <td>@item.Razao</td>
-                    <td>@item.Danfe</td>
-                    @*<td width="200">@item.Arquivo_XML</td>*@
-                    <td>@item.DataCadastro</td>
-                    
-                    <td class="campo-acao"><a href="#" onclick="Excluir(@item.ID)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i>&nbsp;Excluir</a></td>
-                </tr>
+                @{
+                    var listarXML = ViewBag.ListarXmlDocs;
+                    int countRegistro = ViewBag.CountListarXmlDocs;
+                    if (countRegistro > 0)
+                    {
+                        foreach (var item in listarXML)
+                        {
+                            <tr id="item-@item.ID">
+                                <td>@item.ID</td>
+                                <td>@item.Razao</td>
+                                <td>@item.Danfe</td>
+                                @*<td width="200">@item.Arquivo_XML</td>*@
+                                <td>@item.DataCadastro</td>
+
+                                <td class="campo-acao"><a href="#" onclick="Excluir(@item.ID)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i>&nbsp;Excluir</a></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5"> Sem Danfes encontradas</td>
+                        </tr>
+                    }
+
                 }
+
+
             </tbody>
         </table>
     </div>
