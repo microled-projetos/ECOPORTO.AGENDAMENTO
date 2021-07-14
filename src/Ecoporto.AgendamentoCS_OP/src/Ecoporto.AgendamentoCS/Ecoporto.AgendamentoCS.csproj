@@ -256,6 +256,7 @@
     <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Models\Agendamento.cs" />
     <Compile Include="Models\AgendamentoItemDanfe.cs" />
+    <Compile Include="Models\ArquivosCarregados.cs" />
     <Compile Include="Models\CFOP.cs" />
     <Compile Include="Models\DocumentoUpload.cs" />
     <Compile Include="Models\DTO\AgendamentoDTO.cs" />
