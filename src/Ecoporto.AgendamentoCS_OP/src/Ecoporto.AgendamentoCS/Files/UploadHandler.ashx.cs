@@ -158,7 +158,7 @@ namespace Ecoporto.AgendamentoCS.Files
 
                         string ArquivoNome = file.FileName.ToString().Substring(0,44);
 
-                        int idTransportadora = UploadXMLNfe.id_transportadora;
+                        int idTransportadora = UploadXMLNfeDTO.id_transportadora;
 
                         Ecoporto.AgendamentoCS.Dados.Repositorios.UploadXMLNfeRepositorio nf = new Ecoporto.AgendamentoCS.Dados.Repositorios.UploadXMLNfeRepositorio();
 

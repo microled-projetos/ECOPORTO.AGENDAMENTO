@@ -50,6 +50,22 @@
             $('#del-modal').data('id', id).modal('show');
         }
 
+        @*function ConfExclusao() {
+            var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
+            var _id = $('#del-modal').data('id');
+
+            $.ajax({
+                url: _url, 
+                type: 'GET', 
+                data: { id: _id }, 
+
+                success: function (Dados) {
+                    
+
+                }
+            });
+        }*@
+
         function ConfirmarExclusao() {
 
             var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
@@ -60,6 +76,9 @@
             $.get(_url, { id: _id })
                 .done(function (data, statusText, xhr) {
                     toastr.success('Registro excluído com sucesso!', 'Agendamento');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
                     $('#item-' + _id).remove();
                 }).fail(function (data) {
 

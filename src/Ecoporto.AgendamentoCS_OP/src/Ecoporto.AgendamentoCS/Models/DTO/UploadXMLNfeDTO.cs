@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Ecoporto.AgendamentoCS.Models.DTO
 {
-    public class UploadXMLNfe
+    public class UploadXMLNfeDTO
     {
         public int ID { get; set; }
         public string Danfe { get; set; }
