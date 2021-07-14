@@ -610,6 +610,8 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
 
                 obterDanfesPorItem(bookingCsItemId);
                 obterUploadsPorItem(bookingCsItemId);
+                //mexendo
+                obterUploadDanfesCarregadas(6458438);
                 habilitarCamposDanfe();
 
                 $('#Danfe').focus();
@@ -655,6 +657,19 @@ function obterDanfesPorItem(bookingCsItemId) {
         toastr.error(data.statusText, 'Agendamento');
     });
 }
+function obterUploadDanfesCarregadas(idTransportadora) {
+
+    $.get(urlBase + 'Agendamento/ObterUploadDanfesNfe?idTransportadora=' + idTransportadora, function (resultado) {
+
+        if (resultado) {
+
+            console.log(resultado);
+            //$('#tblDanfes').html(resultado);
+        }
+    }).fail(function (data) {
+        toastr.error(data.statusText, 'Agendamento');
+    });
+}
 
 function obterUploadsPorItem(bookingCsItemId) {
 
@@ -668,6 +683,7 @@ function obterUploadsPorItem(bookingCsItemId) {
         toastr.error(data.statusText, 'Agendamento');
     });
 }
+
 
 $('#btnAdicionarDanfe').click(function () {
 

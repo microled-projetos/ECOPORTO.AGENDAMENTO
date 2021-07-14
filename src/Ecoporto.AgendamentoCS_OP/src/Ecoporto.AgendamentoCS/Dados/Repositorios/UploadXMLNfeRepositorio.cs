@@ -22,12 +22,11 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" SELECT OPERADOR.SEQ_TB_UPLOAD_XML.NEXTVAL FROM DUAL  ");
+                    sb.AppendLine(" SELECT SGIPA.SEQ_TB_UPLOAD_XML.NEXTVAL FROM DUAL  ");
 
                     int newID = con.Query<int>(sb.ToString()).FirstOrDefault();
 
                     sb.Clear();
-
 
                     sb.AppendLine(" DECLARE  ");
                     sb.AppendLine(" XML_Txt CLOB :=  '" + arquivo + "';");

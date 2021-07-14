@@ -49,7 +49,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 ViewBag.Message = vm.Message;
                 ViewBag.Protocolo = vm.Protocolo;
             };
-            
+
             var agendamentos = _agendamentoRepositorio
                 .ObterAgendamentos(User.ObterTransportadoraId());
 
@@ -107,7 +107,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 Motoristas = new List<Motorista>(),
                 Veiculos = new List<Veiculo>()
             };
-            
+
             viewModel.Motoristas = _motoristaRepositorio
                 .ObterUltimos5MotoristasAgendados(User.ObterTransportadoraId())
                 .ToList();
@@ -223,8 +223,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     .ObterAgendamentosPorPeriodoEVeiculo(User.ObterTransportadoraId(), viewModel.PeriodoId, viewModel.VeiculoId)
                     .Any();
 
-             //   if (existeAgendamento)
-               //     agendamento.AdicionarNotificacao("Já existe um agendamento para o mesmo veículo e período");
+                //   if (existeAgendamento)
+                //     agendamento.AdicionarNotificacao("Já existe um agendamento para o mesmo veículo e período");
 
                 var motoristaBusca = _motoristaRepositorio.ObterMotoristaPorId(viewModel.MotoristaId);
 
@@ -601,8 +601,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 .Where(c => c.Id != agendamento.Id)
                 .Any();
 
-           // if (existeAgendamento)
-             //   ModelState.AddModelError(string.Empty, "Já existe um agendamento para o mesmo veículo e período");
+            // if (existeAgendamento)
+            //   ModelState.AddModelError(string.Empty, "Já existe um agendamento para o mesmo veículo e período");
 
             var motoristaBusca = _motoristaRepositorio.ObterMotoristaPorId(viewModel.MotoristaId);
 
@@ -614,7 +614,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 if (motoristaBusca.Inativo)
                     agendamento.AdicionarNotificacao("Motorista bloqueado no Terminal");
             }
-            
+
             if (AppConfig.ValidarBDCC())
             {
                 using (var ws = new WsBDCC.WsSincrono())
@@ -815,7 +815,6 @@ namespace Ecoporto.AgendamentoCS.Controllers
 
             return PartialView("_DanfesConsulta", danfesAdicionadas);
         }
-
         [HttpGet]
         public ActionResult ObterDanfesReadOnlyPorItemId(int agendamentoId, int bookingCsItemid)
         {
@@ -967,8 +966,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
             else
             {
                 var _notas = new List<NotaFiscal>();
-            var reservas = _agendamentoRepositorio
-                .ObterReservasAgendamento(agendamento.Id).Select(c => c.Descricao);
+                var reservas = _agendamentoRepositorio
+                    .ObterReservasAgendamento(agendamento.Id).Select(c => c.Descricao);
                 foreach (var item in itens)
                 {
                     var notas = _agendamentoRepositorio
@@ -977,25 +976,25 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     item.NotasFiscais.AddRange(notas);
                     _notas.AddRange(notas);
                 }
-            return View(new AgendamentoViewModel
-            {
-                Id = agendamento.Id,
-                Protocolo = string.Concat(agendamento.Protocolo.PadLeft(6, '0'), "/", agendamento.AnoProtocolo),
-                MotoristaDescricao = agendamento.MotoristaDescricao,
-                VeiculoDescricao = agendamento.VeiculoDescricao,
-                PeriodoDescricao = agendamento.PeriodoDescricao,
-                TransportadoraDescricao = agendamento.TransportadoraDescricao,
-                Navio = agendamento.Navio,
-                Viagem = agendamento.Viagem,
-                Abertura = agendamento.Abertura,
-                Fechamento = agendamento.Fechamento,
-                Reserva = string.Join(",", reservas),
+                return View(new AgendamentoViewModel
+                {
+                    Id = agendamento.Id,
+                    Protocolo = string.Concat(agendamento.Protocolo.PadLeft(6, '0'), "/", agendamento.AnoProtocolo),
+                    MotoristaDescricao = agendamento.MotoristaDescricao,
+                    VeiculoDescricao = agendamento.VeiculoDescricao,
+                    PeriodoDescricao = agendamento.PeriodoDescricao,
+                    TransportadoraDescricao = agendamento.TransportadoraDescricao,
+                    Navio = agendamento.Navio,
+                    Viagem = agendamento.Viagem,
+                    Abertura = agendamento.Abertura,
+                    Fechamento = agendamento.Fechamento,
+                    Reserva = string.Join(",", reservas),
                     DataCadastro = agendamento.DataCriacao,
                     Bagagem = agendamento.Bagagem,
                     NotasFiscais = _notas
-                    
-                   
-            });
+
+
+                });
             };
         }
 
@@ -1251,6 +1250,23 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 .Where(c => c.BookingCsItemId == bookingCsItemId).ToList();
 
             return PartialView("_DanfesConsulta", danfes);
+        }
+        [HttpGet]
+        public ActionResult ObterUploadDanfesNfe(int idTransportadora)
+        {
+            List<UploadXMLNfeViewModel> xmlDanfes = new List<UploadXMLNfeViewModel>();
+            var danfes = _agendamentoRepositorio.ObterArquivosUploadPorIdTransportadora(idTransportadora);
+
+            foreach (var item in danfes)
+            {
+                xmlDanfes.Add(new UploadXMLNfeViewModel()
+                {
+                    Arquivo_XML = item.Arquivo_XML,
+                    Danfe = item.Danfe
+                });
+            }
+
+            return PartialView("_DanfesConsulta", xmlDanfes);
         }
     }
 }

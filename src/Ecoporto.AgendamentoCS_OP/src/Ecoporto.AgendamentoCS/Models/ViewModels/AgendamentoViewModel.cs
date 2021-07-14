@@ -13,6 +13,7 @@ namespace Ecoporto.AgendamentoCS.Models.ViewModels
             Reservas = new List<Reserva>();
             ItensReserva = new List<ReservaItem>();
             Periodos = new List<Janela>();
+            UploadXmlNfe = new List<UploadXMLNfe>();
         }
 
         public string Message { get; set; }
@@ -132,5 +133,7 @@ namespace Ecoporto.AgendamentoCS.Models.ViewModels
         public List<NotaFiscal> NotasFiscais { get; set; } = new List<NotaFiscal>();
 
         public AgendamentoUploadViewModel AgendamentoUploadViewModel { get; set; } = new AgendamentoUploadViewModel();
+        [Display(Name = "Ou Selecione um arquivo já importado")]
+        public List<UploadXMLNfe> UploadXmlNfe { get; set; }
     }
 }
