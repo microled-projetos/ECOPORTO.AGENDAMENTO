@@ -49,12 +49,12 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 ViewBag.Message = vm.Message;
                 ViewBag.Protocolo = vm.Protocolo;
             };
+            
             var agendamentos = _agendamentoRepositorio
                 .ObterAgendamentos(User.ObterTransportadoraId());
 
             return View(agendamentos);
         }
-
         [HttpGet]
         private void ObterPeriodos(AgendamentoViewModel viewModel)
         {
@@ -107,7 +107,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 Motoristas = new List<Motorista>(),
                 Veiculos = new List<Veiculo>()
             };
-
+            
             viewModel.Motoristas = _motoristaRepositorio
                 .ObterUltimos5MotoristasAgendados(User.ObterTransportadoraId())
                 .ToList();
