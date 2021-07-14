@@ -8,25 +8,32 @@ namespace Ecoporto.AgendamentoCS
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery")
                 .Include(
-                        "~/Content/js/upload/jquery-1.8.3.js",
-                        //"~/Content/js/jquery-3.3.1.js",                        
-                        "~/Content/js/upload/jquery-ui-1.8.3.js",
-                        "~/Content/js/upload/bootstrap.js",
-                         "~/Content/js/jquery.unobtrusive-ajax.js"
-                         
+                        "~/Content/js/jquery-3.4.1.js",
+                         "~/Content/js/jquery.unobtrusive-ajax.js"                      
                          ));
-
-            //bundles.Add(new ScriptBundle("~/bundles/jquery-url")
-            //   .Include("~/Content/plugins/jquery-url/jquery-url.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui")
-               .Include("~/Content/plugins/jquery-ui/js/jquery-ui.js"));
+               .Include("~/Content/plugins/jquery-ui/js/jquery-1.12.0-ui.js"));
+
+            //bundles.Add(new ScriptBundle("~/bundles/jquery_1_8")
+            //    .Include(
+            //            "~/Content/js/upload/jquery-1.8.3.js",
+            //            //"~/Content/js/jquery-3.3.1.js",
+            //            "~/Content/js/upload/jquery-ui-1.8.3.js",
+            //            "~/Content/js/upload/bootstrap.js",
+            //             "~/Content/js/jquery.unobtrusive-ajax.js"
+
+            //             ));
+
+            bundles.Add(new ScriptBundle("~/bundles/jquery-url")
+               .Include("~/Content/plugins/jquery-url/jquery-url.js"));
+
+            
 
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui-CSS")
                 .Include("~/Content/plugins/jquery-ui/css/jquery-ui.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/site")
-               .Include("~/Content/plugins/easyAutocomplete/jquery.easy-autocomplete.js", 
+               .Include("~/Content/plugins/easyAutocomplete/jquery.easy-autocomplete.js",
                         "~/Content/js/default.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery-validate")
@@ -48,10 +55,8 @@ namespace Ecoporto.AgendamentoCS
                         "~/Content/css/login.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap")
-                .Include(
-                //"~/Content/js/bootstrap.js",
-                "~/Content/js/popper.min.js"
-                         ));
+                .Include("~/Content/js/popper.min.js",
+                         "~/Content/js/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/bundles/datatablesCSS")
                 .Include("~/Content/plugins/datatables/css/dataTables.bootstrap4.min.css"));
@@ -59,7 +64,7 @@ namespace Ecoporto.AgendamentoCS
             bundles.Add(new ScriptBundle("~/bundles/datatables")
                 .Include("~/Content/plugins/datatables/js/jquery.dataTables.min.js",
                          "~/Content/plugins/datatables/js/dataTables.bootstrap4.min.js"));
-        
+
             bundles.Add(new ScriptBundle("~/bundles/agendamento")
                 .Include("~/Content/js/agendamento.js"));
 
@@ -95,7 +100,7 @@ namespace Ecoporto.AgendamentoCS
 
             bundles.Add(new StyleBundle("~/bundles/bootstrap4ToggleCSS")
                 .Include("~/Content/plugins/bootstrap4-toggle/bootstrap4-toggle.min.css"));
-            
+
             BundleTable.EnableOptimizations = true;
         }
     }

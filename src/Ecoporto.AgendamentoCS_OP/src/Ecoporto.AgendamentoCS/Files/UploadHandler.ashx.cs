@@ -170,7 +170,7 @@ namespace Ecoporto.AgendamentoCS.Files
                         ex.InnerException.ToString();
                     }
                 }                
-            }
+            }           
         }
 
         private void WriteJsonIframeSafe(HttpContext context, List<Files> statuses)

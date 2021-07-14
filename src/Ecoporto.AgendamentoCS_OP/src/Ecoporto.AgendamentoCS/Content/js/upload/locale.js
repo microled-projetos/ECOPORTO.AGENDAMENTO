@@ -17,7 +17,7 @@ window.locale = {
             "acceptFileTypes": "Arquivo não permitido",
             "maxNumberOfFiles": "Máximo de envio de arquivos atingidos",
             "uploadedBytes": "O Upload excede o tamanho dos arquivos",
-            "emptyResult": "Sem arquivos para upload, possivelmente seja um tipo de arquivo nao permitido"
+            "emptyResult": "Sem arquivos para upload, possivelmente seja um tipo de arquivo não permitido"
         },
         "error": "Erro",
         "start": "Upload",

@@ -78,16 +78,30 @@
     </script>
 }
 @section Upload{
+
+
+
     <link href="@Url.Content("~/Content/css/upload/bootstrap-image-gallery.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/css/upload/jquery.fileupload-ui.css")" rel="stylesheet" />
-    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/tmpl.min.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/load-image.min.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/bootstrap-image-gallery.min.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.iframe-transport.js")"></script>
+
+
+    <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <script src="https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/jquery.ui.widget@1.10.3/jquery.ui.widget.js"></script>*@
+
+
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload.js")"></script>
+    <script src="https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+    <script src="@Url.Content("~/Content/js/upload/jquery.fileupload-process.js")"></script>
+    <script src="@Url.Content("~/Content/js/upload/jquery.fileupload-image.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-audio.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-video.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-validate.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-ip.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-ui.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.iframe-transport.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/locale.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/main.js")"></script>
+
 }
