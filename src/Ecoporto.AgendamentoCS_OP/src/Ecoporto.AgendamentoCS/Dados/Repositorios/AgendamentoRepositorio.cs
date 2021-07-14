@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 
 namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 {
@@ -878,6 +879,32 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                         AUTONUM_CARGO_CLASS = 2", parametros).FirstOrDefault();
 
                 return resultado > 0;
+            }
+        }
+
+        public IEnumerable<UploadXMLNfeDTO> ObterArquivosUploadPorIdTransportadora(int idTransportadora)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                   
+                    var query = con.Query<UploadXMLNfeDTO>(@" 
+                       SELECT
+                       A.AUTONUM AS Id,
+                       A.DANFE AS Danfe,
+                       A.ARQUIVO_XML as Arquivo_XML
+                       FROM
+                       SGIPA.TB_UPLOAD_XML A
+                       WHERE 
+                       AUTONUM_TRANSPORTADORA = 879 AND Danfe NOT IN(SELECT DANFE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DANFES)").AsEnumerable();
+
+                    return query;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

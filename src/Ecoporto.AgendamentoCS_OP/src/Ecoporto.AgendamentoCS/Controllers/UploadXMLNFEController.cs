@@ -29,10 +29,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
         // GET: UploadXMLNFE
         public ActionResult Index()
         {
-            UploadXMLNfe.id_transportadora = User.ObterTransportadoraId();
+            UploadXMLNfeDTO.id_transportadora = User.ObterTransportadoraId();
 
-            ViewBag.ListarXmlDocs = _uploadXMLNfeRepositorio.GetListarRegistros(UploadXMLNfe.id_transportadora);
-
+            ViewBag.ListarXmlDocs = _uploadXMLNfeRepositorio.GetListarRegistros(UploadXMLNfeDTO.id_transportadora);
 
             return View();
         }

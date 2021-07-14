@@ -22,19 +22,18 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" SELECT OPERADOR.SEQ_TB_UPLOAD_XML.NEXTVAL FROM DUAL  ");
+                    sb.AppendLine(" SELECT SGIPA.SEQ_TB_UPLOAD_XML.NEXTVAL FROM DUAL  ");
 
                     int newID = con.Query<int>(sb.ToString()).FirstOrDefault();
 
                     sb.Clear();
-
 
                     sb.AppendLine(" DECLARE  ");
                     sb.AppendLine(" XML_Txt CLOB :=  '" + arquivo + "';");
 
                     sb.AppendLine(" BEGIN ");
 
-                    sb.AppendLine(" INSERT INTO OPERADOR.TB_UPLOAD_XML ");
+                    sb.AppendLine(" INSERT INTO SGIPA.TB_UPLOAD_XML ");
                     sb.AppendLine(" (   ");
                     sb.AppendLine(" AUTONUM,  ");
                     sb.AppendLine(" DANFE, ");
@@ -63,7 +62,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 return false;
             }
         }
-        public IEnumerable<UploadXMLNfe> GetListarRegistros(int id)
+        public IEnumerable<UploadXMLNfeDTO> GetListarRegistros(int id)
         {
             try
             {
@@ -79,14 +78,14 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                     sb.AppendLine(" A.AUTONUM_TRANSPORTADORA as TransportadoraID, ");
                     sb.AppendLine(" B.RAZAO as Razao ");
                     sb.AppendLine(" FROM  ");
-                    sb.AppendLine(" OPERADOR.TB_UPLOAD_XML A ");
-                    sb.AppendLine(" INNER JOIN OPERADOR.TB_CAD_TRANSPORTADORAS B ");
+                    sb.AppendLine(" SGIPA.TB_UPLOAD_XML A ");
+                    sb.AppendLine(" INNER JOIN SGIPA.TB_CAD_TRANSPORTADORAS B ");
                     sb.AppendLine(" ON (A.AUTONUM_TRANSPORTADORA =  B.AUTONUM )  ");
                     sb.AppendLine(" WHERE  ");
                     sb.AppendLine(" AUTONUM_TRANSPORTADORA = " + id);
 
 
-                    var query = con.Query<UploadXMLNfe>(sb.ToString()).AsEnumerable();
+                    var query = con.Query<UploadXMLNfeDTO>(sb.ToString()).AsEnumerable();
 
                     return query;
                 }
@@ -96,7 +95,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 return null;
             }
         }
-        public UploadXMLNfe GetExcluirRegistro(int id)
+        public UploadXMLNfeDTO GetExcluirRegistro(int id)
         {
             try
             {
@@ -104,9 +103,9 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" DELETE FROM OPERADOR.TB_UPLOAD_XML  WHERE AUTONUM = " + id);
+                    sb.AppendLine(" DELETE FROM SGIPA.TB_UPLOAD_XML  WHERE AUTONUM = " + id);
 
-                    con.Query<UploadXMLNfe>(sb.ToString()).FirstOrDefault();
+                    con.Query<UploadXMLNfeDTO>(sb.ToString()).FirstOrDefault();
 
                     return null;
                 }
