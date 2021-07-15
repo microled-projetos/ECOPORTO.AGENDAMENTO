@@ -1265,8 +1265,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     Danfe = item.Danfe
                 });
             }
-
-            return PartialView("_DanfesConsulta", xmlDanfes);
+            return PartialView("_DanfesCarregadas", xmlDanfes);
         }
     }
 }
