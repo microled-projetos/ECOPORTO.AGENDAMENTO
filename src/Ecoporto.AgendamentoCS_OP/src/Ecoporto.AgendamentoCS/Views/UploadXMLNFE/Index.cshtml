@@ -1,0 +1,126 @@
+﻿<section class="content-header">
+    <h1>
+        <i class="fa fa-upload"></i> Upload XML Nfe
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#">
+                <i class="fa fa-home"></i>Home
+            </a>
+        </li>
+        <li>
+            <a href="#">Upload XML Nfe </a>
+        </li>
+    </ol>
+</section>
+<div class="row">
+    <div class="col-md-12" style="display:none;">
+        @Html.Partial("_common/_upload")
+    </div>
+    <div class="col-md-12">
+        @Html.Partial("_common/_uploadMultiplo")
+    </div>
+</div>
+<div class="row">
+    @Html.Partial("_uploadXMLNfe/_grid")
+</div>
+@Html.Partial("_ModalExclusao")
+
+@section Css{
+    @Styles.Render("~/bundles/datatablesCSS")
+}
+@section Scripts{
+    <script>
+        @*@Scripts.Render("~/bundles/datatables")*@
+
+        $(document).ready(function () {
+
+            var langUrl = "@Url.Content("~/Content/plugins/datatables/language/pt-br.json")";
+
+            // $('#datatables').DataTable({
+            //    "language": {
+            //        "url": langUrl
+            //    }
+            //});
+         });
+
+        function Excluir(id) {
+
+            $('#modal-mensagem').text('Confirma a exclusão do XML?');
+            $('#del-modal').data('id', id).modal('show');
+        }
+
+        @*function ConfExclusao() {
+            var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
+            var _id = $('#del-modal').data('id');
+
+            $.ajax({
+                url: _url, 
+                type: 'GET', 
+                data: { id: _id }, 
+
+                success: function (Dados) {
+                    
+
+                }
+            });
+        }*@
+
+        function ConfirmarExclusao() {
+
+            var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
+
+            var _id = $('#del-modal')
+                .data('id');
+
+            $.get(_url, { id: _id })
+                .done(function (data, statusText, xhr) {
+                    toastr.success('Registro excluído com sucesso!', 'Agendamento');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                    $('#item-' + _id).remove();
+                }).fail(function (data) {
+
+                    if (data.statusText !== '') {
+                        toastr.error(data.statusText, 'Agendamento');
+                    } else {
+                        toastr.error('O registro não pode ser excluído', 'Agendamento');
+                    }
+                }).always(function () {
+                    $('#del-modal')
+                        .data('id', '0')
+                        .modal('hide');
+                });
+        }
+
+    </script>
+}
+@section Upload{
+
+
+
+    <link href="@Url.Content("~/Content/css/upload/bootstrap-image-gallery.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/css/upload/jquery.fileupload-ui.css")" rel="stylesheet" />
+
+
+    <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <script src="https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/jquery.ui.widget@1.10.3/jquery.ui.widget.js"></script>*@
+
+
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload.js")"></script>
+    <script src="https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+    <script src="@Url.Content("~/Content/js/upload/jquery.fileupload-process.js")"></script>
+    <script src="@Url.Content("~/Content/js/upload/jquery.fileupload-image.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-audio.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-video.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-ip.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-ui.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.iframe-transport.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/locale.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/main.js")"></script>
+
+}

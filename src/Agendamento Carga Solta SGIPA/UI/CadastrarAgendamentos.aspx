@@ -99,7 +99,10 @@
                                                                     Enabled="true" PromptText="Digite" TargetControlID="cbCavalo"
                                                                     PromptCssClass="PromptCSS">
                                                                 </asp:ListSearchExtender>
+<<<<<<< HEAD
                                                                 <asp:HiddenField ID="hddnCbCavaloCarreta" runat="server" />
+=======
+>>>>>>> dev-kleiton
                                                             </td>
                                                             <td align="right" width="90px">Placa Carreta:
                                                             </td>
@@ -277,7 +280,11 @@
                                                     <asp:TextBox ID="txtPackingList" runat="server" Enabled="False" Font-Names="Verdana" Font-Size="12px" MaxLength="150" Width="98%"></asp:TextBox>
                                                 </td>
                                                 <td align="right">
+<<<<<<< HEAD
                                                     <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Excluir" Visible="false" Width="100%" />
+=======
+                                                    <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Exclur" Visible="false" Width="100%" />
+>>>>>>> dev-kleiton
                                                 </td>
                                                 <td align="right">
                                                     <asp:Button ID="btnAdicProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CommandName="ADICIONAR" Font-Names="Verdana" Font-Size="9px" Height="18px" Text="Adicionar" Width="100%" />

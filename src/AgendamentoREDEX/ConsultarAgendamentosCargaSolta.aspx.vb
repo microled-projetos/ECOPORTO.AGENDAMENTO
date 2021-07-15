@@ -85,7 +85,7 @@
                 Dim Itens = Banco.List("SELECT ARQUIVO_DANFE FROM REDEX.TB_AGENDAMENTO_WEB_CS_NF WHERE AUTONUM_AGENDAMENTO = " & ID)
 
                 Dim ExisteItemSemDanfe As Boolean
-                ExisteItemSemDanfe = False
+
                 If Itens.Rows.Count = 0 Then
                     ExisteItemSemDanfe = True
                 End If
@@ -95,19 +95,17 @@
                         ExisteItemSemDanfe = True
                     End If
                 Next
-                If Banco.ExecuteScalar("select count(1) from REDEX.TB_agendamento_web_cs a  inner join redex.tb_booking  b on a.autonum_booking =b.autonum_boo  where  b.flag_bagagem=1  and a.autonum = " & ID) > 0 Then
-                    ExisteItemSemDanfe = False
-                End If
+
                 If ExisteItemSemDanfe Then
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('É necessário fazer o upload da Danfe para imprimir o protocolo');", True)
                     Exit Sub
                 End If
 
                 Dim Protocolo As String = Banco.ExecuteScalar("SELECT NUM_PROTOCOLO || '/' || ANO_PROTOCOLO FROM TB_AGENDAMENTO_WEB_CS WHERE AUTONUM = " & ID)
-                    Response.Redirect("ProtocoloCS.aspx?protocolo=" & Protocolo)
+                Response.Redirect("ProtocoloCS.aspx?protocolo=" & Protocolo)
 
-                End If
             End If
+        End If
 
     End Sub
 
