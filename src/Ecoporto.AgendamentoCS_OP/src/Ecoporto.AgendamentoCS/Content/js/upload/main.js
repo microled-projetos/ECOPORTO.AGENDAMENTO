@@ -23,7 +23,10 @@ $(function () {
         resizeMaxWidth: 400,
         resizeMaxHeight: 300,
         uploadTemplateId: 'template-upload',
-        downloadTemplateId: 'template-download'
+        downloadTemplateId: 'template-download',
+        complete: function (e, data) {
+            window.location = "/UploadXMLNFE";
+        }
     });    
     
     $('#fileuploadOne').fileupload();

@@ -35,7 +35,7 @@ namespace Ecoporto.AgendamentoCS.Files
             context.Response.AddHeader("Pragma", "no-cache");
             context.Response.AddHeader("Cache-Control", "private, no-cache");
 
-            HandleMethod(context);
+            HandleMethod(context);            
         }
 
         // Handle request based on method
@@ -129,6 +129,8 @@ namespace Ecoporto.AgendamentoCS.Files
         // Upload entire file
         private void UploadWholeFile(HttpContext context, List<Files> statuses)
         {
+            int z = 0;
+
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
@@ -155,22 +157,28 @@ namespace Ecoporto.AgendamentoCS.Files
                         doc.Load(fullPath);
 
                         string Arquivo = doc.OuterXml.ToString();
-
+                        
                         string ArquivoNome = file.FileName.ToString().Substring(0,44);
 
                         int idTransportadora = UploadXMLNfeDTO.id_transportadora;
 
                         Ecoporto.AgendamentoCS.Dados.Repositorios.UploadXMLNfeRepositorio nf = new Ecoporto.AgendamentoCS.Dados.Repositorios.UploadXMLNfeRepositorio();
 
-                        nf.InsertDocXML(ArquivoNome, Arquivo, idTransportadora);
-
+                        nf.InsertDocXML(ArquivoNome, Arquivo, idTransportadora);                        
                     }
+                    
                     catch (Exception ex)
                     {
                         ex.InnerException.ToString();
                     }
-                }                
-            }           
+                }
+                z = z + 1;
+            }
+
+            //if (z > 0)
+            //{
+            //    System.Web.HttpContext.Current.Response.Redirect("/UploadXMLNFE/");
+            //}
         }
 
         private void WriteJsonIframeSafe(HttpContext context, List<Files> statuses)
