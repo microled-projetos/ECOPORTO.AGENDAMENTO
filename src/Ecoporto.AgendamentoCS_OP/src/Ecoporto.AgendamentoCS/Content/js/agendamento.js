@@ -611,7 +611,8 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
                 obterDanfesPorItem(bookingCsItemId);
                 obterUploadsPorItem(bookingCsItemId);
                 //mexendo
-                obterUploadDanfesCarregadas(6458438);
+                obterArquivoDanfe(9519);
+
                 habilitarCamposDanfe();
 
                 $('#Danfe').focus();
@@ -691,6 +692,7 @@ $('#btnAdicionarDanfe').click(function () {
     var input, file, fr;
 
     if (typeof window.FileReader !== 'function') {
+        
         bodyAppend("p", "The file API isn't supported on this browser yet.");
         return;
     }
@@ -1090,3 +1092,32 @@ $('#btnAdicionarUpload').click(function (e) {
     };
     xhr.send(formData);
 });
+function obterArquivoDanfe(danfe) {
+
+    danfe = $('#danfe_pesquisada').val();
+    console.log(danfe)
+
+    $.get(urlBase + 'Agendamento/ObterDanfeArquivo?danfe=' + danfe, function (resultado) {
+
+        if (resultado) {
+
+            var nfe = resultado;
+
+            //console.log(nfe.Danfe);
+            //$('#CFOP').val(cfop);
+            //$('#Danfe').hide();
+            $('#Danfe').val(nfe.Danfe);
+            $('#xml').val(nfe.ArquivoXml);
+            $('#numero').html(nfe.Danfe);
+            //$('#serie').html(nfe.Danfe);
+            //$('#data').html(data);
+            //$('#valor').html(valor);
+            //$('#emisso').html(emissor);
+            //$('#qtd').html(qtd);
+            //$('#pesobruto').html(pesob);
+        }
+    }).fail(function (data) {
+        toastr.error(data.statusText, 'Agendamento');
+
+    });
+}

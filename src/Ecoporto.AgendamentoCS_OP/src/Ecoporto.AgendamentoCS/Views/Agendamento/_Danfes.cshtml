@@ -17,7 +17,42 @@
         @Html.EditorFor(model => model.Danfe, new { htmlAttributes = new { @class = "form-control form-control-sm", maxlength = "44", onkeypress = "return apenasNumeros();", @disabled = "disabled", type = "text", style = "display:none" } })
         @Html.EditorFor(model => model.xml, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "text", style = "display:none ", id = "xml" } })
         @Html.EditorFor(model => model.CFOP, new { htmlAttributes = new { @class = "form-control form-control-sm", @disabled = "disabled", type = "text", style = "display:none" } })
-        @Html.Partial("_DanfesCarregadas", Model.UploadXmlNfe)
+    <div class="col-md-12 mb-0 ">
+        @Html.LabelFor(model => model.UploadXmlNfe)
+        @using (Ajax.BeginForm("ObterDanfeArquivo", "Agendamento", null, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET"
+        }, new { id = "frmPesquisaArquivosDanfe" }))
+        {
+
+            <div class="form-group row">
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="danfe_pesquisada" name="danfe_pesquisada" placeholder="Danfe...">
+                </div>
+                <div class="col-md-2">
+                    <a id="btnPesquisarArquivoDanfe" onclick="obterArquivoDanfe()" class="btn btn-outline-info btn-block btn-as-block"><i class="fas fa-search"></i>&nbsp;&nbsp;Pesquisar</a>
+                </div>
+            </div>
+            
+        }
+        @*<script>
+            $(function () {
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: "/Cadastrar/ObterDanfeArquivo",
+                    data: { id: 978 },
+                    success: function (dados) {
+                        $(dados).each(function (i) {
+                            console.log("Danfe: " + dados[i].Danfe)
+                        });
+                    }
+                });
+            });
+        </script>*@
+
+    </div>
     </div>
     @*<textarea id="xml" style="display:initial"></textarea>*@
     <input type="text" id="Danfe2" style="display:none"></input>
@@ -54,3 +89,5 @@
 </div>
 
 @Html.Partial("_DanfesConsulta", Model.NotasFiscais)
+
+

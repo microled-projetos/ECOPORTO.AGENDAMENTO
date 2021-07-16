@@ -29,5 +29,6 @@ namespace Ecoporto.AgendamentoCS.Dados.Interfaces
         ChassiProtocoloDTO ChassiEmOutroAgendamento(string chassi);
         bool ItemCargaProjeto(int id);
         IEnumerable<UploadXMLNfeDTO> ObterArquivosUploadPorIdTransportadora(int idTransportadora);
+        UploadXMLNfe BuscarArquivoPorIdTransportadora(string danfe);
     }
 }

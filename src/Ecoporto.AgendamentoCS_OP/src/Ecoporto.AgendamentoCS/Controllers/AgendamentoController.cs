@@ -1267,5 +1267,22 @@ namespace Ecoporto.AgendamentoCS.Controllers
             }
             return PartialView("_DanfesCarregadas", xmlDanfes);
         }
+        [HttpGet]
+        public JsonResult ObterDanfeArquivo(string danfe)
+        {
+             var nfe = _agendamentoRepositorio.BuscarArquivoPorIdTransportadora(danfe);
+
+            if (nfe != null)
+            {
+                return Json(
+                    new
+                    {
+                        Danfe = nfe.Danfe,
+                        ArquivoXml = nfe.Arquivo_XML
+                    }, JsonRequestBehavior.AllowGet);
+            }
+
+            return null;
+        }
     }
 }
