@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe"><NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+<infNFe versao="4.00" Id="NFe35210529307609000190550040001373141140880644"><ide><cUF>35</cUF><cNF>14088062</cNF>
+<natOp>Venda de producao do estabelecimento</natOp>
+<mod>55</mod>
+<serie>4</serie>
+<nNF>137314</nNF>
+<dhEmi>2021-05-17T08:37:19-03:00</dhEmi>
+<tpNF>1</tpNF>
+<idDest>3</idDest><cMunFG>3536703</cMunFG>
+<tpImp>1</tpImp><tpEmis>1</tpEmis><cDV>7</cDV><tpAmb>1</tpAmb><finNFe>1</finNFe><indFinal>0</indFinal>
+<indPres>9</indPres><procEmi>0</procEmi><verProc>3.89.0</verProc></ide><emit>
+<CNPJ>29307609000190</CNPJ>
+<xNome>VOLVO EQUIPAMENTOS CONSTRUCAO LATIN AMERICA LTDA</xNome>
+<xFant>Pederneiras</xFant><enderEmit><xLgr>Av Lions Club</xLgr><nro>24-70</nro><xBairro>Distrito Industrial</xBairro><cMun>3536703</cMun><xMun>Pederneiras</xMun>
+<UF>SP</UF><CEP>17280000</CEP><cPais>1058</cPais><xPais>Brasil</xPais></enderEmit><IE>515056952110</IE><CRT>3</CRT></emit><dest><idEstrangeiro/>
+<xNome>Green Energy Capital LLC</xNome><enderDest><xLgr>875 Avenue Of The Americas</xLgr><nro>5015</nro><xBairro>W/N</xBairro><cMun>9999999</cMun>
+<xMun>EXTERIOR</xMun>
+<UF>EX</UF><cPais>2496</cPais><xPais>United States</xPais></enderDest><indIEDest>9</indIEDest>
+<email>vce.nfe.export@volvo.com</email>
+</dest><det nItem="1">
+<prod>
+<cProd>A30G</cProd>
+<cEAN>SEM GTIN</cEAN>
+<xProd>Volvo A30G Articulated Hauler</xProd>
+<NCM>87041090</NCM>
+<CFOP>7101</CFOP>
+<uCom>PC</uCom>
+<qCom>1.0000</qCom>
+<vUnCom>982203.1800000001</vUnCom>
+<vProd>982203.18</vProd>
+<cEANTrib>SEM GTIN</cEANTrib>
+<uTrib>UN</uTrib>
+<qTrib>1.0000</qTrib>
+<vUnTrib>982203.1800000001</vUnTrib>
+<vOutro>9532.53</vOutro>
+<indTot>1</indTot>
+<xPed>VCE23465</xPed>
+<nItemPed>10</nItemPed>
+<nFCI>0C48D9B7-C8BA-44C8-B66D-6770241A7758</nFCI>
+</prod>
+<imposto>
+<ICMS>
+<ICMS40>
+<orig>5</orig>
+<CST>41</CST>
+</ICMS40>
+</ICMS>
+<IPI>
+<cEnq>002</cEnq>
+<IPINT><CST>54</CST>
+</IPINT></IPI>
+<PIS>
+<PISNT>
+<CST>08</CST>
+</PISNT>
+</PIS>
+<COFINS>
+<COFINSNT>
+<CST>08</CST>
+</COFINSNT>
+</COFINS>
+</imposto>
+<infAdProd>MARCA &quot;VOLVO&quot; MODELO A30G 6X6, MOTOR DIESEL VOLVO, CABINE FECHADA, ARCONDICIONADO, PNEUS,CACAMBA COM CAPACIDADE DE 17M3. ACOMPANHA MANUAIS DEPECAS E OPERACAO -SERIE:VCE0A30GT00752386</infAdProd>
+</det>
+<total>
+<ICMSTot>
+<vBC>0.00</vBC>
+<vICMS>0.00</vICMS>
+<vICMSDeson>0.00</vICMSDeson>
+<vFCP>0.00</vFCP>
+<vBCST>0.00</vBCST>
+<vST>0.00</vST>
+<vFCPST>0.00</vFCPST>
+<vFCPSTRet>0.00</vFCPSTRet>
+<vProd>982203.18</vProd>
+<vFrete>0.00</vFrete>
+<vSeg>0.00</vSeg>
+<vDesc>0.00</vDesc>
+<vII>0.00</vII>
+<vIPI>0.00</vIPI>
+<vIPIDevol>0.00</vIPIDevol>
+<vPIS>0.00</vPIS>
+<vCOFINS>0.00</vCOFINS>
+<vOutro>9532.53</vOutro>
+<vNF>991735.71</vNF>
+</ICMSTot>
+</total>
+<transp>
+<modFrete>1</modFrete>
+<transporta><CNPJ>52548435016334</CNPJ><xNome>Jsl Sa</xNome><IE>535259798118</IE><xEnder>Rua Felipe Zaidan Maluf, 2000</xEnder><xMun>PIRACICABA</xMun><UF>SP</UF></transporta><vol><qVol>1</qVol>
+<esp>VOLUME</esp>
+<marca>LETREIRO</marca>
+<nVol>VCE23465</nVol>
+<pesoL>23722.000</pesoL>
+<pesoB>23722.000</pesoB>
+</vol></transp>
+<cobr>
+<fat>
+<nFat>000137314</nFat>
+<vOrig>991735.71</vOrig>
+<vLiq>991735.71</vLiq>
+</fat>
+<dup><nDup>001</nDup>
+<dVenc>2021-07-25</dVenc>
+<vDup>991735.71</vDup>
+</dup></cobr><pag><detPag>
+<tPag>01</tPag>
+<vPag>991735.71</vPag></detPag></pag><infAdic><infAdFisco>ORDEM DE EXPORTAÇÃO: VCE23465 TAXA DE CÂMBIO: USD/BRL = 5.26950 NRE: &quot;NAO INCIDENCIA DO ICMS ART.7, INCISO V, DO REGULAMENTO APROVADO PELO DECRETO 45490 DE 30/11/2000&quot;. IPI IMUNE CONFORME ARTIGO 18, II, RIPI DECRETO 7212/10.VISTO OBTIDO ELETRONICAMENTE-RIEX-SEFAZ/SP. PRODUTOS COM GARANTIA DE FABRICACAO. OPERACAO AMPARADA PELO REGIME ESPECIAL SIMPLIFICADO DE EXPORTACAO - CREDENCIAMENTO - PROCESSO 75811/2019. FINAME: 3462001</infAdFisco></infAdic><exporta><UFSaidaPais>SP</UFSaidaPais>
+<xLocExporta>Porto de Santos</xLocExporta></exporta>
+</infNFe><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo>
+<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+<Reference URI="#NFe35210529307609000190550040001373141140880644"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms>
+<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>TiBMo76805tyHZg8uiw05ZEBRCk=</DigestValue></Reference>
+</SignedInfo><SignatureValue>hYZWjy5AKorZj5e2mGMLntfYWBWmAP/sN3GXj5Qd5X5wHR3ITPPmp8Mm/ZMrq6/2OiyzNFEMkZTUiQgU7qdvkYKJI9IF6mcBhh/aldOoTRkELO5dnGLZg3VvlsISwSrtBmea605vdNmA+F817Qir1D0oC04DXpouXtClFf4sMs0=</SignatureValue><KeyInfo><X509Data><X509Certificate>MIICOTCCAaKgAwIBAgIQUXn+h7UWga1DGzpPjVYJZDANBgkqhkiG9w0BAQUFADBbMVkwVwYDVQQDHlAAdwB3AHcALgBmAHMAaQBzAHQALgBjAG8AbQAuAGIAcgAgACgAUwBFAE0AIABWAEEATABJAEQAQQBEAEUAIABKAFUAUgDNAEQASQBDAEEAKTAeFw0yMDA4MTkwOTI3MDZaFw0yMzA4MTkwOTI3MDZaMFsxWTBXBgNVBAMeUAB3AHcAdwAuAGYAcwBpAHMAdAAuAGMAbwBtAC4AYgByACAAKABTAEUATQAgAFYAQQBMAEkARABBAEQARQAgAEoAVQBSAM0ARABJAEMAQQApMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDVuzPKD5jupb87mp0A11qpowBTokuORSdopo6YbwvK9eyM0wi3P0qu1UuuVLSQTnHiKMdWEoEWvBmvMYKXpfvQWgAoyJb+IfI21edIrs/UjRxzaBsq8Ui/J9EAcACt60nAFmWMS3U/ZqIqxmv5VDyb+DE/DU9ZOlQ+KnWcE3o7vQIDAQABMA0GCSqGSIb3DQEBBQUAA4GBABV4U5v2ZnFKblaCRGWLZp/jaupbYpzHyYLSl7ur/7eLYH8vpK9JPKcnLekNvbrT224FuBfo1tRHV3vAH+lAWQKwsLNJByRHH4/5LmYVzIZCWLwWRUapANeouRYSGY7Ye9RuCK1T2I1RmrIBaG7uNFT+d9BXA/+bKcJ5hjYShOs8</X509Certificate></X509Data></KeyInfo></Signature></NFe><protNFe versao="4.00"><infProt><tpAmb>1</tpAmb><verAplic>3.89.0</verAplic><chNFe>35210529307609000190550040001373141140880644</chNFe><dhRecbto>2021-05-17T08:37:33-03:00</dhRecbto><nProt>135210539408801</nProt><digVal>NHi7G7ldXbiADpgy/H0qPZ/91Jw=</digVal><cStat>100</cStat><xMotivo>Autorizado o uso da NF-e</xMotivo></infProt></protNFe></nfeProc>
