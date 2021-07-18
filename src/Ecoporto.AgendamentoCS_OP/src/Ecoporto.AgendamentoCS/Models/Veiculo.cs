@@ -18,14 +18,14 @@ namespace Ecoporto.AgendamentoCS.Models
         }
 
         public Veiculo(
-            int transportadoraId, 
-            int tipoCaminhaoId, 
-            string cavalo, 
-            string carreta, 
+            int transportadoraId,
+            int tipoCaminhaoId,
+            string cavalo,
+            string carreta,
             string chassi,
-            string renavam, 
-            decimal? tara, 
-            string modelo, 
+            string renavam,
+            decimal? tara,
+            string modelo,
             string cor)
         {
             TransportadoraId = transportadoraId;
@@ -96,9 +96,9 @@ namespace Ecoporto.AgendamentoCS.Models
                 .WithMessage("Placa da Carreta não informada corretamente")
                 .Length(8)
                 .WithMessage("Placa da Carreta é inválida");
-
             RuleFor(c => c.Renavam)
-                .NotEmpty()               
+                .NotEmpty()
+                .When(c => c.TipoCaminhaoId != 20)
                 .WithMessage("Renavam não informado");
 
             RuleFor(c => c.Renavam)

@@ -907,5 +907,23 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 return null;
             }
         }
+        public UploadXMLNfe BuscarArquivoPorIdTransportadora(string danfe)
+        {
+            using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add(name: "Danfe", value: danfe, direction: ParameterDirection.Input);
+
+                return con.Query<UploadXMLNfe>(@"
+                    SELECT
+                       A.AUTONUM AS Id,
+                       A.DANFE AS Danfe,
+                       A.ARQUIVO_XML as Arquivo_XML
+                       FROM
+                       SGIPA.TB_UPLOAD_XML A
+                       WHERE 
+                       DANFE = :Danfe ", parametros).FirstOrDefault();
+            }
+        }
     }
 }

@@ -5,24 +5,59 @@
         <div class="input-group mb-3">
             <div class="custom-file">
                 @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "custom-file-input", maxlength = "44", onkeypress = "return apenasNumeros();", type = "file", id = "fileinput" } })
-                <label class="custom-file-label" for="inputGroupFile02">Clique aqui para enviar o arquivo Danfe, depois clique em Validar, depois Salvar</label>
+                <label class="custom-file-label " for="inputGroupFile02">Clique aqui para enviar o arquivo Danfe, depois clique em Validar, depois Salvar</label>
             </div>
             <div class="input-group-append">
-                <span class="input-group-text" id="btnLoad" onclick="loadFile()">Validar</span>
+                <span class="input-group-text " id="btnLoad" onclick="loadFile()">Validar</span>
             </div>
-            <div class="col-md-3 float-lg-right">
+            <div class="col-md-3 float-lg-right ">
                 <a id="btnAdicionarDanfe" href="#" class="btn btn-success btn-outline-info btn-block btn-as-block right">SALVAR   <i class="fas fa-save"></i></a>
             </div>
         </div>
         @Html.EditorFor(model => model.Danfe, new { htmlAttributes = new { @class = "form-control form-control-sm", maxlength = "44", onkeypress = "return apenasNumeros();", @disabled = "disabled", type = "text", style = "display:none" } })
         @Html.EditorFor(model => model.xml, new { htmlAttributes = new { @class = "form-control form-control-sm", type = "text", style = "display:none ", id = "xml" } })
         @Html.EditorFor(model => model.CFOP, new { htmlAttributes = new { @class = "form-control form-control-sm", @disabled = "disabled", type = "text", style = "display:none" } })
-        @Html.Partial("_DanfesCarregadas")
+
+    </div>
+    <div class="form-group col-md-12 mb-0">
+        @Html.LabelFor(model => model.UploadXmlNfe)
+        @using (Ajax.BeginForm("ObterDanfeArquivo", "Agendamento", null, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET"
+        }, new { id = "frmPesquisaArquivosDanfe" }))
+        {
+        <div class="row">
+            <div class="col-md-9 mb-0">
+                <input type="text" onblur="obterArquivoDanfe()" class="form-control" id="danfe_pesquisada" name="danfe_pesquisada" placeholder="Danfe...">
+            </div>
+            <!--<div class="col-md-3 float-lg-right">
+                <a id="btnPesquisarArquivoDanfe" href="#"  class="btn btn-success btn-outline-info btn-block btn-as-block right">BUSCAR   <i class="fas fa-search"></i></a>-->
+                @*<a id="btnPesquisarArquivoDanfe" onclick="obterArquivoDanfe()" class="btn btn-success btn-outline-info btn-block btn-as-block right"><i class="fas fa-search"></i>&nbsp;&nbsp;Pesquisar</a>*@
+            <!--</div>-->
+        </div>
+        }
+        @*<script>
+                $(function () {
+                    $.ajax({
+                        dataType: "json",
+                        type: "POST",
+                        url: "/Cadastrar/ObterDanfeArquivo",
+                        data: { id: 978 },
+                        success: function (dados) {
+                            $(dados).each(function (i) {
+                                console.log("Danfe: " + dados[i].Danfe)
+                            });
+                        }
+                    });
+                });
+            </script>*@
+
     </div>
     @*<textarea id="xml" style="display:initial"></textarea>*@
     <input type="text" id="Danfe2" style="display:none"></input>
     <div class="table-responsive" style="display: initial" id="tabelaDanfeXml">
-        <table id="tblItensReserva" class="table table-sm">
+        <table id="tblItensDanfe" class="table table-sm">
             <thead class="">
                 <tr>
 
@@ -54,3 +89,5 @@
 </div>
 
 @Html.Partial("_DanfesConsulta", Model.NotasFiscais)
+
+
