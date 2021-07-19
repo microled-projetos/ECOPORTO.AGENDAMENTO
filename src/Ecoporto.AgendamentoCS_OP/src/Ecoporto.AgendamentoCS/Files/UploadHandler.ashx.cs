@@ -19,7 +19,7 @@ namespace Ecoporto.AgendamentoCS.Files
 
         private string StorageRoot
         {
-            get { return Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Files/XML/")); } //Path should! always end with '/'
+            get { return Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/XML/")); } //Path should! always end with '/'
         }
 
         public UploadHandlerFiles()
