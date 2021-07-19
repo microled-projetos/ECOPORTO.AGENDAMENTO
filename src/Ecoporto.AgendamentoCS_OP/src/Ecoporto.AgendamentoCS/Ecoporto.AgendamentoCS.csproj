@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleConfig2.cs" />
     <Compile Include="App_Start\DecimalModelBinder.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -213,18 +214,21 @@
     <Compile Include="Controllers\AgendamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Config\AppConfig.cs" />
+    <Compile Include="Controllers\UploadXMLNFEController.cs" />
     <Compile Include="Controllers\VeiculosController.cs" />
     <Compile Include="Controllers\MotoristasController.cs" />
     <Compile Include="Dados\Interfaces\IAgendamentoRepositorio.cs" />
     <Compile Include="Dados\Interfaces\IReservaRepositorio.cs" />
     <Compile Include="Dados\Interfaces\IEmpresaRepositorio.cs" />
     <Compile Include="Dados\Interfaces\IUploadRepositorio.cs" />
+    <Compile Include="Dados\Interfaces\IUploadXMLNfeRepositorio.cs" />
     <Compile Include="Dados\Interfaces\IVeiculoRepositorio.cs" />
     <Compile Include="Dados\Interfaces\IMotoristaRepositorio.cs" />
     <Compile Include="Dados\Interfaces\IUsuarioRepositorio.cs" />
     <Compile Include="Dados\Repositorios\ReservaRepositorio.cs" />
     <Compile Include="Dados\Repositorios\EmpresaRepositorio.cs" />
     <Compile Include="Dados\Repositorios\UploadRepositorio.cs" />
+    <Compile Include="Dados\Repositorios\UploadXMLNfeRepositorio.cs" />
     <Compile Include="Dados\Repositorios\VeiculoRepositorio.cs" />
     <Compile Include="Dados\Repositorios\MotoristaRepositorio.cs" />
     <Compile Include="Dados\Repositorios\AgendamentoRepositorio.cs" />
@@ -237,6 +241,10 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UserExtensions.cs" />
+    <Compile Include="Files\FilesStatus.cs" />
+    <Compile Include="Files\UploadHandler.ashx.cs">
+      <DependentUpon>UploadHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -252,6 +260,7 @@
     <Compile Include="Models\DocumentoUpload.cs" />
     <Compile Include="Models\DTO\AgendamentoDTO.cs" />
     <Compile Include="Models\DTO\ChassiProtocoloDTO.cs" />
+    <Compile Include="Models\DTO\UploadXMLNfeDTO.cs" />
     <Compile Include="Models\Empresa.cs" />
     <Compile Include="Models\Entidade.cs" />
     <Compile Include="Models\Janela.cs" />
@@ -260,6 +269,7 @@
     <Compile Include="Models\ReservaItem.cs" />
     <Compile Include="Models\TipoVeiculo.cs" />
     <Compile Include="Models\Upload.cs" />
+    <Compile Include="Models\UploadXMLNfe.cs" />
     <Compile Include="Models\Veiculo.cs" />
     <Compile Include="Models\Motorista.cs" />
     <Compile Include="Models\Usuario.cs" />
@@ -267,6 +277,7 @@
     <Compile Include="Models\ViewModels\AgendamentoUploadViewModel.cs" />
     <Compile Include="Models\ViewModels\AgendamentoViewModel.cs" />
     <Compile Include="Models\ViewModels\MotoristaViewModel.cs" />
+    <Compile Include="Models\ViewModels\UploadXMLNfeViewModel.cs" />
     <Compile Include="Models\ViewModels\VeiculoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -290,6 +301,8 @@
     <Content Include="Content\css\estilos.css" />
     <Content Include="Content\css\fontawesome-all.css" />
     <Content Include="Content\css\login.css" />
+    <Content Include="Content\css\upload\bootstrap-image-gallery.min.css" />
+    <Content Include="Content\css\upload\jquery.fileupload-ui.css" />
     <Content Include="Content\css\vinculo-edi-repositorio.css" />
     <Content Include="Content\img\box-menu.png" />
     <Content Include="Content\img\checked.png" />
@@ -315,8 +328,26 @@
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\default.js" />
     <Content Include="Content\js\jquery-3.3.1.js" />
+    <Content Include="Content\js\jquery-3.4.1.js" />
     <Content Include="Content\js\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\js\popper.min.js" />
+    <Content Include="Content\js\upload\bootstrap-image-gallery.min.js" />
+    <Content Include="Content\js\upload\bootstrap.js" />
+    <Content Include="Content\js\upload\jquery-1.8.3.js" />
+    <Content Include="Content\js\upload\jquery-ui-1.8.3.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-audio.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-image.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-ip.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-process.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-ui.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-validate.js" />
+    <Content Include="Content\js\upload\jquery.fileupload-video.js" />
+    <Content Include="Content\js\upload\jquery.fileupload.js" />
+    <Content Include="Content\js\upload\jquery.iframe-transport.js" />
+    <Content Include="Content\js\upload\load-image.min.js" />
+    <Content Include="Content\js\upload\locale.js" />
+    <Content Include="Content\js\upload\main.js" />
+    <Content Include="Content\js\upload\tmpl.min.js" />
     <Content Include="Content\js\vinculo-edi-repositorio.js" />
     <Content Include="Content\plugins\bootstrap4-toggle\bootstrap4-toggle.min.css" />
     <Content Include="Content\plugins\bootstrap4-toggle\bootstrap4-toggle.min.js" />
@@ -327,6 +358,7 @@
     <Content Include="Content\plugins\easyAutocomplete\easy-autocomplete.css" />
     <Content Include="Content\plugins\easyAutocomplete\jquery.easy-autocomplete.js" />
     <Content Include="Content\plugins\jquery-mask\jquery.mask.js" />
+    <Content Include="Content\plugins\jquery-ui\js\jquery-1.12.0-ui.js" />
     <Content Include="Content\plugins\jquery-url\jquery-url.js" />
     <Content Include="Content\plugins\jquery-validate\jquery.validate.min.js" />
     <Content Include="Content\plugins\jquery-validate\language\messages_pt_BR.min.js" />
@@ -350,6 +382,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\plugins\datatables\language\pt-br.json" />
+    <Content Include="Files\UploadHandler.ashx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -378,6 +411,19 @@
     <Content Include="Views\Agendamento\_ModalReservaSemSaldo.cshtml" />
     <Content Include="Views\Motoristas\Cadastrar.cshtml" />
     <Content Include="Views\Agendamento\_DanfesUpload.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_common\_upload.cshtml" />
+    <Content Include="Views\Shared\_common\_uploadAlteracao.cshtml" />
+    <Content Include="Views\Shared\_common\_uploadAlteracao2.cshtml" />
+    <Content Include="Views\Shared\_common\_uploadAlteracao3.cshtml" />
+    <Content Include="Views\Shared\_common\_uploadAlteracao4.cshtml" />
+    <Content Include="Views\Shared\_common\_uploadFotos.cshtml" />
+    <Content Include="Views\Shared\_common\_uploadMultiplo.cshtml" />
+    <Content Include="Views\Shared\_upload\_uploadMultiplehtmlContent.cshtml" />
+    <Content Include="Views\Shared\_upload\_uploadSinglehtmlContent.cshtml" />
+    <Content Include="Views\UploadXMLNFE\Index.cshtml" />
+    <Content Include="Views\Shared\_uploadXMLNfe\_grid.cshtml" />
+    <Content Include="Views\Agendamento\_DanfesCarregadas.cshtml" />
     <None Include="Web References\WsBDCC\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -516,6 +562,8 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Data\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <PropertyGroup>

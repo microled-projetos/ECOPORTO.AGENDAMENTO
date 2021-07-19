@@ -1035,7 +1035,7 @@ namespace Ecoporto.AgendamentoConteiner.Controllers
             ".pdf",".xls",".xlsx",".doc",".jpg",".jpeg",".png",".gif",".msg",".tif",".txt"
         };
         [HttpPost]
-        public ActionResult CadastrarDanfes([Bind(Include = "AgendamentoId, ConteinerId, Danfe, CFOP, SiglaConteiner")] NotaFiscal nf)
+        public ActionResult CadastrarDanfes([Bind(Include = "AgendamentoId, ConteinerId, xml, CFOP, SiglaConteiner")] NotaFiscal nf)
         {
             var agendamentoBusca = _agendamentoRepositorio.ObterAgendamentoPorId(nf.AgendamentoId.Value);
 

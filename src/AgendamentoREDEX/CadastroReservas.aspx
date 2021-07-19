@@ -10,27 +10,27 @@
 
     <center>
         <br />
-        <table style="font-family: tahoma; font-size: 16x; border-collapse: collapse;" align="center"
+        <table style="font-family: tahoma; font-size: 12px; border-collapse: collapse;" align="center"
             bgcolor="#F8FFDE">
             <tr>
                 <td colspan="2" style="border-color: Black; border-style: solid; border-width: 1px;
-                    font-weight: bold; font-family: tahoma; font-size: 16px; color: White;" bgcolor="#076703">
+                    font-weight: bold; font-family: tahoma; font-size: 13px; color: White;" bgcolor="#B3C63C">
                     Cadastro da Reserva
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right" >
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Reserva:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:TextBox ID="txtReserva" runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Tipo:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:DropDownList ID="cbTipo" runat="server" DataTextField="DESCRICAO" DataValueField="AUTONUM_ARM"
                         Width="172px" AutoPostBack="True">
                         <asp:ListItem Value="0">-- SELECIONE --</asp:ListItem>
@@ -41,83 +41,83 @@
             </tr>
             <asp:Panel ID="pnConteiner" runat="server" Visible="false">
                 <tr bgcolor="White">
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                    <td style="border-style: solid; border-width: 1px" align="right">
                         Qtde Contêineres:
                     </td>
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                    <td style="border-style: solid; border-width: 1px" align="left">
                         <asp:TextBox ID="txtQtdeConteineres" runat="server"></asp:TextBox>
                     </td>
                 </tr>
             </asp:Panel>
             <asp:Panel ID="pnCargaSolta" runat="server" Visible="false">
                 <tr bgcolor="White">
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                    <td style="border-style: solid; border-width: 1px" align="right">
                         Quantidade:
                     </td>
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                    <td style="border-style: solid; border-width: 1px" align="left">
                         <asp:TextBox ID="txtQuantidade" runat="server"></asp:TextBox>
                     </td>
                 </tr>
                 <tr bgcolor="White">
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                    <td style="border-style: solid; border-width: 1px" align="right">
                         Peso:
                     </td>
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                    <td style="border-style: solid; border-width: 1px" align="left">
                         <asp:TextBox ID="txtPeso" runat="server"></asp:TextBox>
                     </td>
                 </tr>
                 <tr bgcolor="White">
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                    <td style="border-style: solid; border-width: 1px" align="right">
                         Volumes:
                     </td>
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                    <td style="border-style: solid; border-width: 1px" align="left">
                         <asp:TextBox ID="txtVolumes" runat="server"></asp:TextBox>
                     </td>
                 </tr>
                 <tr bgcolor="White">
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                    <td style="border-style: solid; border-width: 1px" align="right">
                         Metragem Cúbica:
                     </td>
-                    <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                    <td style="border-style: solid; border-width: 1px" align="left">
                         <asp:TextBox ID="txtM3" runat="server"></asp:TextBox>
                     </td>
                 </tr>
             </asp:Panel>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Armador:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:DropDownList ID="cbArmador" runat="server" DataTextField="DESCRICAO" DataValueField="AUTONUM_ARM"
                         Width="500px">
                     </asp:DropDownList>
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Viagem:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:DropDownList ID="cbViagem" runat="server" DataTextField="NUM_VIAGEM" DataValueField="AUTONUM_VIA"
                         Width="500px" AutoPostBack="True">
                     </asp:DropDownList>
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Navio:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:DropDownList ID="cbNavio" runat="server" DataTextField="DESCRICAO_NAV" DataValueField="AUTONUM_NAV"
                         Width="500px">
                     </asp:DropDownList>
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Exportador:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:TextBox ID="txtExportador" runat="server" Width="496px"></asp:TextBox>
                 </td>
                 <asp:AutoCompleteExtender ID="AutoCompleteExportador" ServiceMethod="ListarExportadores"
@@ -126,10 +126,10 @@
                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" />
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Agente/NVOCC:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:TextBox ID="txtNVOCC" runat="server" Width="496px"></asp:TextBox>
                 </td>
                 <asp:AutoCompleteExtender ID="AutoCompleteNVOCC" ServiceMethod="ListarNVOCC" MinimumPrefixLength="1"
@@ -138,29 +138,29 @@
                     CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem" />
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Porto Origem:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:DropDownList ID="cbPortoOrigem" runat="server" DataTextField="DESCRICAO_POR"
                         DataValueField="AUTONUM_POR" Width="500px">
                     </asp:DropDownList>
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Porto Destino:
                 </td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:DropDownList ID="cbPortoDestino" runat="server" DataTextField="DESCRICAO_POR"
                         DataValueField="AUTONUM_POR" Width="500px">
                     </asp:DropDownList>
                 </td>
             </tr>
             <tr bgcolor="White">
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="right">
+                <td style="border-style: solid; border-width: 1px" align="right">
                     Confirmação de E-Mail:</td>
-                <td style="border-style: solid; border-width: 1px;font-size:14px;" align="left">
+                <td style="border-style: solid; border-width: 1px" align="left">
                     <asp:TextBox ID="txtEmail" runat="server" Width="496px"></asp:TextBox>              
                 </td>
             </tr>
@@ -170,7 +170,7 @@
                     <asp:Panel ID="pnConsulta" runat="server" Height="140px" ScrollBars="Vertical">
                         <asp:GridView ID="dgConsulta" runat="server" AutoGenerateColumns="False" CellPadding="4"
                             EmptyDataText="Nenhum registro encontrado." ForeColor="#333333" ShowHeaderWhenEmpty="True"
-                            Font-Size="14px" DataKeyNames="AUTONUM" Width="100%">
+                            Font-Size="11px" DataKeyNames="AUTONUM" Width="100%">
                             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                             <Columns>
                                 <%--<asp:BoundField HeaderText="Exportador" DataField="EXPORTADOR" />--%>
@@ -200,7 +200,7 @@
                             </Columns>
                             <EditRowStyle BackColor="#999999" />
                             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                            <HeaderStyle BackColor="#076703" Font-Bold="False" ForeColor="White" />
+                            <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
                             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />

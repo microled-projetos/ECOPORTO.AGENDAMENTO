@@ -256,20 +256,32 @@ function limpar() {
 
 function limparCamposDanfe() {
 
-    $('#Danfe').val('');
-    $('#CFOP').val('');
-    $('#XmlDanfeCompleta').val('');
-    $('#fileinput').val('');
-    $('#valor').innerHTML = '';
-    $('#serie').val('');
-    $('#data').val('');
-    $('#numero').innerHTML = '0';
+    //var numero = '-';
+    //var serie = '-';
+    //var emissor = '-'
+    //var data = '-';
+    //var cfop = '-'
+    //var valor = '-'
+    //var qtd = '-';
+    //var pesob = '-';
+    //var danfe = '-';
+    //var xml = '-';
 
-    desabilitarCamposDanfe();
+    //$('#CFOP').val("");
+    //$('#Danfe').val("");
+    $('#numero').val('');
+    //$('#serie').html("");
+    //$('#data').html("");
+    //$('#valor').html("");
+    //$('#emisso').html("");
+    //$('#qtd').html("");
+    //$('#pesobruto').html("");
+    //$('#xml').val("");
+
+    //desabilitarCamposDanfe();
 }
 
 function limparCamposItem() {
-
     $('#QuantidadeItemReserva').val('');
     $('#Chassis').val('');
 }
@@ -543,9 +555,11 @@ function confirmarExclusaoItemReserva() {
 }
 
 function selecionarItem(bookingCsItemId, qtde, chassis) {
-
+    $('#msgErro')
+        .html('')
+        .addClass('invisivel');
     event.preventDefault();
-
+   
     limparCamposItem();
 
     $.get(urlBase + 'Agendamento/ObterItemReservaPorId?bookingCsItemId=' + bookingCsItemId, function (resultado) {
@@ -610,9 +624,10 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
 
                 obterDanfesPorItem(bookingCsItemId);
                 obterUploadsPorItem(bookingCsItemId);
+                //mexendo
                 habilitarCamposDanfe();
 
-                $('#Danfe').focus();
+                $('#danfe_pesquisada').focus();
 
             }).fail(function (data) {
                 toastr.error(data.statusText, 'Agendamento');
@@ -628,19 +643,21 @@ function habilitarCamposDanfe() {
     $('#Danfe').prop('disabled', false);
     $('#CFOP').prop('disabled', false);
     $('#XmlDanfeCompleta').prop('disabled', false);
-    $('#fileinput').prop('disabled', false)
-
+    $('#fileinput').prop('disabled', false);
     $('#btnAdicionarDanfe').removeClass('disabled');
+    $('#danfe_pesquisada').prop('disabled', false);
+
 }
 
 function desabilitarCamposDanfe() {
 
     $('#Danfe').prop('disabled', true);
-    $('#fileinput').prop('disable', true)
+    $('#fileinput').prop('disabled', true)
     $('#CFOP').prop('disabled', true);
     $('#XmlDanfeCompleta').prop('disable', true);
     $('#CFOP').prop('disabled', true);
     $('#btnAdicionarDanfe').addClass('disabled');
+    $('#danfe_pesquisada').prop('disabled', true);
 }
 
 function obterDanfesPorItem(bookingCsItemId) {
@@ -650,6 +667,19 @@ function obterDanfesPorItem(bookingCsItemId) {
         if (resultado) {
 
             $('#tblDanfes').html(resultado);
+        }
+    }).fail(function (data) {
+        toastr.error(data.statusText, 'Agendamento');
+    });
+}
+function obterUploadDanfesCarregadas(idTransportadora) {
+
+    $.get(urlBase + 'Agendamento/ObterUploadDanfesNfe?idTransportadora=' + idTransportadora, function (resultado) {
+
+        if (resultado) {
+
+            console.log(resultado);
+            //$('#tblDanfes').html(resultado);
         }
     }).fail(function (data) {
         toastr.error(data.statusText, 'Agendamento');
@@ -669,41 +699,43 @@ function obterUploadsPorItem(bookingCsItemId) {
     });
 }
 
+
 $('#btnAdicionarDanfe').click(function () {
 
     event.preventDefault();
-    var input, file, fr;
+    //var input, file, fr;
 
-    if (typeof window.FileReader !== 'function') {
-        bodyAppend("p", "The file API isn't supported on this browser yet.");
-        return;
-    }
+    //if (typeof window.FileReader !== 'function') {
+        
+    //    bodyAppend("p", "The file API isn't supported on this browser yet.");
+    //    return;
+    //}
 
-    input = document.getElementById('fileinput');
-    if (!input) {
-        bodyAppend("p", "Um, couldn't find the fileinput element.");
-    }
-    else if (!input.files) {
-        bodyAppend("p", "This browser doesn't seem to support the `files` property of file inputs.");
-    }
-    else if (!input.files[0]) {
-        bodyAppend("p", "Please select a file before clicking 'Load'");
-    }
-    else {
-        file = input.files[0];
-        fr = new FileReader();
-        fr.onload = receivedText;
-        fr.readAsText(file);
-    }
+    //input = document.getElementById('fileinput');
+    //if (!input) {
+    //    bodyAppend("p", "Um, couldn't find the fileinput element.");
+    //}
+    //else if (!input.files) {
+    //    bodyAppend("p", "This browser doesn't seem to support the `files` property of file inputs.");
+    //}
+    //else if (!input.files[0]) {
+    //    bodyAppend("p", "Please select a file before clicking 'Load'");
+    //}
+    //else {
+    //    file = input.files[0];
+    //    fr = new FileReader();
+    //    fr.onload = receivedText;
+    //    fr.readAsText(file);
+    //}
 
-    function receivedText() {
-        console.log(fr.result);
-        var doc = parser.parseFromString(fr.result, "text/xml");
-        document.getElementById("XmlDanfeCompleta").innerHTML = fr.result;
-        //document.getElementById("xml").innerHTML = fr.result;
+    //function receivedText() {
+    //    console.log(fr.result);
+    //    var doc = parser.parseFromString(fr.result, "text/xml");
+    //    document.getElementById("XmlDanfeCompleta").innerHTML = fr.result;
+    //    //document.getElementById("xml").innerHTML = fr.result;
 
-        shownode(doc.childNodes[0]);
-    }
+    //    shownode(doc.childNodes[0]);
+    //}
     //
 
     event.preventDefault();
@@ -727,8 +759,9 @@ $('#btnAdicionarDanfe').click(function () {
         $('#msgErro')
             .html(retorno)
             .removeClass('invisivel');
-
-        $('#Danfe').focus();
+        $("#tblItensDanfe td").empty();
+        limparCamposDanfe();
+        $('#danfe_pesquisada').focus();
 
         return;
     }
@@ -770,7 +803,9 @@ $('#btnAdicionarDanfe').click(function () {
             var msg = retorno.erros[0].ErrorMessage;
 
             $('#msgErro').html(msg).removeClass('invisivel');
-
+            $("#tblItensDanfe td").empty();
+            $("#danfe_pesquisada").val("");
+            $("#danfe_pesquisada").focus();
         } else {
             if (data.statusText) {
                 toastr.error(data.statusText, 'Agendamento');
@@ -783,6 +818,11 @@ $('#btnAdicionarDanfe').click(function () {
         $('#btnAdicionarDanfe')
             .html('<i class="fas fa-save"></i>')
             .removeClass('disabled');
+
+        $("#tblItensDanfe td").empty();
+        $("#danfe_pesquisada").val("");
+        $("#danfe_pesquisada").focus();
+        desabilitarCamposDanfe();
     });
 });
 function loadFile() {
@@ -816,6 +856,7 @@ function loadFile() {
         var doc = parser.parseFromString(fr.result, "text/xml");
         //document.getElementById("xmlDanfeCompleta").innerHTML = fr.result;
         $('#xml').val(fr.result);
+        console.log(fr.result);
         shownode(doc.childNodes[0]);
     }
 }
@@ -1073,3 +1114,72 @@ $('#btnAdicionarUpload').click(function (e) {
     };
     xhr.send(formData);
 });
+function obterArquivoDanfe(danfe) {
+
+    danfe = $('#danfe_pesquisada').val();
+
+    if (danfe !=='') {
+        $.get(urlBase + 'Agendamento/ObterDanfeArquivo?danfe=' + danfe, function (resultado) {
+            $('#msgErro')
+                .html('')
+                .addClass('invisivel');
+            if (resultado) {
+
+                var nfe = resultado;
+                var node = parseXml(nfe.ArquivoXml);
+
+                var numero = node.getElementsByTagName('cNF')[0].innerHTML;
+                var serie = node.getElementsByTagName('serie')[0].innerHTML;
+                var emissor = node.getElementsByTagName('CNPJ')[0].innerHTML;
+                var data = node.getElementsByTagName('dhEmi')[0].innerHTML;
+                var cfop = node.getElementsByTagName('CFOP')[0].innerHTML;
+                var valor = node.getElementsByTagName('vNF')[0].innerHTML;
+                var qtd = node.getElementsByTagName('indTot')[0].innerHTML;
+                var pesob = node.getElementsByTagName('pesoB')[0].innerHTML;
+
+                $('#CFOP').val(cfop);
+                $('#Danfe').hide();
+                $('#Danfe').val(nfe.Danfe);
+                $('#numero').html(numero);
+                $('#serie').html(serie);
+                $('#data').html(data);
+                $('#valor').html(valor);
+                $('#emisso').html(emissor);
+                $('#qtd').html(qtd);
+                $('#pesobruto').html(pesob);
+                $('#xml').val(nfe.ArquivoXml);
+            } else {
+                $('#msgErro')
+                    .html('<p>Danfe nao encontrada!</p>')
+                    .removeClass('invisivel');
+            }
+        }).fail(function (data) {
+            toastr.error(data.statusText, 'Agendamento');
+
+        });
+    }
+    
+    function parseXml(xml) {
+        var dom = null;
+        if (window.DOMParser) {
+            try {
+                dom = (new DOMParser()).parseFromString(xml, "text/xml");
+            }
+            catch (e) { dom = null; }
+        }
+        else if (window.ActiveXObject) {
+            try {
+                dom = new ActiveXObject('Microsoft.XMLDOM');
+                dom.async = false;
+                if (!dom.loadXML(xml)) // parse error ..
+
+                    window.alert(dom.parseError.reason + dom.parseError.srcText);
+            }
+            catch (e) { dom = null; }
+        }
+        else
+            alert("cannot parse xml string!");
+        return dom;
+    }
+    //convert XML to JSON
+}

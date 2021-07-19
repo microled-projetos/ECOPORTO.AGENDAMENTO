@@ -6,7 +6,6 @@
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Dim ID As String
 
         If Request.QueryString("id") IsNot Nothing Then
             ID = Request.QueryString("id")

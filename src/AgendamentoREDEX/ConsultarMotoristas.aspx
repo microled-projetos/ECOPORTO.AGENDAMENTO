@@ -2,15 +2,15 @@
     MasterPageFile="~/Site.Master" CodeBehind="ConsultarMotoristas.aspx.vb" Inherits="AgendamentoREDEX.ConsultarMotoristas" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <div id="Grid-Scroll" style="overflow: auto; margin-left: 20px; margin-right: 20px; margin-top:10px;
+    <div id="Grid-Scroll" style="overflow: auto; margin-left: 20px; margin-right: 20px;
         height: 500px;">
         <asp:Panel ID="PanelBarra" runat="server">
             <table align="left" cellpadding="0" cellspacing="0">
                 <tr>
                     <td align="center" style="padding-right: 20px;" height="22px">
-                        <asp:Button ID="btNovo" runat="server" Font-Names="Verdana" Font-Size="14px" Text="Novo"
+                        <asp:Button ID="btNovo" runat="server" Font-Names="Verdana" Font-Size="10px" Text="Novo"
                             Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
-                        <asp:Button ID="btPesquisar" runat="server" Font-Names="Verdana" Font-Size="14px"
+                        <asp:Button ID="btPesquisar" runat="server" Font-Names="Verdana" Font-Size="10px"
                             Text="Pesquisar" Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
                     </td>
                 </tr>
@@ -21,12 +21,12 @@
             <asp:Panel ID="PanelPesquisa" runat="server" Visible="False">
                 <table id="tbcad" align="center" bgcolor="#999999" border="0" cellpadding="1" cellspacing="0"
                     style="border-style: solid; border-width: 1px; border-color: #999999; font-family: verdana;
-                    font-size: 14px; width:1000px">
+                    font-size: 11px;">
                     <tr>
-                        <td align="center" colspan="3" style="font-family: verdana; font-size: 16px; font-weight: bold;
+                        <td align="center" colspan="3" style="font-family: verdana; font-size: 11px; font-weight: bold;
                             color: #FFFFFF; border-right-style: dotted; border-bottom-style: dotted; border-right-width: 1px;
                             border-bottom-width: 1px; border-right-color: #999999; border-bottom-color: #999999;"
-                            bgcolor="#076703">
+                            bgcolor="#B3C63C">
                             Pesquisar Motoristas
                         </td>
                     </tr>
@@ -38,8 +38,8 @@
                         </td>
                         <td align="left" bgcolor="White" style="border-right-style: dotted; border-bottom-style: dotted;
                             border-right-width: 1px; border-bottom-width: 1px; border-right-color: #999999;
-                            border-bottom-color: #999999">
-                            <asp:DropDownList ID="cbFiltro1" runat="server" Font-Names="Verdana" Font-Size="14px" Width="500px"
+                            border-bottom-color: #999999" width="100px">
+                            <asp:DropDownList ID="cbFiltro1" runat="server" Font-Names="Verdana" Font-Size="11px"
                                 Enabled="False">
                                 <asp:ListItem Value="0">Exatamente Igual</asp:ListItem>
                                 <asp:ListItem Value="1">Contém</asp:ListItem>
@@ -48,7 +48,7 @@
                         <td width="150px" align="left" bgcolor="White" style="border-bottom-style: dotted;
                             border-bottom-width: 1px; border-bottom-color: #999999">
                             <asp:TextBox ID="txtCavalo" runat="server" CssClass="Placa" Font-Names="Verdana"
-                                Font-Size="11px" Style="margin-left: 0px" Width="500px"></asp:TextBox>
+                                Font-Size="11px" Style="margin-left: 0px" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +60,7 @@
                         <td align="left" bgcolor="White" style="border-right-style: dotted; border-right-width: 1px;
                             border-right-color: #999999; border-bottom-style: dotted; border-bottom-width: 1px;
                             border-bottom-color: #999999;" width="100px">
-                            <asp:DropDownList ID="cbFiltro2" runat="server" Font-Names="Verdana" Font-Size="14px" Width="500px"
+                            <asp:DropDownList ID="cbFiltro2" runat="server" Font-Names="Verdana" Font-Size="11px"
                                 Enabled="False">
                                 <asp:ListItem Value="0">Exatamente Igual</asp:ListItem>
                                 <asp:ListItem Value="1">Contém</asp:ListItem>
@@ -69,7 +69,7 @@
                         <td align="left" bgcolor="White" style="border-bottom-style: dotted; border-bottom-width: 1px;
                             border-bottom-color: #999999" width="150px">
                             <asp:TextBox ID="txtCarreta" runat="server" CssClass="Placa" Font-Names="Verdana"
-                                Font-Size="14px" Style="margin-left: 0px" Width="500px"></asp:TextBox>
+                                Font-Size="11px" Style="margin-left: 0px" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -81,15 +81,15 @@
                         <td align="left" bgcolor="White" style="border-right-style: dotted; border-right-width: 1px;
                             border-right-color: #999999; border-bottom-style: dotted; border-bottom-width: 1px;
                             border-bottom-color: #999999;" width="100px">
-                            <asp:DropDownList ID="cbFiltro3" runat="server" Font-Names="Verdana" Font-Size="14px" Width="500">
+                            <asp:DropDownList ID="cbFiltro3" runat="server" Font-Names="Verdana" Font-Size="11px">
                                 <asp:ListItem Value="0">Exatamente Igual</asp:ListItem>
                                 <asp:ListItem Value="1">Contém</asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td align="left" bgcolor="White" style="border-bottom-style: dotted; border-bottom-width: 1px;
                             border-bottom-color: #999999" width="150px">
-                            <asp:TextBox ID="txtCNH" runat="server" CssClass="Numeric" Font-Names="Verdana" Font-Size="14px"
-                                Style="margin-left: 0px" Width="500px"></asp:TextBox>
+                            <asp:TextBox ID="txtCNH" runat="server" CssClass="Numeric" Font-Names="Verdana" Font-Size="11px"
+                                Style="margin-left: 0px" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -100,8 +100,8 @@
                         </td>
                         <td align="left" bgcolor="White" style="border-right-style: dotted; border-right-width: 1px;
                             border-right-color: #999999; border-bottom-style: dotted; border-bottom-width: 1px;
-                            border-bottom-color: #999999;">
-                            <asp:DropDownList ID="cbFiltro4" runat="server" Font-Names="Verdana" Font-Size="14px" Width="500">
+                            border-bottom-color: #999999;" width="100px">
+                            <asp:DropDownList ID="cbFiltro4" runat="server" Font-Names="Verdana" Font-Size="11px">
                                 <asp:ListItem Value="0">Exatamente Igual</asp:ListItem>
                                 <asp:ListItem Value="1">Contém</asp:ListItem>
                             </asp:DropDownList>
@@ -109,20 +109,20 @@
                         <td align="left" bgcolor="White" style="border-bottom-style: dotted; border-bottom-width: 1px;
                             border-bottom-color: #999999" width="150px">
                             <asp:TextBox ID="txtMotorista" runat="server" CssClass="AlphaNumeric" Font-Names="Verdana"
-                                Font-Size="14px" Style="margin-left: 0px" Width="500"></asp:TextBox>
+                                Font-Size="11px" Style="margin-left: 0px" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" bgcolor="White" style="border-right: 1px dotted #999999;" colspan="3">
                             <asp:Button ID="btVoltar" runat="server" BackColor="WhiteSmoke" BorderColor="#999999"
                                 BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" 
-                                Font-Size="14px" Text="Voltar"
+                                Font-Size="11px" Text="Voltar"
                                 Width="75px" />
                             <asp:Button ID="btLimpar" runat="server" BackColor="WhiteSmoke" 
                                 BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" 
-                                Font-Names="Verdana" Font-Size="14px" Text="Limpar" Width="75px" />
+                                Font-Names="Verdana" Font-Size="11px" Text="Limpar" Width="75px" />
                             <asp:Button ID="btFiltrar" runat="server" BackColor="WhiteSmoke" BorderColor="#999999"
-                                BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="14px" Text="Pesquisar"
+                                BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="11px" Text="Pesquisar"
                                 Width="75px" />
                         </td>
                     </tr>
@@ -132,7 +132,7 @@
         <br />
         <asp:GridView ID="DgMotoristas" runat="server" AutoGenerateColumns="False" CellPadding="1"
             ForeColor="#333333" GridLines="Both" CellSpacing="1" Width="100%" EmptyDataText="Nenhum registro encontrado."
-            ShowHeaderWhenEmpty="True" BackColor="#999999" Font-Names="Verdana" Font-Size="14px" AllowPaging="True" PageSize="20"
+            ShowHeaderWhenEmpty="True" BackColor="#999999" Font-Names="Verdana" Font-Size="10px" AllowPaging="True" PageSize="20"
             DataKeyNames="AUTONUM">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>
@@ -176,7 +176,7 @@
             <EditRowStyle BackColor="#999999" />
             <EmptyDataRowStyle BackColor="#E9E9E9" HorizontalAlign="Center" VerticalAlign="Middle" />
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-            <HeaderStyle Font-Bold="True" ForeColor="White" BackColor="#076703"/>
+            <HeaderStyle Font-Bold="True" ForeColor="White" CssClass="CorPadrao" />
             <PagerStyle CssClass="CorPadrao" ForeColor="White" Font-Size="12px" HorizontalAlign="Center" />
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />

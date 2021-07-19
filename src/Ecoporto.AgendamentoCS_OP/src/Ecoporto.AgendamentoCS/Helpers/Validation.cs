@@ -217,6 +217,7 @@ namespace Ecoporto.AgendamentoCS.Helpers
 
         public static bool RenavamValido(string renavam)
         {
+            
             if (string.IsNullOrEmpty(renavam.Trim())) return false;
 
             int[] d = new int[11];

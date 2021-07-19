@@ -658,7 +658,6 @@ function validarDanfe(campo) {
 
     return retorno;
 }
-
 function SelecionarPeriodo(id) {
 
     if (parseInt(id) > 0)
@@ -765,26 +764,74 @@ function obterUploadsPorConteiner(sigla) {
 }
 
 $('#btnAdicionarDanfe').click(function () {
-    //alert("teste");
+
+    event.preventDefault();
+    var input, file, fr;
+
+    if (typeof window.FileReader !== 'function') {
+        bodyAppend("p", "The file API isn't supported on this browser yet.");
+        return;
+    }
+
+    input = document.getElementById('fileinput');
+    if (!input) {
+        bodyAppend("p", "Um, couldn't find the fileinput element.");
+    }
+    else if (!input.files) {
+        bodyAppend("p", "This browser doesn't seem to support the `files` property of file inputs.");
+    }
+    else if (!input.files[0]) {
+        bodyAppend("p", "Please select a file before clicking 'Load'");
+    }
+    else {
+        file = input.files[0];
+        fr = new FileReader();
+        fr.onload = receivedText;
+        fr.readAsText(file);
+    }
+
+    function receivedText() {
+        console.log(fr.result);
+        var doc = parser.parseFromString(fr.result, "text/xml");
+        document.getElementById("xml").innerHTML = fr.result;
+        //document.getElementById("xml").innerHTML = fr.result;
+
+        shownode(doc.childNodes[0]);
+    }
+    //
+
     event.preventDefault();
 
-    limpaErros();
+    $('#msgErro')
+        .html('')
+        .addClass('invisivel');
 
     if ($('#ItemReservaId').val() === '') {
 
-        mostrarErro('Selecione um item');
+        $('#msgErro')
+            .html('Selecione um item')
+            .removeClass('invisivel');
+        return;
+    }
+
+    var retorno = validarDanfe($('#Danfe').val());
+
+    if (retorno !== '') {
+
+        $('#msgErro')
+            .html(retorno)
+            .removeClass('invisivel');
+
+        $('#Danfe').focus();
 
         return;
     }
-    console.log(danfe);
-    var retorno = validarDanfe(danfe);
-    console.log(retorno);
-    if (retorno !== '') {
 
-        mostrarErro(retorno);
-        
+    if ($('#CFOP').val() === '') {
 
-        $('#Danfe').css({ color:"red"});
+        $('#msgErro')
+            .html('O CFOP é obrigatório')
+            .removeClass('invisivel');
 
         return;
     }
@@ -794,25 +841,37 @@ $('#btnAdicionarDanfe').click(function () {
         .addClass('disabled');
 
     var obj = {
-        AgendamentoId: $('#Id').val(),
-        ConteinerId: $('#ConteinerId').val(),
         Danfe: $('#Danfe').val(),
         Reserva: $('#Reserva').val(),
         CFOP: $('#CFOP').val(),
-        BookingId: $('#BookingId').val(),
-        SiglaConteiner: $('#Sigla').val()
+        CTE: $('#CTE').val(),
+        xml: $('#xml').val(),
+        BookingCsItemId: $('#ItemReservaId').val()
     };
 
     $.post(urlBase + 'Agendamento/CadastrarDanfes', obj, function (resultado) {
 
-        $('#pnlDanfes').html(resultado);
+        $('#tblDanfes').html(resultado);
 
         limparCamposDanfe();
 
     }).fail(function (data) {
 
-        mostrarErrosResponse(data);
+        var retorno = data.responseJSON;
 
+        if (retorno.erros != null) {
+
+            var msg = retorno.erros[0].ErrorMessage;
+
+            $('#msgErro').html(msg).removeClass('invisivel');
+
+        } else {
+            if (data.statusText) {
+                toastr.error(data.statusText, 'Agendamento');
+            } else {
+                toastr.error('Falha ao incluir a Danfe', 'Agendamento');
+            }
+        }
     }).always(function () {
 
         $('#btnAdicionarDanfe')
@@ -821,7 +880,7 @@ $('#btnAdicionarDanfe').click(function () {
     });
 });
 function loadFile() {
-    
+
     var input, file, fr;
 
     if (typeof window.FileReader !== 'function') {
@@ -849,46 +908,32 @@ function loadFile() {
     function receivedText() {
         //console.log(fr.result);
         var doc = parser.parseFromString(fr.result, "text/xml");
-        document.getElementById("xml").innerHTML = fr.result;
-        
+        $('#xml').val(fr.result);
         shownode(doc.childNodes[0]);
     }
 }
-
 function shownode(node) {
-    
-    var protNfe = node.childNodes[1];
-    var ide = node.childNodes[0].childNodes[0];
-    var pag = node.childNodes[0].childNodes[0].childNodes[4].childNodes[0].childNodes[18];
-    //console.log(chidren.childNodes[0]);
-    //console.log(chidren.childNodes[0].childNodes[2]);
-    var nfe = protNfe.childNodes[0].childNodes[2].innerHTML;
-    var numero = ide.childNodes[0].childNodes[1].innerHTML;
-    var serie = ide.childNodes[0].childNodes[4].innerHTML;
-    //var emissor = chidren.childNodes[0].childNodes[2].innerHTML;
-    var data = ide.childNodes[0].childNodes[6].innerHTML;
-    //var qtd = chidren.childNodes[0].childNodes[2].innerHTML;
-    var valor = pag;
-    //var pesobruto = chidren.childNodes[0].childNodes[2].innerHTML;
-    //var mtcubico = chidren.childNodes[0].childNodes[2].innerHTML;
-    //$('#Danfe').val(nfe);
+
+    var nfe = node.getElementsByTagName('chNFe')[0].innerHTML;
+    var numero = node.getElementsByTagName('cNF')[0].innerHTML;
+    var serie = node.getElementsByTagName('serie')[0].innerHTML;
+    var emissor = node.getElementsByTagName('CNPJ')[0].innerHTML;
+    var data = node.getElementsByTagName('dhEmi')[0].innerHTML;
+    var cfop = node.getElementsByTagName('CFOP')[0].innerHTML;
+    var valor = node.getElementsByTagName('vNF')[0].innerHTML;
+    var qtd = node.getElementsByTagName('indTot')[0].innerHTML;
+    var pesob = node.getElementsByTagName('pesoB')[0].innerHTML;
+
+    $('#CFOP').val(cfop);
     $('#Danfe').hide();
-    $('#Danfe').html(nfe);
+    $('#Danfe').val(nfe);
     $('#numero').html(numero);
     $('#serie').html(serie);
     $('#data').html(data);
     $('#valor').html(valor);
-    //document.getElementById("Danfe").innerText = nfe;
-    console.log("nfe:" + nfe)
-    console.log(typeof chidren);
-    
-    
-    //
-    //let list = node.childNodes[0].nodeName;
-
-    //document.getElementById("danfe").innerHTML = node.childNodes[4];
-    //for (var i = 0; i < node.childNodes.length; i++)
-    //    shownode(node.childNodes[i]);
+    $('#emisso').html(emissor);
+    $('#qtd').html(qtd);
+    $('#pesobruto').html(pesob);
 }
 
 //function showResult(fr, label) {

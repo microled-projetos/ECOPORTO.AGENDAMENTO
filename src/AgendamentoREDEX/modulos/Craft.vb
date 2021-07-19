@@ -47,32 +47,27 @@
         Dim clsDados As WsCraft.clsDadosIntegracao
         Dim ret As String = String.Empty
 
-        Try
-            clsDados = ws.RetornaDadosReserva(Reserva, My.Settings.WsCraftUsuario, My.Settings.WsCraftSenha)
+        clsDados = ws.RetornaDadosReserva(Reserva, My.Settings.WsCraftUsuario, My.Settings.WsCraftSenha)
 
-            If clsDados IsNot Nothing Then
-                If Not String.IsNullOrEmpty(clsDados.Ex_ReservaNr) Then
+        If clsDados IsNot Nothing Then
+            If Not String.IsNullOrEmpty(clsDados.Ex_ReservaNr) Then
 
-                    Dim xml As String = Craft.MontaXMLCraft(clsDados)
+                Dim xml As String = Craft.MontaXMLCraft(clsDados)
 
-                    If xml <> String.Empty Then
+                If xml <> String.Empty Then
 
-                        Dim wsCh As New WsBloqueioCraft.Ws
+                    Dim wsCh As New WsBloqueioCraft.Ws
 
-                        Try
-                            ret = wsCh.Ler_EDI_Craft(String.Empty, xml)
-                        Catch ex As Exception
-                            ret = ex.Message
-                        End Try
-
-                    End If
+                    Try
+                        ret = wsCh.Ler_EDI_Craft(String.Empty, xml)
+                    Catch ex As Exception
+                        ret = ex.Message
+                    End Try
 
                 End If
-            End If
-        Catch ex As Exception
-            ret = "Reserva não encontrada"
-        End Try
 
+            End If
+        End If
 
         Return ret
 

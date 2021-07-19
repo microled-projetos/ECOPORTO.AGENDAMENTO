@@ -10,48 +10,45 @@
 
     <center>
 
-    <table id="tbcad" align="center" cellpadding="2" cellspacing="1" width="750px" bgcolor="#CCCCCC">
+    <table id="tbcad" align="center" cellpadding="2" cellspacing="1" width="450px" bgcolor="#CCCCCC">
         <tr>
-            <td colspan="2" height="10"></td>
-        </tr>
-        <tr>
-            <td align="center" colspan="2" style="font-family: verdana; font-size: 16px;
-                font-weight: bold; color: #FFFFFF" bgcolor="#076703">
+            <td align="center" class="CorPadrao" colspan="2" style="font-family: verdana; font-size: 11px;
+                font-weight: bold; color: #FFFFFF" bgcolor="#B3C63C">
                 Cadastrar Motoristas
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 Transportadora
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
                 <asp:TextBox ID="txtIDTransportadora" runat="server" MaxLength="8" Width="20px" Font-Names="Verdana"
                     Font-Size="11px" Visible="False"></asp:TextBox>
-                <asp:TextBox ID="txtTransportadora" runat="server" MaxLength="8" Width="500px" BackColor="White"
-                    BorderStyle="None" Enabled="False" Font-Names="Verdana" Font-Size="14px"></asp:TextBox>
+                <asp:TextBox ID="txtTransportadora" runat="server" MaxLength="8" Width="300px" BackColor="White"
+                    BorderStyle="None" Enabled="False" Font-Names="Verdana" Font-Size="11px"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 CNH
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtCNH" runat="server" MaxLength="11" Width="400px" Font-Names="Verdana"
-                    Font-Size="14" CssClass="Numeric" AutoPostBack="True"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtCNH" runat="server" MaxLength="11" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px" CssClass="Numeric" AutoPostBack="True"></asp:TextBox>
                 &nbsp;<asp:Button ID="btConsultarCNH" runat="server" BorderColor="#999999" BorderStyle="Solid"
-                    BorderWidth="1px" Font-Names="Verdana" Font-Size="14px" Text="Consultar" CausesValidation="False" />
+                    BorderWidth="1px" Font-Names="Verdana" Font-Size="11px" Text="Consultar" CausesValidation="False" />
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtCNH"
                     ErrorMessage="RequiredFieldValidator" Font-Names="Verdana" ForeColor="Red" 
                     Display="Dynamic">* Campo Obrigatório</asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 Validade CNH
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtValidadeCNH" runat="server" MaxLength="10" Width="200px" Font-Names="Verdana"
-                    Font-Size="14px"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtValidadeCNH" runat="server" MaxLength="10" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px"></asp:TextBox>
                 <asp:MaskedEditExtender ID="txtValidadeCNH_MaskedEditExtender" runat="server" 
                     ClearMaskOnLostFocus="False" CultureAMPMPlaceholder="" 
                     CultureCurrencySymbolPlaceholder="" CultureDateFormat="" 
@@ -69,36 +66,36 @@
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 Nome
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtNome" runat="server" MaxLength="50" Width="400px" Font-Names="Verdana"
-                    Font-Size="14px"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtNome" runat="server" MaxLength="50" Width="200px" Font-Names="Verdana"
+                    Font-Size="11px"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtNome"
                     ErrorMessage="RequiredFieldValidator" Font-Names="Verdana" ForeColor="Red" 
                     Display="Dynamic">* Campo Obrigatório</asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 RG
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtRG" runat="server" MaxLength="12" Width="400px" Font-Names="Verdana"
-                    Font-Size="14px" CssClass="Numeric"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtRG" runat="server" MaxLength="12" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px" CssClass="Numeric"></asp:TextBox>
                 &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtRG"
                     ErrorMessage="RequiredFieldValidator" Font-Names="Verdana" ForeColor="Red" 
                     Display="Dynamic">* Campo Obrigatório</asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 CPF
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtCPF" runat="server" MaxLength="10" Width="400px" Font-Names="Verdana"
-                    Font-Size="14px" Height="19px"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtCPF" runat="server" MaxLength="10" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px" Height="19px"></asp:TextBox>
                 <asp:MaskedEditExtender ID="txtCPF_MaskedEditExtender" runat="server" 
                     ClearMaskOnLostFocus="False" CultureAMPMPlaceholder="" 
                     CultureCurrencySymbolPlaceholder="" CultureDateFormat="" 
@@ -112,12 +109,12 @@
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 Celular
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtCelular" runat="server" MaxLength="15" Width="400px" Font-Names="Verdana"
-                    Font-Size="14px"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtCelular" runat="server" MaxLength="15" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px"></asp:TextBox>
                 <asp:MaskedEditExtender ID="txtCelular_MaskedEditExtender" runat="server" 
                     ClearMaskOnLostFocus="False" CultureAMPMPlaceholder="" 
                     CultureCurrencySymbolPlaceholder="" CultureDateFormat="" 
@@ -131,36 +128,36 @@
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 Nextel ID
             </td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtNextel" runat="server" MaxLength="10" Width="400px" Font-Names="Verdana"
-                    Font-Size="14px"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtNextel" runat="server" MaxLength="10" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtNextel"
                     ErrorMessage="RequiredFieldValidator" Font-Names="Verdana" ForeColor="Red" 
                     Display="Dynamic">* Campo Obrigatório</asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
-            <td style="font-family: verdana; font-size: 14px" width="100px" bgcolor="White">
+            <td style="font-family: verdana; font-size: 11px" width="100px" bgcolor="White">
                 Número MOP</td>
-            <td style="font-family: verdana; font-size: 14px" bgcolor="White">
-                <asp:TextBox ID="txtNumeroMOP" runat="server" MaxLength="10" Width="400px" Font-Names="Verdana"
-                    Font-Size="16px" CssClass="Numeric"></asp:TextBox>
+            <td style="font-family: verdana; font-size: 11px" bgcolor="White">
+                <asp:TextBox ID="txtNumeroMOP" runat="server" MaxLength="10" Width="120px" Font-Names="Verdana"
+                    Font-Size="11px" CssClass="Numeric"></asp:TextBox>
             </td>
         </tr>
         <tr>
-            <td align="center" colspan="2" style="font-family: verdana; font-size: 14px" bgcolor="White"
+            <td align="center" colspan="2" style="font-family: verdana; font-size: 11px" bgcolor="White"
                 height="30px">
                 <asp:Button ID="btRetornar" runat="server" BorderColor="#999999" BorderStyle="Solid"
-                    BorderWidth="1px" Font-Names="Verdana" Font-Size="14px" Text="Retornar" Width="80px"
+                    BorderWidth="1px" Font-Names="Verdana" Font-Size="11px" Text="Retornar" Width="80px"
                     CausesValidation="False" />
                 <asp:Button ID="btLimpar" runat="server" BorderColor="#999999" BorderStyle="Solid"
-                    BorderWidth="1px" Font-Names="Verdana" Font-Size="14px" Text="Limpar" 
+                    BorderWidth="1px" Font-Names="Verdana" Font-Size="11px" Text="Limpar" 
                     Width="80px" CausesValidation="False" />
                 <asp:Button ID="btSalvar" runat="server" BorderColor="#999999" BorderStyle="Solid"
-                    BorderWidth="1px" Font-Names="Verdana" Font-Size="14px" Text="Salvar" Width="80px" />
+                    BorderWidth="1px" Font-Names="Verdana" Font-Size="11px" Text="Salvar" Width="80px" />
                 <asp:Panel ID="PanelMsg" runat="server" Visible="false">
                     <br />
                     <asp:Label ID="lblMsgOK" runat="server" ForeColor="Green" Font-Bold="False"></asp:Label>
