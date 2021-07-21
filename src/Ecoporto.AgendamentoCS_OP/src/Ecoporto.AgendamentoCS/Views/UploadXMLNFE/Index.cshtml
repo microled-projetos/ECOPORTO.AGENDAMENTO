@@ -24,6 +24,16 @@
 <div class="row">
     @Html.Partial("_uploadXMLNfe/_grid")
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-3 float-right">
+            <select id="cbAcoes" class="form-control btn-primary">
+                <option value="0">Ações</option>
+                <option value="1">Excluir Selecionados</option>
+            </select>
+        </div>
+    </div>
+</div>
 @Html.Partial("_ModalExclusao")
 
 @section Css{
@@ -49,22 +59,6 @@
             $('#modal-mensagem').text('Confirma a exclusão do XML?');
             $('#del-modal').data('id', id).modal('show');
         }
-
-        @*function ConfExclusao() {
-            var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
-            var _id = $('#del-modal').data('id');
-
-            $.ajax({
-                url: _url, 
-                type: 'GET', 
-                data: { id: _id }, 
-
-                success: function (Dados) {
-                    
-
-                }
-            });
-        }*@
 
         function ConfirmarExclusao() {
 
@@ -93,7 +87,52 @@
                         .modal('hide');
                 });
         }
+        function fn_excluir_selecionados(cod) {
+             var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
+            
 
+            $.get(_url, { id: cod })
+                .done(function (data, statusText, xhr) {
+                    toastr.success('Registro excluído com sucesso!', 'Agendamento');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                    $('#item-' + _id).remove();
+                }).fail(function (data) {
+
+                    if (data.statusText !== '') {
+                        toastr.error(data.statusText, 'Agendamento');
+                    } else {
+                        toastr.error('O registro não pode ser excluído', 'Agendamento');
+                    }
+                }).always(function () {
+                    $('#del-modal')
+                        .data('id', '0')
+                        .modal('hide');
+                });
+        }
+    </script>
+    <script>
+        $('#cbAcoes').change(function () {
+            var excluirID = $(this).val();
+            camposMarcados = new Array();
+            var checkedInput = $('input:checked').length;
+
+            if (checkedInput == 0) {
+                $(this).val(0);
+                alert("Selecione um item");
+                return false;
+            }
+            else {
+                $("input[type=checkbox][name='toggle-all-itens']:checked").each(function () {
+                    var cod = $(this).attr('data-check');                    
+                    fn_excluir_selecionados(cod);                    
+                    
+                });
+                return false;
+            }
+
+        });
     </script>
 }
 @section Upload{
@@ -104,14 +143,18 @@
     <link href="@Url.Content("~/Content/css/upload/jquery.fileupload-ui.css")" rel="stylesheet" />
 
 
-    <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
-    <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
-    <script src="https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-    @*<script src="https://cdn.jsdelivr.net/npm/jquery.ui.widget@1.10.3/jquery.ui.widget.js"></script>*@
+    @*<script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/load-image.all.min.js")"></script>
+
+    @*<script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/canvas-to-blob.min.js")"></script>
+    @*<script src="https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.blueimp-gallery.min.js")"></script>
 
 
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload.js")"></script>
-    <script src="https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
+    @*<script src="https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/tmpl.min.js")"></script>
     <script src="@Url.Content("~/Content/js/upload/jquery.fileupload-process.js")"></script>
     <script src="@Url.Content("~/Content/js/upload/jquery.fileupload-image.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-audio.js")"></script>
@@ -122,5 +165,11 @@
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.iframe-transport.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/locale.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/main.js")"></script>
+
+    <script>
+        $('#fileupload').bind('fileuploaddone', function (e, data) {
+            toastr.success("Upload realizado com sucesso");
+        });
+    </script>
 
 }

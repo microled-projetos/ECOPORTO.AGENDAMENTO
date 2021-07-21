@@ -22,6 +22,7 @@
                         foreach (var item in listarXML)
                         {
                             <tr id="item-@item.ID">
+                                <td> <input type="checkbox" name="toggle-all-itens" data-check="@item.ID" id="@item.ID" /></td>
                                 <td>@item.ID</td>
                                 <td>@item.Razao</td>
                                 <td>@item.Danfe</td>
