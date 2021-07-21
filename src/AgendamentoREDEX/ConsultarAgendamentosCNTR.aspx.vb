@@ -50,6 +50,8 @@
 
         Dim Index As Integer = e.CommandArgument
         Dim ID As String = Me.dgConsulta.DataKeys(Index)("AUTONUM_GD_CNTR").ToString()
+        Dim BOO = Banco.ExecuteScalar("SELECT NVL(MAX(REFERENCE),'') FROM REDEX.TB_GD_CONTEINER WHERE AUTONUM_GD_CNTR = " & ID)
+        Dim ID_BOO = Banco.ExecuteScalar("SELECT NVL(MAX(AUTONUM_BOO),0) FROM REDEX.TB_BOOKING WHERE REFERENCE = '" & BOO.ToString() & "'")
 
         If e.CommandName = "DEL" Then
             If Not String.IsNullOrEmpty(ID) Or
@@ -96,16 +98,24 @@
                         ExisteItemSemDanfe = True
                     End If
                 Next
+                If Banco.BeginTransaction("Update REDEX.TB_gd_conteiner Set autonum_reserva=" & ID_BOO.ToString() & " where autonum_gd_cntr=" & ID) Then
 
-                If ExisteItemSemDanfe Then
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('É necessário fazer o upload da Danfe para imprimir o protocolo');", True)
-                    Exit Sub
                 End If
 
-                Response.Redirect("ProtocoloCNTR.aspx?protocolo=" & ID)
 
+                If Banco.ExecuteScalar("Select count(1) from REDEX.Tb_gd_conteiner a  inner join redex.tb_booking  b On a.autonum_RESERVA= b.autonum_BOO  where  b.flag_bagagem=1  And a.autonum_gd_cntr = " & ID) > 0 Then
+                    ExisteItemSemDanfe = False
+                End If
+
+                If ExisteItemSemDanfe Then
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('É necessário fazer o upload da Danfe para imprimir o protocolo');", True)
+                        Exit Sub
+                    End If
+
+                    Response.Redirect("ProtocoloCNTR.aspx?protocolo=" & ID)
+
+                End If
             End If
-        End If
 
     End Sub
 
