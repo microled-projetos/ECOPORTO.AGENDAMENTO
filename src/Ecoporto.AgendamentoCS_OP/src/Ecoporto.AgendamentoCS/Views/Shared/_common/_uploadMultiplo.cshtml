@@ -2,7 +2,7 @@
 <form id="fileupload" action="/Files/UploadHandler.ashx" method="POST" enctype="multipart/form-data">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
-            <div class="span7">
+            <div class="span8">
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
                     <i class="fa fa-plus"></i>
@@ -16,10 +16,13 @@
                 <button type="reset" class="btn btn-warning cancel">
                     <i class="fa fa-ban"></i>
                     <span>Cancelar Todos Uploads</span>
-                </button>
-                
+                </button>                
+                <span class="btn btn-danger fileinput-button" id="cbAcoes">
+                    <i class="fa fa-trash"></i>
+                    <span>Excluir Selecionados</span>                    
+                </span>
             </div>
-            <div class="span5">
+            <div class="span4">
                 <!-- The global progress bar -->
                 <div class="progress progress-success progress-striped active fade">
                     <div class="bar" style="width:0%;"></div>

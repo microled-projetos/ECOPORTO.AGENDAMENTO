@@ -490,6 +490,7 @@
     <Content Include="Views\UploadXMLNFE\Index.cshtml" />
     <Content Include="Views\Shared\_uploadXMLNfe\_grid.cshtml" />
     <Content Include="Views\Agendamento\_DanfesCarregadas.cshtml" />
+    <Content Include="Views\Shared\_ModalExclusaoTodos.cshtml" />
     <None Include="Web References\WsBDCC\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
