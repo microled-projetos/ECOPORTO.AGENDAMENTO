@@ -24,17 +24,9 @@
 <div class="row">
     @Html.Partial("_uploadXMLNfe/_grid")
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="col-md-3 float-right">
-            <select id="cbAcoes" class="form-control btn-primary">
-                <option value="0">Ações</option>
-                <option value="1">Excluir Selecionados</option>
-            </select>
-        </div>
-    </div>
-</div>
+
 @Html.Partial("_ModalExclusao")
+@Html.Partial("_ModalExclusaoTodos")
 
 @section Css{
     @Styles.Render("~/bundles/datatablesCSS")
@@ -52,7 +44,14 @@
             //        "url": langUrl
             //    }
             //});
-         });
+        });
+
+        $('#cbAcoes').click(function () {
+
+            $('#modal-mensagem-all').text('Confirma a exclusão dos arquivos selecionados');
+            $('#del-modal-all').modal('show');
+        });
+        
 
         function Excluir(id) {
 
@@ -89,7 +88,7 @@
         }
         function fn_excluir_selecionados(cod) {
              var _url = '@Url.Action("GetDeleteFiles", "UploadXMLNFE")';
-            
+
 
             $.get(_url, { id: cod })
                 .done(function (data, statusText, xhr) {
@@ -113,21 +112,20 @@
         }
     </script>
     <script>
-        $('#cbAcoes').change(function () {
+        $('#btnDeleteAll').click(function () {
             var excluirID = $(this).val();
             camposMarcados = new Array();
             var checkedInput = $('input:checked').length;
 
             if (checkedInput == 0) {
-                $(this).val(0);
                 alert("Selecione um item");
                 return false;
             }
             else {
                 $("input[type=checkbox][name='toggle-all-itens']:checked").each(function () {
-                    var cod = $(this).attr('data-check');                    
-                    fn_excluir_selecionados(cod);                    
-                    
+                    var cod = $(this).attr('data-check');
+                    fn_excluir_selecionados(cod);
+
                 });
                 return false;
             }
