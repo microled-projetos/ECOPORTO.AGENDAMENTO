@@ -108,14 +108,14 @@
                 End If
 
                 If ExisteItemSemDanfe Then
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('É necessário fazer o upload da Danfe para imprimir o protocolo');", True)
-                        Exit Sub
-                    End If
-
-                    Response.Redirect("ProtocoloCNTR.aspx?protocolo=" & ID)
-
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('É necessário fazer o upload da Danfe para imprimir o protocolo');", True)
+                    Exit Sub
                 End If
+
+                Response.Redirect("ProtocoloCNTR.aspx?protocolo=" & ID)
+
             End If
+        End If
 
     End Sub
 
