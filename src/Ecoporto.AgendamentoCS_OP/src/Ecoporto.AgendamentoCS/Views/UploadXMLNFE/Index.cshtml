@@ -162,12 +162,25 @@
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.fileupload-ui.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/jquery.iframe-transport.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Content/js/upload/locale.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Content/js/upload/main.js")"></script>
+    @*<script type="text/javascript" src="@Url.Content("~/Content/js/upload/main.js")"></script>*@
 
     <script>
+        $('#fileupload').fileupload();
+        $('#fileupload').fileupload('option', {
+            maxFileSize: 500000000,
+            resizeMaxWidth: 400,
+            resizeMaxHeight: 300,
+            uploadTemplateId: 'template-upload',
+            downloadTemplateId: 'template-download',
+            complete: function (e, data) {
+                window.location = '@Url.Content("~/UploadXMLNFE/Index")';
+            }
+        });
         $('#fileupload').bind('fileuploaddone', function (e, data) {
             toastr.success("Upload realizado com sucesso");
         });
+
+
     </script>
 
 }
