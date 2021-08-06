@@ -118,7 +118,7 @@
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     @Html.LabelFor(model => model.Chassis)
-                                    @Html.TextAreaFor(model => model.Chassis, new { @class = "form-control form-control-sm", @disabled = "disabled", @rows = "4" })
+                                    @Html.TextAreaFor(model => model.Chassis, new { @class = "form-control form-control-sm", @rows = "4",  @disabled = false })
                                 </div>
                             </div>
 
@@ -293,7 +293,7 @@
     <script>
 
         $(document).ready(function () {
-
+            
             $('#smartwizard').smartWizard({
                 selected: 0,
                 theme: 'arrows',

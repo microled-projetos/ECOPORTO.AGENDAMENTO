@@ -1020,7 +1020,8 @@ function obterDetalhesItem() {
     var bookingCsItemId = $('#ItemReservaId').val();
     var reserva = $('#Reserva').val();
 
-    $('#Chassis').prop('readonly', true);
+    //$('#Chassis').prop('readonly', true);
+    $('#Chassis').prop('readonly', false);
     $('#TiposDocumentos').empty();
 
     if (!isNumero(bookingCsItemId)) {
@@ -1033,17 +1034,17 @@ function obterDetalhesItem() {
         if (resultado) {
 
             if (resultado.Veiculo) {
-                $('#Chassis').prop('readonly', false);
+                $('#Chassis').prop('readonly', false);               
             }
 
             if (parseInt(resultado.ClassificacaoId) === 2) {
-                $('#Chassis').prop('readonly', false);
+                $('#Chassis').prop('readonly', false);                
             }
 
             if (resultado.TipoCarga === 'BS') {
-                $('#Chassis').prop('readonly', true);
+                //$('#Chassis').prop('readonly', true); Comentado para que possa atualizar os dados do chassi
+                $('#Chassis').prop('readonly', false);
             }
-
             $('#ClassificacaoId').val(resultado.ClassificacaoId);
         }
     }).fail(function (data) {
