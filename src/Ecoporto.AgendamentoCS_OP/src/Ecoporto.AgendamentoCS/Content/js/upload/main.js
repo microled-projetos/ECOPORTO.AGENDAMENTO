@@ -25,7 +25,7 @@ $(function () {
         uploadTemplateId: 'template-upload',
         downloadTemplateId: 'template-download',
         complete: function (e, data) {
-            window.location = "/UploadXMLNFE";
+            window.location = "/UploadXMLNFE/Index";
         }
     });    
     
