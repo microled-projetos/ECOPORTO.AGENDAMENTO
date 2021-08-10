@@ -536,271 +536,6 @@ Public Class AgendarCS
     End Function
     Protected Sub btnSalvar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSalvar.Click
 
-        Dim SQL As New StringBuilder
-        Dim Entrada As Boolean
-        Dim CodAntVeic As Long
-        Dim ContaVeic As Long
-        Dim CodPer As Long
-
-        Try
-            Entrada = True
-            CodAntVeic = 0
-            CodPer = 0
-            Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM  OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
-            If Val(Me.lblCodigoAgendamento.Text) > 0 Then
-                CodPer = Banco.ExecuteScalar("SELECT nvl(AUTONUM_GD_RESERVA,0) FROM redex.TB_AGENDAMENTO_WEB_CS WHERE AUTONUM  = " & Val(Me.lblCodigoAgendamento.Text))
-                CodAntVeic = Banco.ExecuteScalar("SELECT nvl(AUTONUM_VEICULO,0) FROM redex.TB_AGENDAMENTO_WEB_CS WHERE AUTONUM  = " & Val(Me.lblCodigoAgendamento.Text))
-                ContaVeic = Banco.ExecuteScalar("SELECT Count(1) FROM redex.TB_AGENDAMENTO_WEB_CS WHERE AUTONUM_GD_RESERVA=" & Val(CodPer) & " AND AUTONUM_VEICULO = " & Val(CodAntVeic))
-                If ContaVeic > 1 And Me.LblResp.Text = "" Then
-                    'Exit Sub
-                End If
-            End If
-
-
-
-            If CodPer <> Val(Me.lblCodigoPeriodo.Text) Or CodPer = 0 Then
-                If CodPer <> 0 Then
-                    SQL.Append("UPDATE ")
-                    SQL.Append("   Redex.TB_AGENDAMENTO_WEB_CS ")
-                    SQL.Append("  SET ")
-                    SQL.Append("    AUTONUM_GD_RESERVA = 0 ")
-                    SQL.Append("  WHERE AUTONUM = " & Me.lblCodigoAgendamento.Text)
-                    Banco.BeginTransaction(SQL.ToString())
-                End If
-                If Val(Me.lblCodigoAgendamento.Text) > 0 Then
-                    Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
-                    Entrada = ValidarSaldoRestante(totalq)
-                End If
-            End If
-
-            If Val(Me.lblCodigoAgendamento.Text) = 0 Then
-                Entrada = ValidarSaldoRestante("0")
-            End If
-            If Me.btnSalvar.Text = "Concluir" Then
-                If Val(Me.lblCodigoPeriodo.Text) = 0 Then
-                    Entrada = False
-                End If
-            End If
-            If Entrada Then
-
-                If Me.btnSalvar.Text = "Concluir" Then
-
-                    If String.IsNullOrEmpty(Me.txtEmailResponsavel.Text.Trim()) Or
-                String.IsNullOrWhiteSpace(Me.txtEmailResponsavel.Text.Trim()) Then
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O email é de preenchimento obrigatório.');", True)
-                        Me.AccordionIndex.Value = 3
-                        Me.txtCNPJResponsavel.Enabled = True
-                        Me.txtEmailResponsavel.Enabled = True
-                        Me.txtEmailResponsavel.Focus()
-                        Exit Sub
-                    End If
-
-                    If String.IsNullOrEmpty(Me.txtEmailResponsavel.Text.Trim()) Or
-                String.IsNullOrWhiteSpace(Me.txtEmailResponsavel.Text.Trim()) Then
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O email é de preenchimento obrigatório.');", True)
-                        Me.AccordionIndex.Value = 3
-                        Me.txtCNPJResponsavel.Enabled = True
-                        Me.txtEmailResponsavel.Enabled = True
-                        Me.txtEmailResponsavel.Focus()
-                        Exit Sub
-                    End If
-
-
-
-                    If Convert.ToInt32(Banco.ExecuteScalar("SELECT COUNT(1) FROM REDEX.TB_BOOKING WHERE (FLAG_DTA = 1 OR FLAG_RETIRADA_CARGA = 'E') AND REFERENCE = '" & Me.txtReserva.Text & "'")) > 1 Then
-
-
-                    End If
-
-                    If Val(Me.hiddenText.Value) = 0 Then
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O CNPJ é de preenchimento obrigatório');", True)
-                        Me.AccordionIndex.Value = 3
-                        Me.txtCNPJResponsavel.Enabled = True
-                        Me.txtEmailResponsavel.Enabled = True
-                        Me.txtEmailResponsavel.Focus()
-                        Exit Sub
-                    End If
-
-                    If Val(Me.lblCodigoPeriodo.Text) > 0 Then
-                        If Val(Me.lblCodigoAgendamento.Text) > 0 Then
-                            Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
-                            If ValidarSaldoRestante(totalq) = False Then
-                                ConsultarPeriodos()
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Saldo insuficiente. Escolha outro período.');", True)
-                                Exit Sub
-                            End If
-                        End If
-                    End If
-
-                    SQL.Append("UPDATE ")
-                    SQL.Append("  REDEX.TB_AGENDAMENTO_WEB_CS ")
-                    SQL.Append("  SET ")
-                    SQL.Append("    AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " ")
-                    SQL.Append(" ,EMAIL_FAT = '" & Me.txtEmailResponsavel.Text & "' ")
-                    SQL.Append(" ,CLIENTE_FAT = " & Me.hiddenText.Value & " ")
-                    SQL.Append("  WHERE AUTONUM = " & Me.lblCodigoAgendamento.Text)
-
-                    If Banco.BeginTransaction(SQL.ToString()) Then
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "novaReserva(" & Me.lblCodigoAgendamento.Text & "," & Me.lblCodigoProtocolo.Text & ");", True)
-                        Exit Sub
-                    End If
-
-                    ' Me.txtCNPJResponsavel.Text = String.Empty
-                    ' Me.txtCNPJResponsavel.Enabled = False
-                    ' Me.hiddenText.Value = String.Empty
-                    '
-                    '           Me.txtEmailResponsavel.Text = String.Empty
-                    '           Me.txtEmailResponsavel.Enabled = False
-
-                End If
-
-                If ValidarCampos() Then
-
-                    If Request.QueryString("id") Is Nothing Or Request.QueryString("more") IsNot Nothing Then
-
-                        If Val(Me.lblCodigoPeriodo.Text) > 0 Then
-                            If ValidarSaldoRestante(0) = False Then
-                                ConsultarPeriodos()
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Saldo insuficiente. Escolha outro período.');", True)
-                                Exit Sub
-                            End If
-                        End If
-
-                        Me.lblCodigoMotorista.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_MOTORISTAS WHERE UPPER(TRIM(NOME)) = '" & ObterNomeMotorista(Me.txtMotorista.Text.ToUpper()) & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
-
-                        Dim Ds As New DataTable
-                        SQL.Clear()
-                        SQL.Append(" SELECT count(1) FROM  OPERADOR.TB_AG_MOTORISTAS A")
-                        SQL.Append(" INNER JOIN OPERADOR.TB_MOTORISTAS B ON REPLACE(REPLACE(A.CPF,'.',''),'-','') = REPLACE(REPLACE(B.CPF,'.',''),'-','')")
-                        SQL.Append("  WHERE  NVL(B.FLAG_INATIVO, 0)=1 and a.AUTONUM = " & Me.lblCodigoMotorista.Text)
-                        Ds = Banco.List(SQL.ToString())
-                        If Ds.Rows.Count > 0 Then
-                            '     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Motorista bloqueado no Terminal.');", True)
-                            '    Exit Sub
-
-                        End If
-                        Me.lblCodigoAgendamento.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_CS.NEXTVAL FROM DUAL")
-
-                        If Not String.IsNullOrEmpty(Me.lblCodigoAgendamento.Text.Trim()) And Not String.IsNullOrWhiteSpace(Me.lblCodigoAgendamento.Text.Trim()) Then
-
-                            Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
-                            Me.lblCodigoProtocolo.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_PROT_" & Now.Year & ".NEXTVAL FROM DUAL")
-
-                            SQL.Clear()
-                            SQL.Append("INSERT INTO ")
-                            SQL.Append("  REDEX.TB_AGENDAMENTO_WEB_CS ")
-                            SQL.Append("  ( ")
-                            SQL.Append("    AUTONUM, ")
-                            SQL.Append("    RESERVA, ")
-                            SQL.Append("    AUTONUM_MOTORISTA, ")
-                            SQL.Append("    AUTONUM_VEICULO, ")
-                            SQL.Append("    AUTONUM_TRANSPORTADORA, ")
-                            SQL.Append("    AUTONUM_GD_RESERVA, ")
-                            SQL.Append("    AUTONUM_BOOKING, ")
-                            SQL.Append("    DATA_AGENDAMENTO, ")
-                            SQL.Append("    STATUS, ")
-                            SQL.Append("    NUM_PROTOCOLO, ")
-                            SQL.Append("    ANO_PROTOCOLO, ")
-                            SQL.Append("    EMAIL_FAT, ")
-                            SQL.Append("    CLIENTE_FAT ")
-                            SQL.Append("  ) ")
-                            SQL.Append("  VALUES ")
-                            SQL.Append("  ( ")
-                            SQL.Append("  " & Me.lblCodigoAgendamento.Text & ", ")
-                            SQL.Append("  '" & Me.txtReserva.Text.ToUpper() & "', ")
-                            SQL.Append("  " & Me.lblCodigoMotorista.Text & ", ")
-                            SQL.Append("  " & Me.lblCodigoVeiculo.Text & ", ")
-                            SQL.Append("  " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString() & ", ")
-                            SQL.Append("  " & Nnull(Me.lblCodigoPeriodo.Text, 0) & ", ")
-                            SQL.Append("  " & Nnull(Me.lblCodigoBooking.Text, 0) & ", ")
-                            SQL.Append("  SYSDATE, ")
-                            SQL.Append("  'GE', ")
-
-                            If Request.QueryString("more") IsNot Nothing Then
-                                If Request.QueryString("protocolo") IsNot Nothing Then
-                                    SQL.Append("  " & Request.QueryString("protocolo").ToString() & ", ")
-                                End If
-                            Else
-                                SQL.Append("  " & Me.lblCodigoProtocolo.Text & ", ")
-                            End If
-
-                            SQL.Append("  " & Now.Year & " ,")
-                            SQL.Append("  '" & Me.txtEmailResponsavel.Text & "', ")
-                            SQL.Append("  '" & Me.hiddenText.Value & "' ")
-                            SQL.Append("  ) ")
-
-                            If Banco.BeginTransaction(SQL.ToString()) Then
-                                'If Agendamento.InsereAgendamentoNaFila(0, Val(Me.lblCodigoPeriodo.Text), Val(Me.lblCodigoBooking.Text), Val(Me.lblCodigoAgendamento.Text), TipoAgendamento.CARGA_SOLTA_DESCARGA) Then
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Agendamento criado com sucesso! Vincule as Notas Fiscais utlizando os campos abaixo.');", True)
-                                Me.AccordionIndex.Value = 2
-                                Me.btnSalvar.Text = "Concluir"
-                                Me.lblMsgSalvar.BackColor = System.Drawing.Color.FromName("#C1FFC1")
-                                Me.lblMsgSalvar.Text = "Digite os Dados das Notas Fiscais e vincule-os ao agendamento clicando no botão Salvar."
-
-                                ConsultarNF(Me.lblCodigoAgendamento.Text)
-                                HabilitaCamposNF(True)
-                                'End If
-                            Else
-                                'ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "alert('Erro ao criar um novo agendamento. Tente Novamente.');", True)
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao criar um novo agendamento. Tente Novamente.');", True)
-                            End If
-
-                        End If
-
-                    Else
-
-                        Me.lblCodigoMotorista.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_MOTORISTAS WHERE UPPER(TRIM(NOME)) = '" & ObterNomeMotorista(Me.txtMotorista.Text.ToUpper()) & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
-                        Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
-                        Me.lblCodigoProtocolo.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_PROT_" & Now.Year & ".NEXTVAL FROM DUAL")
-
-                        If Val(Me.lblCodigoPeriodo.Text) > 0 Then
-                            Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
-
-                            If ValidarSaldoRestante(totalq) = False Then
-                                ConsultarPeriodos()
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Saldo insuficiente. Escolha outro período.');", True)
-                                Exit Sub
-                            End If
-                        End If
-
-                        If Me.hiddenText.Value = 0 Then
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Digite o CNPJ do responsável pelo Faturamento e click na Razão social.');", True)
-                            Exit Sub
-                        End If
-
-                        SQL.Append("UPDATE ")
-                        SQL.Append("  REDEX.TB_AGENDAMENTO_WEB_CS ")
-                        SQL.Append("  SET ")
-                        SQL.Append("    AUTONUM_MOTORISTA = " & Me.lblCodigoMotorista.Text & ", ")
-                        SQL.Append("    AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ", ")
-                        SQL.Append("    NUM_PROTOCOLO = " & Me.lblCodigoProtocolo.Text & ", ")
-                        SQL.Append("    ANO_PROTOCOLO = " & Now.Year & ", ")
-                        SQL.Append("    STATUS = 'GE', ")
-                        SQL.Append("    AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & ", ")
-                        SQL.Append("    EMAIL_FAT = '" & Me.txtEmailResponsavel.Text & "', ")
-                        SQL.Append("    CLIENTE_FAT = " & Me.hiddenText.Value & " ")
-                        SQL.Append("  WHERE AUTONUM = " & Me.lblCodigoAgendamento.Text)
-
-                        If Banco.BeginTransaction(SQL.ToString()) Then
-                            'If Agendamento.InsereAgendamentoNaFila(0, Val(Me.lblCodigoPeriodo.Text), Val(Me.lblCodigoBooking.Text), Val(Me.lblCodigoAgendamento.Text), TipoAgendamento.CARGA_SOLTA_DESCARGA) Then
-                            Me.lblMsgSalvar.BackColor = System.Drawing.Color.FromName("#C1FFC1")
-                            Me.lblMsgSalvar.Text = "Digite os Dados das Notas Fiscais e vincule-os ao agendamento clicando no botão Salvar."
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Agendamento alterado com sucesso!','ConsultarAgendamentosCargaSolta.aspx');", True)
-                            'End If
-                        Else
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao alterar o agendamento. Tente Novamente.');", True)
-                        End If
-
-                    End If
-
-                End If
-            End If
-
-        Catch ex As Exception
-            Err.Clear()
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao alterar o agendamento. Tente Novamente.');", True)
-        End Try
-
 
     End Sub
 
@@ -1500,7 +1235,148 @@ Public Class AgendarCS
 
     End Sub
 
+    Private Function ValidarPeriodo(ByVal Qtde As String, ByVal Tipo As String) As Boolean
 
+        Dim SQL As New StringBuilder
+        Dim Ds As New DataTable
+
+
+        If Nnull(Me.lblCodigoAgendamento.Text, 0) = 0 Then
+            Return True
+        End If
+
+        If String.IsNullOrEmpty(Me.lblCodigoPeriodo.Text) Or Val(Me.lblCodigoPeriodo.Text) = 0 Then
+            Return True
+        End If
+
+        If Not String.IsNullOrEmpty(Me.lblCodigoPeriodo.Text) And Val(Me.lblCodigoPeriodo.Text) > 0 Then
+            If Me.lblCodigoBooking.Text > "" Then
+                Dim DsDes As New DataTable
+                Dim sSql As String
+                Dim Contar As Integer
+
+                SQL.Clear()
+                If txtReserva.Text = "" Then
+                    sSql = "SELECT reference FROM Redex.TB_BOOKING WHERE autonum_boo = " & lblCodigoBooking.Text & "  "
+                    txtReserva.Text = Banco.List(sSql).Rows(0)(0).ToString
+                End If
+
+                sSql = "Select count(1) contar From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text
+                DsDes = Banco.List(sSql)
+                Contar = Convert.ToInt32(DsDes.Rows(0)("contar").ToString())
+
+                sSql = "SELECT FLAG_CS_M3, FLAG_CS_PESO, FLAG_CS_VOLUME, FLAG_CS_CAMINHAO, FLAG_CN_CAMINHAO FROM Redex.TB_AGENDAMENTO_WEB_PERIODO_DES"
+                sSql = sSql & " AND PATIO =" & Val(Me.lblCodigoPatio.Text)
+                DsDes = Banco.List(sSql)
+                SQL.Append(" SELECT AUTONUM_GD_RESERVA ")
+                SQL.Append(" FROM (")
+                SQL.Append("  SELECT A.AUTONUM_GD_RESERVA,A.PERIODO_INICIAL PERIODO_ORDER ")
+                If DsDes.Rows.Count > 0 Then
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) > 0 Then
+                        SQL.Append("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_M3,0)        end   - NVL(AG.M3,0) LIMITE_M3, ")
+                    Else
+                        SQL.Append("  0 LIMITE_M3, ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) > 0 Then
+                        SQL.Append("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_PESO,0)      end   - NVL(AG.PESO,0)  LIMITE_PESO, ")
+                    Else
+                        SQL.Append(" 0  LIMITE_PESO, ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) > 0 Then
+                        SQL.Append("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_VOLUMES,0)   end   - (NVL(AG.QTD,0) +" & Qtde & ") LIMITE_VOLUMES,  ")
+                    Else
+                        SQL.Append(" 0 LIMITE_VOLUMES,  ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
+                        SQL.Append("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0) LIMITE_CAMINHOES  ")
+                    Else
+                        SQL.Append("  0 LIMITE_CAMINHOES  ")
+                    End If
+                Else
+                    SQL.Append("  NVL(A.LIMITE_M3,0)       - NVL(AG.M3,0) LIMITE_M3, ")
+                    SQL.Append("  NVL(A.LIMITE_PESO,0)     - NVL(AG.PESO,0)  LIMITE_PESO, ")
+                    SQL.Append("  NVL(A.LIMITE_VOLUMES,0)  - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
+                    SQL.Append("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0) LIMITE_CAMINHOES  ")
+                End If
+                SQL.Append("  FROM Redex.TB_GD_RESERVA A ")
+                SQL.Append("   LEFT JOIN ( Select * From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text + ") RL ON RL.AUTONUM_GD_RESERVA=A.AUTONUM_GD_RESERVA ")
+                SQL.Append("  LEFT JOIN (")
+                SQL.Append("    SELECT NVL(SUM(QTDE),0)  AS QTD, NVL(SUM(M3),0) M3, NVL(SUM(PESO_BRUTO),0) PESO, AUTONUM_GD_RESERVA ")
+                SQL.Append("    FROM Redex.TB_AGENDAMENTO_WEB_CS_NF ")
+                SQL.Append("    INNER JOIN Redex.TB_AGENDAMENTO_WEB_CS ON TB_AGENDAMENTO_WEB_CS_NF.AUTONUM_AGENDAMENTO = TB_AGENDAMENTO_WEB_CS.AUTONUM ")
+                If Contar > 0 Then
+                    SQL.Append(" WHERE AUTONUM_BOOKING =" + Me.lblCodigoBooking.Text)
+                End If
+                SQL.Append("    GROUP BY AUTONUM_GD_RESERVA")
+                SQL.Append("  ) AG On A.AUTONUM_GD_RESERVA = AG.AUTONUM_GD_RESERVA")
+                SQL.Append("  LEFT JOIN (")
+                If Me.lblCodigoVeiculo.Text > "0" Then
+                    SQL.Append(" Select Case when max(NVL(cm.qtde,0))=0 then SUM(1)+1 else ")
+                    SQL.Append(" 0 End QTD, cs.AUTONUM_GD_RESERVA  ")
+                    SQL.Append(" From redex.dbo.TB_AGENDAMENTO_WEB_CS  cs ")
+                    SQL.Append(" Left Join( select distinct 1 qtde , AUTONUM_GD_RESERVA from ")
+                    SQL.Append(" redex.dbo.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA=" & Me.lblCodigoPeriodo.Text & " AND ")
+                    SQL.Append(" AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & " AND autonum <>" & Val(Me.lblCodigoAgendamento.Text) & ")  cm ")
+                    SQL.Append(" On cs.AUTONUM_GD_RESERVA=cm.AUTONUM_GD_RESERVA ")
+                    SQL.Append(" WHERE CS.AUTONUM_GD_RESERVA=" & Me.lblCodigoPeriodo.Text & " And  CS.autonum <>" & Val(Me.lblCodigoAgendamento.Text) & "")
+                    SQL.Append(" Group BY CS.AUTONUM_GD_RESERVA   ")
+                Else
+                    SQL.Append("    Select NVL(SUM(1),0)+1 QTD, AUTONUM_GD_RESERVA")
+                    SQL.Append("    FROM Redex.TB_AGENDAMENTO_WEB_CS Where ")
+                    SQL.Append("    AUTONUM_GD_RESERVA=" & Me.lblCodigoPeriodo.Text & " And  autonum <>" & Val(Me.lblCodigoAgendamento.Text) & "")
+                    SQL.Append("    Group BY CS.AUTONUM_GD_RESERVA   ")
+                End If
+                SQL.Append("  ) CAM On A.AUTONUM_GD_RESERVA = CAM.AUTONUM_GD_RESERVA")
+                SQL.Append("  WHERE A.SERVICO_GATE = 'A' AND A.TIPO = 'CS' AND A.PERIODO_INICIAL >= GETDATE()")
+                If Val(Me.lblCodigoPatio.Text) <> 0 Then
+                    SQL.Append("  AND A.PATIO = " & Val(Me.lblCodigoPatio.Text))
+                Else
+                    SQL.Append(" AND A.PATIO = 9999 ")
+                End If
+                SQL.Append("  ) R ")
+                SQL.Append("  WHERE AUTONUM_GD_RESERVA > 0 ")
+
+            If DsDes.Rows.Count > 0 Then
+                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) > 0 Then
+                    SQL.Append(" AND LIMITE_M3 >= 0 ")
+                End If
+                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) > 0 Then
+                    SQL.Append(" AND LIMITE_PESO >= 0 ")
+                End If
+                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) > 0 Then
+                    SQL.Append(" AND LIMITE_VOLUMES >= 0 ")
+                End If
+                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
+                    SQL.Append(" AND LIMITE_CAMINHOES >= 0 ")
+                End If
+                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) = 0 Then
+                    SQL.Append(" AND LIMITE_CAMINHOES >= 0 ")
+                End If
+            End If
+            SQL.Append(" AND (LIMITE_M3 >= 0 or LIMITE_PESO >= 0 or LIMITE_VOLUMES >= 0 or LIMITE_CAMINHOES >= 0 ) ")
+
+            SQL.Append(" AND AUTONUM_GD_RESERVA=" & Me.lblCodigoPeriodo.Text)
+                If Tipo = "1" Then
+                    Return True
+                Else
+                    Ds = Banco.List(SQL.ToString())
+                    If Ds IsNot Nothing Then
+                        If Ds.Rows.Count > 0 Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Else
+                        Return False
+                End If
+            End If
+        Else
+            Return False
+            End If
+        Else
+            Return False
+        End If
+    End Function
 
     Public Sub ConsultarPeriodos()
 
@@ -2113,14 +1989,7 @@ Public Class AgendarCS
         Return cnpj
     End Function
 
-    Protected Sub cbCavalo_OnSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbCavalo.SelectedIndexChanged
 
-        If Me.cbCavalo.Text <> String.Empty Then
-            Me.ConsultarCarretas(Me.cbCavalo.Text)
-            Me.AccordionIndex.Value = 1
-        End If
-
-    End Sub
 
     Protected Sub cbCarreta_onSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbCarreta.SelectedIndexChanged
 
@@ -2135,6 +2004,296 @@ Public Class AgendarCS
     End Sub
 
     Private Sub txtCNPJResponsavel_DataBinding(sender As Object, e As EventArgs) Handles txtCNPJResponsavel.DataBinding
+        Me.LblResp.Text = "N"
+        If Me.LblResp.Text = "N" Then
+            mpePergunta.Hide()
+            Me.lblCodigoPeriodo.Text = ""
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Favor selecionar um novo periodo.','');", True)
+            Me.AccordionIndex.Value = 3
+            Exit Sub
+        End If
+
+    End Sub
+    Private Sub Salvar()
+
+        Dim SQL As New StringBuilder
+        Dim Entrada As Boolean
+        Dim CodAntVeic As Long
+        Dim ContaVeic As Long
+        Dim CodPer As Long
+
+        Try
+            Entrada = True
+            CodAntVeic = 0
+            CodPer = 0
+            Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM  OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
+            If Val(Me.lblCodigoAgendamento.Text) > 0 Then
+                CodPer = Banco.ExecuteScalar("SELECT nvl(AUTONUM_GD_RESERVA,0) FROM redex.TB_AGENDAMENTO_WEB_CS WHERE AUTONUM  = " & Val(Me.lblCodigoAgendamento.Text))
+                CodAntVeic = Banco.ExecuteScalar("SELECT nvl(AUTONUM_VEICULO,0) FROM redex.TB_AGENDAMENTO_WEB_CS WHERE AUTONUM  = " & Val(Me.lblCodigoAgendamento.Text))
+                ContaVeic = Banco.ExecuteScalar("SELECT Count(1) FROM redex.TB_AGENDAMENTO_WEB_CS WHERE AUTONUM_GD_RESERVA=" & Val(CodPer) & " AND AUTONUM_VEICULO = " & Val(CodAntVeic))
+                If ContaVeic > 1 And Me.LblResp.Text = "" Then
+                    mpePergunta.Show()
+                    Exit Sub
+                End If
+            End If
+
+
+
+            If CodPer <> Val(Me.lblCodigoPeriodo.Text) Or CodPer = 0 Then
+                If CodPer <> 0 Then
+                    SQL.Append("UPDATE ")
+                    SQL.Append("   Redex.TB_AGENDAMENTO_WEB_CS ")
+                    SQL.Append("  SET ")
+                    SQL.Append("    AUTONUM_GD_RESERVA = 0 ")
+                    SQL.Append("  WHERE AUTONUM = " & Me.lblCodigoAgendamento.Text)
+                    Banco.BeginTransaction(SQL.ToString())
+                End If
+                If Val(Me.lblCodigoAgendamento.Text) > 0 Then
+                    Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
+                    Entrada = ValidarSaldoRestante(totalq)
+                End If
+            End If
+
+            If Val(Me.lblCodigoAgendamento.Text) = 0 Then
+                Entrada = ValidarSaldoRestante("0")
+            End If
+            If Me.btnSalvar.Text = "Concluir" Then
+                If Val(Me.lblCodigoPeriodo.Text) = 0 Then
+                    Entrada = False
+                End If
+            End If
+            If Entrada Then
+
+                If Me.btnSalvar.Text = "Concluir" Then
+
+                    If String.IsNullOrEmpty(Me.txtEmailResponsavel.Text.Trim()) Or
+                String.IsNullOrWhiteSpace(Me.txtEmailResponsavel.Text.Trim()) Then
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O email é de preenchimento obrigatório.');", True)
+                        Me.AccordionIndex.Value = 3
+                        Me.txtCNPJResponsavel.Enabled = True
+                        Me.txtEmailResponsavel.Enabled = True
+                        Me.txtEmailResponsavel.Focus()
+                        Exit Sub
+                    End If
+
+                    If String.IsNullOrEmpty(Me.txtEmailResponsavel.Text.Trim()) Or
+                String.IsNullOrWhiteSpace(Me.txtEmailResponsavel.Text.Trim()) Then
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O email é de preenchimento obrigatório.');", True)
+                        Me.AccordionIndex.Value = 3
+                        Me.txtCNPJResponsavel.Enabled = True
+                        Me.txtEmailResponsavel.Enabled = True
+                        Me.txtEmailResponsavel.Focus()
+                        Exit Sub
+                    End If
+
+
+
+                    If Convert.ToInt32(Banco.ExecuteScalar("SELECT COUNT(1) FROM REDEX.TB_BOOKING WHERE (FLAG_DTA = 1 OR FLAG_RETIRADA_CARGA = 'E') AND REFERENCE = '" & Me.txtReserva.Text & "'")) > 1 Then
+
+
+                    End If
+
+                    If Val(Me.hiddenText.Value) = 0 Then
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O CNPJ é de preenchimento obrigatório');", True)
+                        Me.AccordionIndex.Value = 3
+                        Me.txtCNPJResponsavel.Enabled = True
+                        Me.txtEmailResponsavel.Enabled = True
+                        Me.txtEmailResponsavel.Focus()
+                        Exit Sub
+                    End If
+
+                    If Val(Me.lblCodigoPeriodo.Text) > 0 Then
+                        If Val(Me.lblCodigoAgendamento.Text) > 0 Then
+                            Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
+                            If ValidarSaldoRestante(totalq) = False Then
+                                ConsultarPeriodos()
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Saldo insuficiente. Escolha outro período.');", True)
+                                Exit Sub
+                            End If
+                        End If
+                    End If
+
+                    SQL.Append("UPDATE ")
+                    SQL.Append("  REDEX.TB_AGENDAMENTO_WEB_CS ")
+                    SQL.Append("  SET ")
+                    SQL.Append("    AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " ")
+                    SQL.Append(" ,EMAIL_FAT = '" & Me.txtEmailResponsavel.Text & "' ")
+                    SQL.Append(" ,CLIENTE_FAT = " & Me.hiddenText.Value & " ")
+                    SQL.Append("  WHERE AUTONUM = " & Me.lblCodigoAgendamento.Text)
+
+                    If Banco.BeginTransaction(SQL.ToString()) Then
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "novaReserva(" & Me.lblCodigoAgendamento.Text & "," & Me.lblCodigoProtocolo.Text & ");", True)
+                        Exit Sub
+                    End If
+
+                    ' Me.txtCNPJResponsavel.Text = String.Empty
+                    ' Me.txtCNPJResponsavel.Enabled = False
+                    ' Me.hiddenText.Value = String.Empty
+                    '
+                    '           Me.txtEmailResponsavel.Text = String.Empty
+                    '           Me.txtEmailResponsavel.Enabled = False
+
+                End If
+
+                If ValidarCampos() Then
+
+                    If Request.QueryString("id") Is Nothing Or Request.QueryString("more") IsNot Nothing Then
+
+                        If Val(Me.lblCodigoPeriodo.Text) > 0 Then
+                            If ValidarSaldoRestante(0) = False Then
+                                ConsultarPeriodos()
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Saldo insuficiente. Escolha outro período.');", True)
+                                Exit Sub
+                            End If
+                        End If
+
+                        Me.lblCodigoMotorista.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_MOTORISTAS WHERE UPPER(TRIM(NOME)) = '" & ObterNomeMotorista(Me.txtMotorista.Text.ToUpper()) & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
+
+                        Dim Ds As New DataTable
+                        SQL.Clear()
+                        SQL.Append(" SELECT count(1) FROM  OPERADOR.TB_AG_MOTORISTAS A")
+                        SQL.Append(" INNER JOIN OPERADOR.TB_MOTORISTAS B ON REPLACE(REPLACE(A.CPF,'.',''),'-','') = REPLACE(REPLACE(B.CPF,'.',''),'-','')")
+                        SQL.Append("  WHERE  NVL(B.FLAG_INATIVO, 0)=1 and a.AUTONUM = " & Me.lblCodigoMotorista.Text)
+                        Ds = Banco.List(SQL.ToString())
+                        If Ds.Rows.Count > 0 Then
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Motorista bloqueado no Terminal.');", True)
+                            Exit Sub
+                        End If
+                        Me.lblCodigoAgendamento.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_CS.NEXTVAL FROM DUAL")
+
+                        If Not String.IsNullOrEmpty(Me.lblCodigoAgendamento.Text.Trim()) And Not String.IsNullOrWhiteSpace(Me.lblCodigoAgendamento.Text.Trim()) Then
+
+                            Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
+                            Me.lblCodigoProtocolo.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_PROT_" & Now.Year & ".NEXTVAL FROM DUAL")
+
+                            SQL.Clear()
+                            SQL.Append("INSERT INTO ")
+                            SQL.Append("  REDEX.TB_AGENDAMENTO_WEB_CS ")
+                            SQL.Append("  ( ")
+                            SQL.Append("    AUTONUM, ")
+                            SQL.Append("    RESERVA, ")
+                            SQL.Append("    AUTONUM_MOTORISTA, ")
+                            SQL.Append("    AUTONUM_VEICULO, ")
+                            SQL.Append("    AUTONUM_TRANSPORTADORA, ")
+                            SQL.Append("    AUTONUM_GD_RESERVA, ")
+                            SQL.Append("    AUTONUM_BOOKING, ")
+                            SQL.Append("    DATA_AGENDAMENTO, ")
+                            SQL.Append("    STATUS, ")
+                            SQL.Append("    NUM_PROTOCOLO, ")
+                            SQL.Append("    ANO_PROTOCOLO, ")
+                            SQL.Append("    EMAIL_FAT, ")
+                            SQL.Append("    CLIENTE_FAT ")
+                            SQL.Append("  ) ")
+                            SQL.Append("  VALUES ")
+                            SQL.Append("  ( ")
+                            SQL.Append("  " & Me.lblCodigoAgendamento.Text & ", ")
+                            SQL.Append("  '" & Me.txtReserva.Text.ToUpper() & "', ")
+                            SQL.Append("  " & Me.lblCodigoMotorista.Text & ", ")
+                            SQL.Append("  " & Me.lblCodigoVeiculo.Text & ", ")
+                            SQL.Append("  " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString() & ", ")
+                            SQL.Append("  " & Nnull(Me.lblCodigoPeriodo.Text, 0) & ", ")
+                            SQL.Append("  " & Nnull(Me.lblCodigoBooking.Text, 0) & ", ")
+                            SQL.Append("  SYSDATE, ")
+                            SQL.Append("  'GE', ")
+
+                            If Request.QueryString("more") IsNot Nothing Then
+                                If Request.QueryString("protocolo") IsNot Nothing Then
+                                    SQL.Append("  " & Request.QueryString("protocolo").ToString() & ", ")
+                                End If
+                            Else
+                                SQL.Append("  " & Me.lblCodigoProtocolo.Text & ", ")
+                            End If
+
+                            SQL.Append("  " & Now.Year & " ,")
+                            SQL.Append("  '" & Me.txtEmailResponsavel.Text & "', ")
+                            SQL.Append("  '" & Me.hiddenText.Value & "' ")
+                            SQL.Append("  ) ")
+
+                            If Banco.BeginTransaction(SQL.ToString()) Then
+                                'If Agendamento.InsereAgendamentoNaFila(0, Val(Me.lblCodigoPeriodo.Text), Val(Me.lblCodigoBooking.Text), Val(Me.lblCodigoAgendamento.Text), TipoAgendamento.CARGA_SOLTA_DESCARGA) Then
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Agendamento criado com sucesso! Vincule as Notas Fiscais utlizando os campos abaixo.');", True)
+                                Me.AccordionIndex.Value = 2
+                                Me.btnSalvar.Text = "Concluir"
+                                Me.lblMsgSalvar.BackColor = System.Drawing.Color.FromName("#C1FFC1")
+                                Me.lblMsgSalvar.Text = "Digite os Dados das Notas Fiscais e vincule-os ao agendamento clicando no botão Salvar."
+
+                                ConsultarNF(Me.lblCodigoAgendamento.Text)
+                                HabilitaCamposNF(True)
+                                'End If
+                            Else
+                                'ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "alert('Erro ao criar um novo agendamento. Tente Novamente.');", True)
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao criar um novo agendamento. Tente Novamente.');", True)
+                            End If
+
+                        End If
+
+                    Else
+
+                        Me.lblCodigoMotorista.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_MOTORISTAS WHERE UPPER(TRIM(NOME)) = '" & ObterNomeMotorista(Me.txtMotorista.Text.ToUpper()) & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
+                        Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
+                        Me.lblCodigoProtocolo.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_PROT_" & Now.Year & ".NEXTVAL FROM DUAL")
+
+                        If Val(Me.lblCodigoPeriodo.Text) > 0 Then
+                            Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
+
+                            If ValidarSaldoRestante(totalq) = False Then
+                                ConsultarPeriodos()
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Saldo insuficiente. Escolha outro período.');", True)
+                                Exit Sub
+                            End If
+                        End If
+
+                        If Me.hiddenText.Value = 0 Then
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Digite o CNPJ do responsável pelo Faturamento e click na Razão social.');", True)
+                            Exit Sub
+                        End If
+
+                        SQL.Append("UPDATE ")
+                        SQL.Append("  REDEX.TB_AGENDAMENTO_WEB_CS ")
+                        SQL.Append("  SET ")
+                        SQL.Append("    AUTONUM_MOTORISTA = " & Me.lblCodigoMotorista.Text & ", ")
+                        SQL.Append("    AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ", ")
+                        SQL.Append("    NUM_PROTOCOLO = " & Me.lblCodigoProtocolo.Text & ", ")
+                        SQL.Append("    ANO_PROTOCOLO = " & Now.Year & ", ")
+                        SQL.Append("    STATUS = 'GE', ")
+                        SQL.Append("    AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & ", ")
+                        SQL.Append("    EMAIL_FAT = '" & Me.txtEmailResponsavel.Text & "', ")
+                        SQL.Append("    CLIENTE_FAT = " & Me.hiddenText.Value & " ")
+                        SQL.Append("  WHERE AUTONUM = " & Me.lblCodigoAgendamento.Text)
+
+                        If Banco.BeginTransaction(SQL.ToString()) Then
+                            'If Agendamento.InsereAgendamentoNaFila(0, Val(Me.lblCodigoPeriodo.Text), Val(Me.lblCodigoBooking.Text), Val(Me.lblCodigoAgendamento.Text), TipoAgendamento.CARGA_SOLTA_DESCARGA) Then
+                            Me.lblMsgSalvar.BackColor = System.Drawing.Color.FromName("#C1FFC1")
+                            Me.lblMsgSalvar.Text = "Digite os Dados das Notas Fiscais e vincule-os ao agendamento clicando no botão Salvar."
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Agendamento alterado com sucesso!','ConsultarAgendamentosCargaSolta.aspx');", True)
+                            'End If
+                        Else
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao alterar o agendamento. Tente Novamente.');", True)
+                        End If
+
+                    End If
+
+                End If
+            End If
+
+        Catch ex As Exception
+            Err.Clear()
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Erro ao alterar o agendamento. Tente Novamente.');", True)
+        End Try
+
+    End Sub
+    Private Sub btnSim_Click(sender As Object, e As EventArgs) Handles btnSim.Click
+        Me.LblResp.Text = "S"
+        Salvar()
+        mpePergunta.Hide()
+    End Sub
+    Protected Sub cbCavalo_OnSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbCavalo.SelectedIndexChanged
+
+        If cbCavalo.Text <> String.Empty Then
+            ConsultarCarretas(Me.cbCavalo.Text)
+            Me.AccordionIndex.Value = 1
+        End If
+
 
     End Sub
 End Class
