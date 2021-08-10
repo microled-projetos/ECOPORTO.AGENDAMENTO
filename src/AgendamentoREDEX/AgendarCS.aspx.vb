@@ -2137,4 +2137,8 @@ Public Class AgendarCS
     Private Sub txtCNPJResponsavel_DataBinding(sender As Object, e As EventArgs) Handles txtCNPJResponsavel.DataBinding
 
     End Sub
+
+    Private Sub btnNao_Click(sender As Object, e As EventArgs) Handles btnNao.Click
+
+    End Sub
 End Class
