@@ -689,29 +689,47 @@ Partial Public Class AgendarCS
     Protected WithEvents AccordionIndex As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
-    '''Controle pnCadastro.
+    '''Controle UpdatePanel5.
     '''</summary>
     '''<remarks>
     '''Campo gerado automaticamente.
     '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     '''</remarks>
-    Protected WithEvents pnCadastro As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents UpdatePanel5 As Global.System.Web.UI.UpdatePanel
 
     '''<summary>
-    '''Controle frameCadastro.
+    '''Controle btnAuxiliar.
     '''</summary>
     '''<remarks>
     '''Campo gerado automaticamente.
     '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     '''</remarks>
-    Protected WithEvents frameCadastro As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents btnAuxiliar As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''Controle modalReserva.
+    '''Controle pnlPergunta.
     '''</summary>
     '''<remarks>
     '''Campo gerado automaticamente.
     '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     '''</remarks>
-    Protected WithEvents modalReserva As Global.AjaxControlToolkit.ModalPopupExtender
+    Protected WithEvents pnlPergunta As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''Controle btnNao.
+    '''</summary>
+    '''<remarks>
+    '''Campo gerado automaticamente.
+    '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    '''</remarks>
+    Protected WithEvents btnNao As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''Controle btnSim.
+    '''</summary>
+    '''<remarks>
+    '''Campo gerado automaticamente.
+    '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+    '''</remarks>
+    Protected WithEvents btnSim As Global.System.Web.UI.WebControls.Button
 End Class
