@@ -788,9 +788,10 @@
        	<asp:Label ID="LblResp" runat="server" Visible="False"></asp:Label>
        	<asp:Label ID="Lblidcnpj" runat="server" Visible="False"></asp:Label>
         <asp:HiddenField ID="AccordionIndex" runat="server" Value="0" />
+
         
 
-         <%-- <asp:Panel ID="pnCadastro" runat="server" Visible="false" Style="background: white;"
+         <asp:Panel ID="pnCadastro" runat="server" Visible="false" Style="background: white;"
             Width="1000px" Height="180px">
             <div align="center">
                 <iframe id="frameCadastro" runat="server" width="1000px" height="180px"></iframe>
@@ -800,41 +801,9 @@
         <cc1:ModalPopupExtender ID="modalReserva" runat="server" BackgroundCssClass="modalBackground"
             CancelControlID="btnCancelar" DropShadow="true" PopupControlID="pnCadastro" PopupDragHandleControlID="panel3"
             TargetControlID="btnCancelar" OkControlID="btnCancelar">
-        </cc1:ModalPopupExtender>--%>
+        </cc1:ModalPopupExtender>
 
 
-        <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="False">
-                            <ContentTemplate>
-<asp:Button runat="server" Text="btnAuxiliar" ID="btnAuxiliar" Style="display: none;"/>
-		<ajaxToolkit:ModalPopupExtender ID="mpePergunta" runat="server"  DropShadow="true" PopupControlID="pnlPergunta" TargetControlID="btnAuxiliar" CancelControlID="btnAuxiliar" BehaviorID="pPergunta"></ajaxToolkit:ModalPopupExtender>
-                                <asp:Panel ID="pnlPergunta" runat="server" Style="display: none;background-color:white">
-									  <div class=" modal-dialog modal-dialog-centered modal-lg" role="document">
-                                                    <div class="modal-content" >
-															<br/><br/>
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">ATENÇÃO!</h5>
-                                                        </div>
-                                                        <div class="modal-body"> 
-																<br/><br/>
-															<h1>Deseja seguir com a alteração da placa/motorista de todas as reservas identificadas no Periodo?</h1>
-															</div>
-														</div>
-										  </div>
-									<br/><br/>
-									<div class="modal-footer">
-									<asp:Button runat="server" Text="Não" ID="btnNao"/>
-									 <asp:Button runat="server" Text="Sim" ID="btnSim"/>
-										</div>
-										<br/><br/>
-                                </asp:Panel>
-								                                            
 
-								 </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="btnAuxiliar" />
-								<asp:AsyncPostBackTrigger ControlID="btnNao" />
-								<asp:AsyncPostBackTrigger ControlID="btnSim" />
-                            </Triggers>
-                        </asp:UpdatePanel>
     </center>
 </asp:Content>

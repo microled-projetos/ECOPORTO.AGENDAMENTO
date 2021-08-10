@@ -689,47 +689,29 @@ Partial Public Class AgendarCS
     Protected WithEvents AccordionIndex As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
-    '''Controle UpdatePanel5.
+    '''Controle pnCadastro.
     '''</summary>
     '''<remarks>
     '''Campo gerado automaticamente.
     '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     '''</remarks>
-    Protected WithEvents UpdatePanel5 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents pnCadastro As Global.System.Web.UI.WebControls.Panel
 
     '''<summary>
-    '''Controle btnAuxiliar.
+    '''Controle frameCadastro.
     '''</summary>
     '''<remarks>
     '''Campo gerado automaticamente.
     '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     '''</remarks>
-    Protected WithEvents btnAuxiliar As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents frameCadastro As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''Controle pnlPergunta.
+    '''Controle modalReserva.
     '''</summary>
     '''<remarks>
     '''Campo gerado automaticamente.
     '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
     '''</remarks>
-    Protected WithEvents pnlPergunta As Global.System.Web.UI.WebControls.Panel
-
-    '''<summary>
-    '''Controle btnNao.
-    '''</summary>
-    '''<remarks>
-    '''Campo gerado automaticamente.
-    '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-    '''</remarks>
-    Protected WithEvents btnNao As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
-    '''Controle btnSim.
-    '''</summary>
-    '''<remarks>
-    '''Campo gerado automaticamente.
-    '''Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
-    '''</remarks>
-    Protected WithEvents btnSim As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents modalReserva As Global.AjaxControlToolkit.ModalPopupExtender
 End Class
