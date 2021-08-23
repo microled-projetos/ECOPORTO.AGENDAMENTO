@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master"
     CodeBehind="AgendarCS.aspx.vb" Inherits="AgendamentoREDEX.AgendarCS" MaintainScrollPositionOnPostback="true" %>
 
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
@@ -202,8 +202,9 @@
                         success: function (Dados) {
 
                             $('#MainContent_TextBox1').empty();
-                            $.each(Dados.d, function (i, item) {
+                            $.each(Dados.d, function (i, item) {                                
                                 var autonum = item.AUTONUM;
+                                alert(autonum);
                                 var cnpj = item.CNPJ;
                                 var razaoSocial = item.RAZAO;
                                 var flagBloqueia = item.FLAG_BLOQUEIO_AGENDAMENTO;
@@ -586,7 +587,7 @@
                                 <tr bgcolor="White">
                                     <td colspan="6">
                                         <asp:GridView ID="dgConsultaNF" runat="server" AutoGenerateColumns="False" CellPadding="4"
-                                            EmptyDataText="Nenhuma NF encontrada." ForeColor="#333333" ShowHeaderWhenEmpty="True"
+                                            EmptyDataText="Nenhuma NF encontrada." BackColor ="#999999" ForeColor="#333333" ShowHeaderWhenEmpty="True"
                                             Width="100%" Font-Size="11px" DataKeyNames="AUTONUM">
                                             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                             <Columns>
@@ -625,7 +626,7 @@
                                                             ID="HyperLink1" 
                                                             runat="server" 
                                                             Target="_blank"
-                                                             Visible="True" 
+                                                             Visible='<%# IIf(Eval("ARQUIVO_DANFE") <> "X", True, False)  %>' 
                                                             NavigateUrl='<%# "~/VisualizaDanfe.aspx?id=" & Eval("AUTONUM") & "&tipo=1" %>'>
                                                             <img src='<%= Page.ResolveUrl("~/imagens/nfe.jpg") %>' width="50px" height="50px"/>
                                                         </asp:HyperLink>

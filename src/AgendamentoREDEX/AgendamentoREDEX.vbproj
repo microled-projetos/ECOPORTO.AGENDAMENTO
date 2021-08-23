@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\packages\AjaxControlToolkit.20.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\..\..\..\Dropbox\ecoporto\Ecoporto .NET\Ecoporto.Agendamentos\src\Agendamento Carga Solta SGIPA\UI\bin\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -120,6 +120,8 @@
     <Content Include="AgendarCNTRCarregamento.aspx" />
     <Content Include="ConsultarMotoristas.aspx" />
     <Content Include="ConsultarVeiculos.aspx" />
+    <Content Include="css\img\logo-ecoporto.png" />
+    <Content Include="css\img\mn-top.png" />
     <Content Include="EscolheReserva.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="imagens\favicon.ico" />
@@ -200,6 +202,7 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </Content>
+    <Content Include="js\pt-br.json" />
     <None Include="Web References\WsBloqueioCraft\Ws.wsdl" />
     <None Include="Web References\WsControleSenha\Criptografia.disco" />
     <None Include="Web References\WsControleSenha\Criptografia.wsdl" />

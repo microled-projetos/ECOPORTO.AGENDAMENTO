@@ -113,11 +113,11 @@ Public Class Banco
         Using Con As New OleDbConnection(ConnectionString())
             Using Adp As New OleDbDataAdapter(New OleDbCommand(SQL, Con))
 
-                'Try
-                Adp.Fill(Ds)
-                'Catch generatedExceptionName As Exception
-                'Return Nothing
-                'End Try
+                Try
+                    Adp.Fill(Ds)
+                Catch generatedExceptionName As Exception
+                    Return Nothing
+                End Try
 
                 Return Ds.Tables(0)
 

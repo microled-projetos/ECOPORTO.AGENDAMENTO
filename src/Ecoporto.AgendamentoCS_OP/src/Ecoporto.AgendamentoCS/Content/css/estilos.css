@@ -70,7 +70,7 @@ body {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px;
+    height: 20px;
     line-height: 60px;
     background: -moz-linear-gradient(270deg, rgba(167,207,59,1) 0%, rgba(125,178,8,1) 100%); /* ff3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(167,207,59,1)), color-stop(100%, rgba(125,178,8,1))); /* safari4+,chrome */
@@ -627,4 +627,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .float-right {
     float:right;
+}
+#MainContent_dgConsulta td {
+    border:none;
 }

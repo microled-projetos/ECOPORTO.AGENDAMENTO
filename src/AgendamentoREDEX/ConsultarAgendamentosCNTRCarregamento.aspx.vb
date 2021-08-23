@@ -44,6 +44,12 @@
         Me.dgConsulta.DataSource = Banco.List(SQL.ToString())
         Me.dgConsulta.DataBind()
 
+        If (dgConsulta.Rows.Count > 0) Then
+            dgConsulta.HeaderRow.TableSection = TableRowSection.TableHeader
+            dgConsulta.UseAccessibleHeader = True
+            dgConsulta.FooterRow.TableSection = TableRowSection.TableFooter
+        End If
+
     End Sub
 
     Protected Sub dgConsulta_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgConsulta.RowCommand

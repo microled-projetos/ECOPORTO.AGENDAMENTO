@@ -140,20 +140,92 @@ Public Class AgendarCS
             Else
 
 
-                Me.lblDeadLine.Text = String.Empty
-                Me.lblExportador.Text = String.Empty
-                Me.lblM3.Text = String.Empty
-                Me.lblNavio.Text = String.Empty
-                Me.lblPesoBruto.Text = String.Empty
-                Me.lblStatus.Text = String.Empty
-                Me.lblTipo.Text = String.Empty
-                Me.lblTotal.Text = String.Empty
-                Me.lblViagem.Text = String.Empty
-                Me.lblVolumes.Text = String.Empty
+                If Request.QueryString("booking") IsNot Nothing Then
 
+                    Dim SQL As New StringBuilder
 
+                    SQL.Append("SELECT")
+                    SQL.Append("    AUTONUM, ")
+                    SQL.Append("    RESERVA, ")
+                    SQL.Append("    QUANTIDADE, ")
+                    SQL.Append("    PESO, ")
+                    SQL.Append("    VOLUMES, ")
+                    SQL.Append("    METRAGEM_CUBICA, ")
+                    SQL.Append("    ARMADOR, ")
+                    SQL.Append("    NAVIO, ")
+                    SQL.Append("    EXPORTADOR, ")
+                    SQL.Append("    NVOCC, ")
+                    SQL.Append("    NUM_VIAGEM, ")
+                    SQL.Append("    PORTO_ORIGEM, ")
+                    SQL.Append("    PORTO_DESTINO, ")
+                    SQL.Append("    DT_DEAD_LINE, ")
+                    SQL.Append("    AUTONUM_VIAGEM, ")
+                    SQL.Append("    PATIO ")
+                    SQL.Append("FROM ")
+                    SQL.Append("    REDEX.VW_AGENDAMENTO_WEB_DADOS_BOO ")
+                    SQL.Append(" WHERE AUTONUM = " & Request.QueryString("booking").ToString())
 
+                    Dim Ds As New DataTable
+                    Ds = Banco.List(SQL.ToString())
 
+                    If Ds IsNot Nothing Then
+                        If Ds.Rows.Count > 0 Then
+                            For Each Linha As DataRow In Ds.Rows
+
+                                Me.lblDeadLine.Text = Linha("DT_DEAD_LINE").ToString()
+                                Me.lblExportador.Text = Linha("EXPORTADOR").ToString()
+                                Me.lblM3.Text = Linha("METRAGEM_CUBICA").ToString()
+                                Me.lblDisponiveis.Text = Linha("VOLUMES").ToString()
+                                Me.lblNavio.Text = Linha("NAVIO").ToString()
+                                Me.lblPesoBruto.Text = Linha("PESO").ToString()
+                                Me.lblStatus.Text = "Liberado"
+                                Me.lblTipo.Text = "Carga Solta"
+                                Me.lblTotal.Text = Linha("VOLUMES").ToString()
+                                Me.lblViagem.Text = Linha("NUM_VIAGEM").ToString()
+                                Me.lblVolumes.Text = Linha("VOLUMES").ToString()
+                                Me.lblCodigoBooking.Text = Linha("AUTONUM").ToString()
+                                Me.txtReserva.Text = Linha("RESERVA").ToString()
+                                Me.lblCodigoPatio.Text = Linha("PATIO").ToString()
+
+                                Me.txtReserva.Enabled = False
+
+                                If Convert.ToInt32(Banco.ExecuteScalar("SELECT COUNT(1) FROM REDEX.TB_BOOKING_CARGA WHERE FLAG_CS = 1 AND AUTONUM_BOO = " & Me.lblCodigoBooking.Text)) = 0 Then
+                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('A Reserva informada (" & Me.txtReserva.Text.ToUpper() & ") não é de Carga Solta.','AgendarCS.aspx');", True)
+                                    Exit Sub
+                                End If
+
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "exibeAccordion", "document.getElementById('accordion').style.display = 'block';", True)
+                                Me.txtMotorista.Focus()
+
+                                ConsultarQuantidades()
+
+                                Me.btnSalvar.Visible = True
+                                Me.btnCancelar.Visible = True
+
+                                'pnCadastro.Visible = False
+                                'modalReserva.Hide()
+
+                            Next
+                        Else
+
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Reserva não encontrada!');", True)
+
+                            Me.lblDeadLine.Text = String.Empty
+                            Me.lblExportador.Text = String.Empty
+                            Me.lblM3.Text = String.Empty
+                            Me.lblNavio.Text = String.Empty
+                            Me.lblPesoBruto.Text = String.Empty
+                            Me.lblStatus.Text = String.Empty
+                            Me.lblTipo.Text = String.Empty
+                            Me.lblTotal.Text = String.Empty
+                            Me.lblViagem.Text = String.Empty
+                            Me.lblVolumes.Text = String.Empty
+
+                        End If
+
+                    End If
+
+                End If
 
             End If
 
@@ -426,8 +498,8 @@ Public Class AgendarCS
                 Contar = Convert.ToInt32(DsDes.Rows(0)("contar").ToString())
 
                 sSql = "SELECT FLAG_CS_M3, FLAG_CS_PESO, FLAG_CS_VOLUME, FLAG_CS_CAMINHAO, FLAG_CN_CAMINHAO FROM REDEX.TB_AGENDAMENTO_WEB_PERIODO_DES"
-                sSql = sSql & "  WHERE  "
-                sSql = sSql & "  PATIO =" & Val(Me.lblCodigoPatio.Text)
+                'sSql = sSql & "  WHERE  "
+                'sSql = sSql & "  PATIO =" & Val(Me.lblCodigoPatio.Text)
                 DsDes = Banco.List(sSql)
                 SQL.Append(" SELECT AUTONUM_GD_RESERVA ")
                 SQL.Append(" FROM (")
@@ -602,10 +674,8 @@ Public Class AgendarCS
                 String.IsNullOrWhiteSpace(Me.txtCNPJResponsavel.Text.Trim()) Then
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O CNPJ é de preenchimento obrigatório');", True)
                     Me.AccordionIndex.Value = 3
-
-
-                    Me.txtCNPJResponsavel.Enabled = True
-                    Me.txtEmailResponsavel.Enabled = True
+                    'Me.txtCNPJResponsavel.Enabled = True
+                    'Me.txtEmailResponsavel.Enabled = True
                     Me.txtCNPJResponsavel.Focus()
                     Return False
                 End If
@@ -617,8 +687,8 @@ Public Class AgendarCS
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O email é de preenchimento obrigatório.');", True)
                 Me.AccordionIndex.Value = 3
 
-                Me.txtCNPJResponsavel.Enabled = True
-                Me.txtEmailResponsavel.Enabled = True
+                'Me.txtCNPJResponsavel.Enabled = True
+                'Me.txtEmailResponsavel.Enabled = True
                 Me.txtEmailResponsavel.Focus()
                 Return False
             End If
@@ -1250,7 +1320,7 @@ Public Class AgendarCS
             Contar = Convert.ToInt32(DsDes.Rows(0)("contar").ToString())
 
             sSql = "SELECT FLAG_CS_M3, FLAG_CS_PESO, FLAG_CS_VOLUME, FLAG_CS_CAMINHAO, FLAG_CN_CAMINHAO FROM Redex.TB_AGENDAMENTO_WEB_PERIODO_DES "
-            sSql = sSql & "  WHERE PATIO =" & Val(Me.lblCodigoPatio.Text)
+            'sSql = sSql & "  WHERE PATIO =" & Val(Me.lblCodigoPatio.Text)
             DsDes = Banco.List(sSql)
 
             SQL.Append(" SELECT DISTINCT AUTONUM_GD_RESERVA, PERIODO_INICIAL, PERIODO_FINAL, ")
@@ -1898,6 +1968,7 @@ Public Class AgendarCS
 
                 If Me.btnSalvar.Text = "Concluir" Then
 
+
                     If String.IsNullOrEmpty(Me.txtEmailResponsavel.Text.Trim()) Or
                 String.IsNullOrWhiteSpace(Me.txtEmailResponsavel.Text.Trim()) Then
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('O email é de preenchimento obrigatório.');", True)
@@ -2013,9 +2084,9 @@ Public Class AgendarCS
                             SQL.Append("    DATA_AGENDAMENTO, ")
                             SQL.Append("    STATUS, ")
                             SQL.Append("    NUM_PROTOCOLO, ")
-                            SQL.Append("    ANO_PROTOCOLO, ")
-                            SQL.Append("    EMAIL_FAT, ")
-                            SQL.Append("    CLIENTE_FAT ")
+                            SQL.Append("    ANO_PROTOCOLO ")
+                            'SQL.Append("    EMAIL_FAT, ")
+                            'SQL.Append("    CLIENTE_FAT ")
                             SQL.Append("  ) ")
                             SQL.Append("  VALUES ")
                             SQL.Append("  ( ")
@@ -2037,9 +2108,9 @@ Public Class AgendarCS
                                 SQL.Append("  " & Me.lblCodigoProtocolo.Text & ", ")
                             End If
 
-                            SQL.Append("  " & Now.Year & " ,")
-                            SQL.Append("  '" & Me.txtEmailResponsavel.Text & "', ")
-                            SQL.Append("  '" & Me.hiddenText.Value & "' ")
+                            SQL.Append("  " & Now.Year & " ")
+                            'SQL.Append("  '" & Me.txtEmailResponsavel.Text & "', ")
+                            'SQL.Append("  '" & Me.hiddenText.Value & "' ")
                             SQL.Append("  ) ")
 
                             If Banco.BeginTransaction(SQL.ToString()) Then

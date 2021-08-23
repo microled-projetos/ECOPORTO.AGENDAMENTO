@@ -156,6 +156,9 @@
         </asp:Panel>
         <table style="width: 98%">
             <tr>
+                <td colspan ="2" height="10"></td>
+            </tr>
+            <tr>
                 <td align="left">
                     <asp:Button ID="btnAgendar" runat="server" Text="Agendar Contêiner" />
                     <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" />
@@ -164,15 +167,12 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
+                <td colspan ="2" height="10"></td>
+            </tr>            
         </table>
         <asp:GridView ID="dgConsulta" runat="server" AutoGenerateColumns="False" CellPadding="4"
             EmptyDataText="Nenhum registro encontrado." ForeColor="#333333" ShowHeaderWhenEmpty="True"
-            Font-Size="11px" DataKeyNames="AUTONUM_GD_CNTR" Width="98%">
+            Font-Size="14px" DataKeyNames="AUTONUM_GD_CNTR" Width="98%">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>
                 <%--<asp:BoundField HeaderText="Exportador" DataField="EXPORTADOR" />--%>

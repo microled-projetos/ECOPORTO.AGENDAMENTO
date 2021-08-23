@@ -114,12 +114,22 @@
 
         <table style="width: 98%">
             <tr>
+                <td colspan="2" height="10">
+                </td>
+                
+            </tr>
+            <tr>
                 <td align="left">
                     <asp:Button ID="btnAgendar" runat="server" Text="Agendar Carga Solta" />
                     <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" />
                 </td>
                 <td>
                 </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="10">
+                </td>
+                
             </tr>
             <tr>
                 <td>
@@ -129,10 +139,10 @@
             </tr>
         </table>
         <asp:GridView ID="dgConsulta" runat="server" AutoGenerateColumns="False" CellPadding="4"
-            EmptyDataText="Nenhum registro encontrado." ForeColor="#333333" ShowHeaderWhenEmpty="True"
-            Font-Size="11px" DataKeyNames="AUTONUM" Width="98%">
+            EmptyDataText="Nenhum registro encontrado." ForeColor="#333333" BackColor ="#999999"
+            Font-Size="14px" DataKeyNames="AUTONUM" Width="98%" CssClass="table table-hover table-sm">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-            <Columns>                
+            <Columns>                                
                 <asp:BoundField HeaderText="Reserva" DataField="RESERVA" />
                 <asp:BoundField HeaderText="Navio/Viagem" DataField="NAVIO_VIAGEM" />
                 <%--<asp:HyperLinkField DataNavigateUrlFields="NUM_PROTOCOLO, ANO_PROTOCOLO" DataNavigateUrlFormatString="ProtocoloCS.aspx?protocolo={0}/{1}"
@@ -169,7 +179,7 @@
             </Columns>
             <EditRowStyle BackColor="#999999" />
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-            <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#076703" Font-Bold="True" ForeColor="White" />
             <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
@@ -179,4 +189,5 @@
             <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
         </asp:GridView>
     </center>
+    
 </asp:Content>

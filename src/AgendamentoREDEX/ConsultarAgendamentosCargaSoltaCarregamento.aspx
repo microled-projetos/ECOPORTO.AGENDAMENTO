@@ -114,6 +114,9 @@
 
         <table style="width: 98%">
             <tr>
+                <td colspan ="2" height="10">
+            </tr>
+            <tr>
                 <td align="left">
                     <asp:Button ID="btnAgendar" runat="server" Text="Agendar Carga Solta" />
                     <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" />
@@ -122,15 +125,13 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                </td>
-                <td>
-                </td>
+                <td colspan="2" height="10">
+                </td>                
             </tr>
         </table>
         <asp:GridView ID="dgConsulta" runat="server" AutoGenerateColumns="False" CellPadding="4"
             EmptyDataText="Nenhum registro encontrado." ForeColor="#333333" ShowHeaderWhenEmpty="True"
-            Font-Size="11px" DataKeyNames="AUTONUM" Width="98%">
+            Font-Size="14px" DataKeyNames="AUTONUM" Width="98%" CssClass="table table-hover table-sm">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>                
                 <asp:BoundField HeaderText="Reserva" DataField="RESERVA" />

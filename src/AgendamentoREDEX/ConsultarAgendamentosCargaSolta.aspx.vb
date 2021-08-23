@@ -43,6 +43,15 @@
         Me.dgConsulta.DataSource = Banco.List(SQL.ToString())
         Me.dgConsulta.DataBind()
 
+        If (dgConsulta.Rows.Count > 0) Then
+            'Adds THEAD And TBODY Section.
+            dgConsulta.HeaderRow.TableSection = TableRowSection.TableHeader
+            'Adds TH element in Header Row.  
+            dgConsulta.UseAccessibleHeader = True
+            'Adds TFOOT section. 
+            dgConsulta.FooterRow.TableSection = TableRowSection.TableFooter
+        End If
+
     End Sub
 
     Protected Sub dgConsulta_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgConsulta.RowCommand
@@ -175,4 +184,6 @@
     Protected Sub dgConsulta_SelectedIndexChanged(sender As Object, e As EventArgs) Handles dgConsulta.SelectedIndexChanged
 
     End Sub
+
+
 End Class

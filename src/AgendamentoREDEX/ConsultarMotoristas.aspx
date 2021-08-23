@@ -7,16 +7,19 @@
         <asp:Panel ID="PanelBarra" runat="server">
             <table align="left" cellpadding="0" cellspacing="0">
                 <tr>
+                    <td></td>
+                </tr>
+                <tr>
                     <td align="center" style="padding-right: 20px;" height="22px">
-                        <asp:Button ID="btNovo" runat="server" Font-Names="Verdana" Font-Size="10px" Text="Novo"
+                        <asp:Button ID="btNovo" runat="server" Font-Names="Verdana" Text="Novo"
                             Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
                         <asp:Button ID="btPesquisar" runat="server" Font-Names="Verdana" Font-Size="10px"
-                            Text="Pesquisar" Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" />
+                            Text="Pesquisar" Width="80px" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CssClass="table table-hover table-sm" />
                     </td>
                 </tr>
             </table>
         </asp:Panel>
-        <br />
+        <br /><br />
         <center>
             <asp:Panel ID="PanelPesquisa" runat="server" Visible="False">
                 <table id="tbcad" align="center" bgcolor="#999999" border="0" cellpadding="1" cellspacing="0"
@@ -130,9 +133,9 @@
             </asp:Panel>
         </center>
         <br />
-        <asp:GridView ID="DgMotoristas" runat="server" AutoGenerateColumns="False" CellPadding="1"
+        <asp:GridView ID="DgMotoristas" runat="server" AutoGenerateColumns="False" CellPadding="4"
             ForeColor="#333333" GridLines="Both" CellSpacing="1" Width="100%" EmptyDataText="Nenhum registro encontrado."
-            ShowHeaderWhenEmpty="True" BackColor="#999999" Font-Names="Verdana" Font-Size="10px" AllowPaging="True" PageSize="20"
+            ShowHeaderWhenEmpty="True" Font-Names="Verdana" Font-Size="14px" AllowPaging="False" PageSize="20"
             DataKeyNames="AUTONUM">
             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
             <Columns>
@@ -174,10 +177,9 @@
                 </asp:BoundField>
             </Columns>
             <EditRowStyle BackColor="#999999" />
-            <EmptyDataRowStyle BackColor="#E9E9E9" HorizontalAlign="Center" VerticalAlign="Middle" />
             <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-            <HeaderStyle Font-Bold="True" ForeColor="White" CssClass="CorPadrao" />
-            <PagerStyle CssClass="CorPadrao" ForeColor="White" Font-Size="12px" HorizontalAlign="Center" />
+            <HeaderStyle BackColor="#B3C63C" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
             <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
             <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
             <SortedAscendingCellStyle BackColor="#E9E7E2" />

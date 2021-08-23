@@ -22,6 +22,12 @@
 
         DgMotoristas.DataBind()
 
+        If (DgMotoristas.Rows.Count > 0) Then
+            DgMotoristas.HeaderRow.TableSection = TableRowSection.TableHeader
+            DgMotoristas.UseAccessibleHeader = True
+            DgMotoristas.FooterRow.TableSection = TableRowSection.TableFooter
+        End If
+
     End Sub
 
     Private Sub DgMotoristas_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DgMotoristas.PageIndexChanging
