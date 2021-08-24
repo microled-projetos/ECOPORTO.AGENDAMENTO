@@ -627,6 +627,7 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
                 //mexendo
                 habilitarCamposDanfe();
 
+                $('#Chassis').attr('readonly', false);
                 $('#danfe_pesquisada').focus();
 
             }).fail(function (data) {
