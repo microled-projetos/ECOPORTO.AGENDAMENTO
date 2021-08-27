@@ -71,10 +71,20 @@ namespace Ecoporto.AgendamentoCS.Models
 
         public List<ReservaItem> Itens { get; set; } = new List<ReservaItem>();
 
-        public void AdicionarItens(List<ReservaItem> itens)
+        public List<AgendamentoDUE> AgDueItens { get; set; } = new List<AgendamentoDUE>();
+
+        public List<AgendamentoDAT> AgDatItens { get; set; } = new List<AgendamentoDAT>();
+
+        public void AdicionarItens(List<ReservaItem> itens, List<AgendamentoDUE> itensDUE, List<AgendamentoDAT> itensDAT)
         {
             if (itens != null)
                 Itens.AddRange(itens);
+
+            if (itensDUE != null)
+                AgDueItens.AddRange(itensDUE);
+
+            if (itensDAT != null)
+                AgDatItens.AddRange(itensDAT);
         }
 
         public void Alterar(Agendamento agendamento)

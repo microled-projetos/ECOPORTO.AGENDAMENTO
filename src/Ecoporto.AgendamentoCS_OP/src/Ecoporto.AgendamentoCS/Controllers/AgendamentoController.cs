@@ -121,6 +121,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
             GerenciadorDeEstado<Upload>.RemoverTodos();
             GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
             GerenciadorDeEstado<ReservaItem>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
+            GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
 
             return View(viewModel);
         }
@@ -144,6 +146,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 User.ObterId());
 
                 var itens = GerenciadorDeEstado<ReservaItem>.RetornarTodos();
+                var itensDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+                var itensDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
 
                 if (itens.Any(c => c.ClassificacaoId == ClassificacaoCarga.CargaProjeto))
                 {
@@ -169,7 +173,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     //{
                     //    if (item.ExigeNF)
                     //    {
-                    //        agendamento.AdicionarNotificacao($"Nenhuma DANFE informada para o item {item.BookingCsItemId} / Reserva {item.Reserva}");
+                            //agendamento.AdicionarNotificacao($"Nenhuma DANFE informada para o item {item.BookingCsItemId} / Reserva {item.Reserva}");
                     //    }
                     //}
 
@@ -290,7 +294,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 if (!Validar(agendamento))
                     return RetornarErros();
 
-                agendamento.AdicionarItens(itens);
+                agendamento.AdicionarItens(itens,itensDue, itensDat);
 
                 agendamento.Id = _agendamentoRepositorio.Cadastrar(agendamento);
 
@@ -357,7 +361,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
             };
 
             var detalhesMotorista = _motoristaRepositorio.ObterMotoristaPorId(agendamento.MotoristaId);
-            var detalhesVeiculo = _veiculoRepositorio.ObterVeiculoPorId(agendamento.VeiculoId);
+            var detalhesVeiculo = _veiculoRepositorio.ObterVeiculoPorId(agendamento.VeiculoId);            
 
             var viewModel = new AgendamentoViewModel
             {
@@ -383,6 +387,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
             GerenciadorDeEstado<Upload>.RemoverTodos();
             GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
             GerenciadorDeEstado<ReservaItem>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+            GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
 
             var itens = _agendamentoRepositorio
                 .ObterItensAgendamento(agendamento.Id).ToList();
@@ -418,6 +424,21 @@ namespace Ecoporto.AgendamentoCS.Controllers
             }
 
             viewModel.CargaProjeto = cargaProjeto;
+
+
+            var due = _agendamentoRepositorio
+                .GetAllDadosDUE(agendamento.Id).ToList();
+
+            GerenciadorDeEstado<AgendamentoDUE>.ArmazenarLista(due);
+
+            viewModel.AG_DUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+
+
+            var dat = _agendamentoRepositorio
+                .GetAllDadosDAT(agendamento.Id).ToList();
+
+            GerenciadorDeEstado<AgendamentoDAT>.ArmazenarLista(dat);
+
 
             ObterCFOPS(viewModel);
             ObterPeriodos(viewModel);
@@ -521,6 +542,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     User.ObterId()));
 
             var itens = GerenciadorDeEstado<ReservaItem>.RetornarTodos();
+            var itensDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+            var itensDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
 
             if (itens.Any(c => c.ClassificacaoId == ClassificacaoCarga.CargaProjeto))
             {
@@ -657,7 +680,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
             if (!Validar(agendamento))
                 return RetornarErros();
 
-            agendamento.AdicionarItens(itens);
+            agendamento.AdicionarItens(itens, itensDue, itensDat);
 
             _agendamentoRepositorio.Atualizar(agendamento);
 
@@ -966,6 +989,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
             else
             {
                 var _notas = new List<NotaFiscal>();
+                var _due = new List<AgendamentoDUE>();
+                var _dat = new List<AgendamentoDAT>();
+
                 var reservas = _agendamentoRepositorio
                     .ObterReservasAgendamento(agendamento.Id).Select(c => c.Descricao);
                 foreach (var item in itens)
@@ -975,6 +1001,22 @@ namespace Ecoporto.AgendamentoCS.Controllers
 
                     item.NotasFiscais.AddRange(notas);
                     _notas.AddRange(notas);
+
+
+                    var dues = _agendamentoRepositorio
+                        .GetAllDadosDUE(agendamento.Id).ToList();
+
+
+                    item.AG_DUE.AddRange(dues);
+                    _due.AddRange(dues);
+
+
+                    var dats = _agendamentoRepositorio
+                        .GetAllDadosDAT(agendamento.Id).ToList();
+
+                    item.AG_DAT.AddRange(dats);
+                    _dat.AddRange(dats);
+
                 }
                 return View(new AgendamentoViewModel
                 {
@@ -991,9 +1033,10 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     Reserva = string.Join(",", reservas),
                     DataCadastro = agendamento.DataCriacao,
                     Bagagem = agendamento.Bagagem,
-                    NotasFiscais = _notas
-
-
+                    NotasFiscais = _notas,
+                    AG_DUE = _due,
+                    AG_DAT = _dat
+                    
                 });
             };
         }
@@ -1107,6 +1150,108 @@ namespace Ecoporto.AgendamentoCS.Controllers
         };
 
         [HttpPost]
+        public ActionResult AlterarItemReserva([Bind(Include = "BookingCsItemId, Qtde, Chassis, Reserva, Id")] ReservaItem item)
+        {
+            List<ReservaItem> itens_ = GerenciadorDeEstado<ReservaItem>.RetornarTodos();
+
+            var reservaItem = itens_
+                .Where(c => c.Id == item.Id).FirstOrDefault();
+
+            GerenciadorDeEstado<ReservaItem>.Remover(reservaItem.Id);
+
+            var itemBusca = _reservaRepositorio.ObterItemReservaPorId(item.BookingCsItemId);
+
+            if (itemBusca != null)
+            {
+                //var itensAdicionados = GerenciadorDeEstado<ReservaItem>.RetornarTodos();
+
+                //if (itensAdicionados.Any(c => c.BookingCsItemId == item.BookingCsItemId))
+                //{
+                //    //Colocar uma validação para alteração dos dados 
+                //    return RetornarErro($"O Item {itemBusca.Embalagem} {itemBusca.Marca} já foi adicionado");
+                //}
+
+
+                var exigeChassi = _reservaRepositorio.CargaExigeChassi(itemBusca.BookingCsItemId);
+
+                if ((itemBusca.Veiculo || itemBusca.ClassificacaoId == ClassificacaoCarga.CargaProjeto) && string.IsNullOrEmpty(item.Chassis))
+                {
+                    if (exigeChassi)
+                    {
+                        return RetornarErro($"O Chassi do veiculo é obrigatório");
+                    }
+                }
+
+                if (item.Qtde > itemBusca.QtdeReserva)
+                    return RetornarErro($"A Quantidade informada não pode ultrapassar a quantidade total do item");
+
+                if (item.Qtde == 0)
+                    return RetornarErro($"A Quantidade informada deverá ser maior que zero");
+
+
+                //Linhas comentadas para a alteração
+
+                //var qtdeJaAdicionada = itensAdicionados.Where(c => c.BookingCsItemId == itemBusca.BookingCsItemId).Sum(c => c.Qtde);
+
+                //if ((item.Qtde + qtdeJaAdicionada) > itemBusca.Saldo)
+                //    return RetornarErro($"Saldo insuficiente para agendamento");
+
+                if (!string.IsNullOrEmpty(item.Chassis))
+                {
+                    item.Chassis = item.Chassis.RemoverQuebrasDeLinha();
+
+                    if (item.Chassis.Substring(item.Chassis.Length - 1) == ",")
+                    {
+                        item.Chassis = item.Chassis.Remove(item.Chassis.Length - 1);
+                    }
+
+                    var chassis = item.Chassis.Split(',');
+
+                    if (item.Qtde != chassis.Length)
+                        return RetornarErro($"Os chassis informados divergem da quantidade que está sendo agendada");
+
+                    if (chassis != null)
+                    {
+                        foreach (var chassi in chassis)
+                        {
+                            var agendamento = _agendamentoRepositorio.ChassiEmOutroAgendamento(chassi);
+
+                            if (agendamento != null)
+                                return RetornarErro($"Chassi {agendamento.Chassi} já foi utilizado no agendamento {agendamento.Protocolo}");
+                        }
+                    }
+                }
+
+                var exigeNF = _reservaRepositorio.CargaExigeNF(itemBusca.BookingCsItemId);
+
+                GerenciadorDeEstado<ReservaItem>.Armazenar(
+                    new ReservaItem
+                    {
+                        Reserva = item.Reserva,
+                        BookingCsItemId = item.BookingCsItemId,
+                        QtdeReserva = itemBusca.QtdeReserva,
+                        Qtde = item.Qtde,
+                        Embalagem = itemBusca.Embalagem,
+                        Marca = itemBusca.Marca,
+                        Chassis = item.Chassis,
+                        PesoUnitario = itemBusca.PesoUnitario,
+                        Classificacao = itemBusca.Classificacao,
+                        ClassificacaoId = itemBusca.ClassificacaoId,
+                        PackingList = itemBusca.PackingList,
+                        DesenhoTecnico = itemBusca.DesenhoTecnico,
+                        ImagemCarga = itemBusca.ImagemCarga,
+                        ExigeNF = exigeNF,
+                        ExigeChassi = exigeChassi
+                    });
+            }
+
+            var itens = GerenciadorDeEstado<ReservaItem>.RetornarTodos();
+
+            return PartialView("_ItensReservaConsulta", itens);
+
+        }
+
+        [HttpPost]
         public ActionResult CadastrarItemReserva([Bind(Include = "BookingCsItemId, Qtde, Chassis, Reserva")] ReservaItem item)
         {
             var itemBusca = _reservaRepositorio.ObterItemReservaPorId(item.BookingCsItemId);
@@ -1116,7 +1261,11 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 var itensAdicionados = GerenciadorDeEstado<ReservaItem>.RetornarTodos();
 
                 if (itensAdicionados.Any(c => c.BookingCsItemId == item.BookingCsItemId))
+                {
+                    //Colocar uma validação para alteração dos dados 
                     return RetornarErro($"O Item {itemBusca.Embalagem} {itemBusca.Marca} já foi adicionado");
+                }
+
 
                 var exigeChassi = _reservaRepositorio.CargaExigeChassi(itemBusca.BookingCsItemId);
 
@@ -1216,6 +1365,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDanfes([Bind(Include = "Danfe, Reserva, CFOP, xml, BookingCsItemId")] NotaFiscal nf)
         {
+            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+
             var danfeBusca = _agendamentoRepositorio.ObterNotasFiscaisPorDanfe(nf.Danfe);
 
             if (danfeBusca.Any())
@@ -1270,7 +1422,7 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [HttpGet]
         public JsonResult ObterDanfeArquivo(string danfe)
         {
-             var nfe = _agendamentoRepositorio.BuscarArquivoPorIdTransportadora(danfe);
+            var nfe = _agendamentoRepositorio.BuscarArquivoPorIdTransportadora(danfe);
 
             if (nfe != null)
             {
@@ -1283,6 +1435,87 @@ namespace Ecoporto.AgendamentoCS.Controllers
             }
 
             return null;
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult CadastrarDUE([Bind(Include = "AUTONUM_AGENDAMENTO, DUE, AUTONUM")] AgendamentoDUE obj)
+        {
+            GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+
+            var countDUE = _agendamentoRepositorio.countDUE(obj.DUE);
+
+            if (countDUE > 0)
+                return RetornarErro($"DUE já cadastrada em outro agendamento");
+
+
+            var dueAdd = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().AsEnumerable();
+            
+            if (dueAdd != null)
+            {
+                if (dueAdd.Any(c => c.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO && c.DUE == obj.DUE))
+                    return RetornarErro($"A DUE {obj.DUE} já foi adicionada no item {obj.AUTONUM_AGENDAMENTO}");
+            }            
+
+
+            GerenciadorDeEstado<AgendamentoDUE>.Armazenar(new AgendamentoDUE
+            {
+                AUTONUM  = obj.Id,
+                AUTONUM_AGENDAMENTO = obj.AUTONUM_AGENDAMENTO,
+                DUE = obj.DUE
+            });
+
+            return PartialView("_DUE", GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(c => c.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO).AsEnumerable());
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult CadastrarDAT([Bind(Include = "AUTONUM, AUTONUM_AGENDAMENTO, DAT")] AgendamentoDAT obj)
+        {
+            GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+
+            var countDAT = _agendamentoRepositorio.countDAT(obj.DAT);
+
+            if (countDAT > 0)
+                return RetornarErro("DAT já cadstrada em outro agendamento");
+
+            var datAdd = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().AsEnumerable(); 
+
+
+            if (datAdd.Any(c => c.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO && c.DAT == obj.DAT))
+                return RetornarErro($"A DAT {obj.DAT} já foi adicionada no item {obj.AUTONUM_AGENDAMENTO}");
+
+            GerenciadorDeEstado<AgendamentoDAT>.Armazenar(new AgendamentoDAT
+            {
+                AUTONUM = obj.Id,
+                AUTONUM_AGENDAMENTO = obj.AUTONUM_AGENDAMENTO, 
+                DAT = obj.DAT,
+            });
+
+            var dat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(c => c.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO).ToList();
+            
+            return PartialView("_DAT", dat);
+        }
+        [HttpPost]
+        public ActionResult ExcluirDUE(int id, int agendamento)
+        {
+            GerenciadorDeEstado<AgendamentoDUE>.Remover(id);
+
+            var due = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == agendamento).ToList();
+
+            return PartialView("_DUE", due);
+
+        }
+
+        [HttpPost]
+        public ActionResult ExcluirDAT(int id, int agendamento)
+        {
+            GerenciadorDeEstado<AgendamentoDUE>.Remover(id);
+
+            var dat = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == agendamento).ToList();
+
+            return PartialView("_DAT", dat);
         }
     }
 }

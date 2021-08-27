@@ -44,6 +44,9 @@ namespace Ecoporto.AgendamentoCS.Models
         public bool DesenhoTecnico { get; set; }
 
         public string Classificacao { get; set; }
+        public int AUTONUM { get; set; }
+        public int AUTONUM_AGENDAMENTO { get; set; }
+        public string DUE { get; set; }
 
         public ClassificacaoCarga ClassificacaoId { get; set; }
 
@@ -52,6 +55,10 @@ namespace Ecoporto.AgendamentoCS.Models
         public bool ExigeChassi { get; set; }
 
         public List<NotaFiscal> NotasFiscais { get; set; } = new List<NotaFiscal>();
+
+        public List<AgendamentoDUE> AG_DUE { get; set; } = new List<AgendamentoDUE>();
+
+        public List<AgendamentoDAT> AG_DAT { get; set; } = new List<AgendamentoDAT>();
 
         public override string ToString()
         {

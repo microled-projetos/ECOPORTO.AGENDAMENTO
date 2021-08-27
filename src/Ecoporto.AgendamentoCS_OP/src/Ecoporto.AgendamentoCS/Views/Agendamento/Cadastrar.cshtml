@@ -124,6 +124,36 @@
                                 <div id="pnlReserva" class="invisivel">
 
                                     @Html.Partial("_ItensReserva")
+                                    <div class="row">
+                                        <div class="col-md-12 mb-1">
+                                            <label>Doc. Carga</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-2"></div>
+                                        <div class="form-group col-md-3">
+                                            <div class="custom-control custom-radio">
+                                                <input type="checkbox" class="custom-control-input" id="nfe" />
+                                                <label class="custom-control-label" for="nfe">NFE </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="checkbox" id="due" />
+                                                <label class="custom-control-label" for="due">DUE </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="checkbox" id="dat" />
+                                                <label class="custom-control-label" for="dat">DAT</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-1"></div>
+                                    </div>
+
+                                    @Html.Partial("_DUE")
+                                    @Html.Partial("_DAT")
                                     @Html.Partial("_Danfes")
 
                                     <div class="row">
@@ -211,5 +241,59 @@
     @Scripts.Render("~/bundles/smartWizard")
     @Scripts.Render("~/bundles/bootstrap4Toggle")
     @Scripts.Render("~/bundles/agendamento")
-    
+
+    <script>
+        $(document).ready(function () {
+            $('#txtDAT').mask('99BR9999999');
+            $('#txtDUE').mask('99BR9999999999');
+            $('#tabelaDAT').hide();
+            $('#tabelaDUE').hide();
+            $('#tblDanfes').hide();
+
+            $('#nfe').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#due').prop('checked', false);
+                    $('#dat').prop('checked', false);
+                    $('#divDanfe').show();
+                    $('#divDAT').hide();
+                    $('#divDUE').hide();
+                    $('#txtDAT').val('');
+                    $('#txtDUE').val('');
+                    $('#tblDanfes').show();
+                    $('#tabelaDUE').hide();
+                    $('#tabelaDAT').hide();
+                }
+
+
+            });
+
+            $('#due').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#nfe').prop('checked', false);
+                    $('#dat').prop('checked', false);
+                    $('#divDanfe').hide();
+                    $('#divDAT').hide();
+                    $('#divDUE').show();
+                    $('#txtDAT').val('');
+                    $('#tblDanfes').hide();
+                    $('#tabelaDUE').show();
+                    $('#tabelaDAT').hide();
+                }
+            });
+
+            $('#dat').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#nfe').prop('checked', false);
+                    $('#due').prop('checked', false);
+                    $('#divDanfe').hide();
+                    $('#divDAT').show();
+                    $('#divDUE').hide();
+                    $('#txtDAT').val('');
+                    $('#tblDanfes').hide();
+                    $('#tabelaDUE').hide();
+                    $('#tabelaDAT').show();
+                }
+            });
+        });
+    </script>
 }

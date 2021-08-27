@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Ecoporto.AgendamentoCS.Models.AgendamentoDAT>
+<div class="row" id="divDAT" style="display:none">
+    <div class="form-group col-md-9">
+        <input type="text" id="txtDAT" class="form-control" placeholder="Preencha o campo DAT ex: ##BR#######" />
+    </div>
+    <div class="form-group col-md-3">
+        <a id="btnAdicionarDAT" href="#" class="btn btn-success btn-outline-info btn-block btn-as-block right">SALVAR   <i class="fas fa-save"></i></a>
+    </div>
+</div>
+<div class="table-responsive" style="display: initial" id="tabelaDAT">
+    <table id="tblItensDAT" class="table table-sm">
+        <thead class="">
+            <tr>
+                <th scope="col">&nbsp;</th>
+
+                <th scope="col">Numero DAT</th>
+
+                <th scope="col">&nbsp;</th>
+
+            </tr>
+        </thead>
+        <tbody id="linhas-items-due">
+
+            @{
+                foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="td-icone">
+                                <img src="@Url.Content("~/Content/img/icone-nf.png")" />
+                            </td>
+
+                            <td class="td-w-10" id="dueLine">
+                                @item.DAT
+                            </td>
+
+                            <td class="campo-acao"><a href="#" onclick="excluirItemDUE(@item.AUTONUM)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i></a></td>
+
+                        </tr>
+
+                    }
+
+            }
+
+        </tbody>
+    </table>
+</div>

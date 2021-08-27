@@ -13,6 +13,7 @@
                 <th scope="col" class="text-center">Class.</th>
                 <th scope="col" class="campo-acao text-center">&nbsp;</th>
                 <th scope="col" class="campo-acao text-center">&nbsp;</th>
+                <th scope="col" class="campo-acao text-center">&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
                 <td class="campo-acao text-center">@item.PesoUnitario</td>
                 <td class="text-center carga-projeto">@item.Classificacao</td>
                 <td class="campo-acao"><a href="#" onclick="selecionarItem(@item.BookingCsItemId, @item.Qtde, '@item.Chassis')" class="btn btn-info btn-sm btn-acao"><i class="fa fa-list"></i>&nbsp;&nbsp;Vincular Danfes</a></td>
+                <td class="campo-acao"><a href="#" onclick="selecionarItemAlt(@item.BookingCsItemId, @item.Qtde, '@item.Chassis', @item.Id)" class="btn btn-success btn-sm btn-acao"><i class="fa fa-sync"></i></a></td>
                 <td class="campo-acao"><a href="#" onclick="excluirItemReserva(@item.Id, @item.BookingCsItemId)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i></a></td>
             </tr>
             }

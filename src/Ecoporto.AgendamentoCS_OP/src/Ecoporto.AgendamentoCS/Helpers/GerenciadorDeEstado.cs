@@ -16,17 +16,27 @@ namespace Ecoporto.AgendamentoCS.Helpers
 
             if (instancia == typeof(ReservaItem))
             {
-                CHAVE =  $"{HttpContext.Current.Session.SessionID}{instancia.Name}";
+                CHAVE =  $"{ HttpContext.Current.Session.SessionID}{instancia.Name}";
+            }
+
+            if (instancia == typeof(AgendamentoDUE))
+            {
+                CHAVE = $"{ HttpContext.Current.Session.SessionID}{instancia.Name}";
+            }
+
+            if (instancia == typeof(AgendamentoDAT)) 
+            {
+                CHAVE = $"{ HttpContext.Current.Session.SessionID}{instancia.Name}";
             }
 
             if (instancia == typeof(NotaFiscal))
             {
-                CHAVE = $"{HttpContext.Current.Session.SessionID}{instancia.Name}";
+                CHAVE = $"{ HttpContext.Current.Session.SessionID}{instancia.Name}";
             }
 
             if (instancia == typeof(Upload))
             {
-                CHAVE = $"{HttpContext.Current.Session.SessionID}{instancia.Name}";
+                CHAVE = $"{ HttpContext.Current.Session.SessionID}{instancia.Name}";
             }
         }
 

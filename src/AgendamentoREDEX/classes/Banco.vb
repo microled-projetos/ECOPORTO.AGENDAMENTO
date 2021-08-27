@@ -191,7 +191,7 @@ Public Class Banco
             Senha = My.Settings.Senha
         End Try
 
-        Return String.Format("Provider=MSDAORA.1;Data Source={0};User ID={1};Password={2};Unicode=True", Servidor, Usuario, Senha)
+        Return String.Format("Provider=OraOLEDB.ORACLE.1;Data Source={0};User ID={1};Password={2};Unicode=True", Servidor, Usuario, Senha)
 
     End Function
 

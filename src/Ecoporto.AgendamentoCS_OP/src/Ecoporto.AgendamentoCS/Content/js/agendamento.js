@@ -232,6 +232,8 @@ function consultarReserva(reserva) {
             validarAgendamentoSemSaldo($('#Reserva').val(), $('#ViagemId').val());
 
             desabilitarCamposDanfe();
+            desabilitarCamposDAT();
+            desabilitarCamposDUE();
 
             $('#pnlReserva').removeClass('invisivel');
         }
@@ -456,6 +458,7 @@ $('#btnAdicionarItemReserva').click(function () {
         return;
     }
 
+    //$('#btnAdicionarItemReserva')
     $('#btnAdicionarItemReserva')
         .html('<i class="fa fa-spinner fa-spin"></i>')
         .addClass('disabled');
@@ -506,9 +509,72 @@ $('#btnAdicionarItemReserva').click(function () {
     });
 });
 
-function excluirItemReserva(id, bookingCsItemId) {
+$('#btnAlterarItemReserva').click(function () {
+    event.preventDefault();
+    
+    $('#msgErro').html('').addClass('invisivel');
 
+    if ($('#QuantidadeItemReserva').val() === '') {
+
+        $('#msgErro')
+            .html('Informe a Quantidade do item')
+            .removeClass('invisivel');
+        return;
+    }
+
+    $('#btnAlterarItemReserva')
+        .html('<i class="fa fa-spinner fa-spin"></i>')
+        .addClass('disabled');
+
+    var obj = {
+        Reserva: $('#Reserva').val(),
+        BookingCsItemId: $('#ItemReservaId').val(),
+        Qtde: $('#QuantidadeItemReserva').val(),
+        Chassis: $('#Chassis').val(),
+        ClassificacaoId: $('#ClassificacaoId').val(),
+        Id: $('#Chassis').attr('data-id')
+    };
+
+    $.post(urlBase + 'Agendamento/AlterarItemReserva', obj, function (resultado) {
+
+        $('#tblItensReserva').html(resultado);
+
+        obterDanfesPorItem(obj.BookingCsItemId);
+        obterUploadsPorItem(obj.BookingCsItemId);
+
+        obterPeriodos();
+
+        limparCamposItem();
+
+    }).fail(function (data) {
+
+        var retorno = data.responseJSON;
+
+        if (retorno.erros != null) {
+
+            var msg = retorno.erros[0].ErrorMessage;
+
+            $('#msgErro').html(msg).removeClass('invisivel');
+
+        } else {
+            if (data.statusText) {
+                toastr.error(data.statusText, 'Agendamento');
+            } else {
+                toastr.error('Falha ao incluir a Danfe', 'Agendamento');
+            }
+        }
+
+    }).always(function () {
+
+        $('#btnAlterarItemReserva').html('<i class="fas fa-save"></i>').removeClass('disabled');
+        $('#btnAlterarItemReserva').hide();
+        $('#btnAdicionarItemReserva').show();
+    });
+});
+function excluirItemReserva(id, bookingCsItemId) {
+    
     $('#modal-mensagem-item').text('Confirma a exclusão do item?');
+   
 
     $('#del-modal-item')
         .data('id', id);
@@ -626,9 +692,102 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
                 obterUploadsPorItem(bookingCsItemId);
                 //mexendo
                 habilitarCamposDanfe();
+                habilitarCamposDAT();
+                habilitarCamposDUE();
 
                 $('#Chassis').attr('readonly', false);
                 $('#danfe_pesquisada').focus();
+
+                $('#btnAdicionarItemReserva').show();
+                $('#btnAlterarItemReserva').hide();
+
+            }).fail(function (data) {
+                toastr.error(data.statusText, 'Agendamento');
+            });
+        }
+    }).fail(function (data) {
+        toastr.error(data.statusText, 'Agendamento');
+    });
+}
+
+
+function selecionarItemAlt(bookingCsItemId, qtde, chassis, id) {
+    
+    $('#msgErro')
+        .html('')
+        .addClass('invisivel');
+    event.preventDefault();
+
+    limparCamposItem();
+
+    $.get(urlBase + 'Agendamento/ObterItemReservaPorId?bookingCsItemId=' + bookingCsItemId, function (resultado) {
+
+        if (resultado) {
+
+            $('#Reserva').val(resultado.Reserva);
+            $('#ViagemId').val(resultado.ViagemId);
+
+            $('#ItemReservaId').empty();
+
+            $.get(urlBase + 'Agendamento/ObterItensReserva?reserva=' + resultado.Reserva + '&viagemId=' + resultado.ViagemId, function (resultadoItens) {
+
+                if (resultadoItens) {
+
+                    resultadoItens.forEach(function (item) {
+
+                        $('#ItemReservaId').append($('<option>', {
+                            value: item.BookingCsItemId,
+                            text: item.Descricao
+                        }));
+                    });
+                }
+
+                if ($("#ItemReservaId option[value='" + bookingCsItemId + "']").val() === undefined) {
+                    $('#ItemReservaId').append($('<option>', {
+                        value: resultado.BookingCsItemId,
+                        text: resultado.Descricao
+                    }));
+                }
+
+                $('#ItemReservaId').val(bookingCsItemId);
+
+                $('#QuantidadeItemReserva').val(qtde);
+                $('#Chassis').val(chassis);
+                $('#Chassis').attr('data-id', id);
+
+
+                $('#TiposDocumentos').empty();
+
+                if (resultado.PackingList) {
+
+                    $('#TiposDocumentos').append($('<option>', {
+                        value: 1,
+                        text: 'Packing List'
+                    }));
+                }
+
+                if (resultado.DesenhoTecnico) {
+
+                    $('#TiposDocumentos').append($('<option>', {
+                        value: 2,
+                        text: 'Desenho Técnico'
+                    }));
+                }
+
+                if (resultado.ImagemCarga) {
+
+                    $('#TiposDocumentos').append($('<option>', {
+                        value: 3,
+                        text: 'Imagem Carga'
+                    }));
+                }
+
+                
+
+                $('#Chassis').attr('readonly', false);
+                $('#danfe_pesquisada').focus();
+                $('#btnAdicionarItemReserva').hide();
+                $('#btnAlterarItemReserva').show();
 
             }).fail(function (data) {
                 toastr.error(data.statusText, 'Agendamento');
@@ -655,11 +814,30 @@ function desabilitarCamposDanfe() {
     $('#Danfe').prop('disabled', true);
     $('#fileinput').prop('disabled', true)
     $('#CFOP').prop('disabled', true);
-    $('#XmlDanfeCompleta').prop('disable', true);
+    $('#XmlDanfeCompleta').prop('disabled', true);
     $('#CFOP').prop('disabled', true);
     $('#btnAdicionarDanfe').addClass('disabled');
     $('#danfe_pesquisada').prop('disabled', true);
 }
+
+function habilitarCamposDUE() {
+    $('#txtDUE').prop('disabled', false);
+    $('#btnAdicionarDUE').removeClass('disabled');
+}
+function desabilitarCamposDUE() {
+    $('#txtDUE').prop('disabled', true);
+    $('#btnAdicionarDUE').addClass('disabled');
+}
+function habilitarCamposDAT() {
+    $('#txtDAT').prop('disabled', false);
+    $('#btnAdicionarDAT').removeClass('disabled');
+}
+function desabilitarCamposDAT() {
+    $('#txtDAT').prop('disabled', true);
+    $('#btnAdicionarDAT').addClass('disabled');
+}
+
+
 
 function obterDanfesPorItem(bookingCsItemId) {
 
@@ -700,47 +878,167 @@ function obterUploadsPorItem(bookingCsItemId) {
     });
 }
 
+$('#btnAdicionarDUE').click(function () {
 
+    $('#btnAdicionarDUE')
+        .html('<i class="fa fa-spinner fa-spin"></i>')
+        .addClass('disabled');
+
+
+    var DUE = $('#txtDUE').val();
+    var agId = $('#Id').val();    
+
+    var inserir = {
+        DUE: DUE,
+        AUTONUM_AGENDAMENTO: agId,
+    }
+
+    if (DUE == "") {
+        toastr.error('O campo DUE não pode estar em branco', 'Agendamento');
+
+        $(this)
+            .html('SALVAR <i class="fas fa-save"></i>')
+            .removeClass('disabled');
+    }
+    else if (DUE.length < 14) {
+        toastr.error('O campo DUE tem que ter 14 caracteres', 'Agendamento');
+        $(this)
+            .html('SALVAR <i class="fas fa-save"></i>')
+            .removeClass('disabled');
+    }
+    else if ($('#ItemReservaId').val() === '') {
+        toastr.error('Selecione um item', 'Agendamento');        
+        $(this)
+            .html('SALVAR <i class="fas fa-save"></i>')
+            .removeClass('disabled');
+    }
+    else {
+        $.post('/Agendamento/CadastrarDUE', inserir, function (resultado) {
+
+            $(this)
+                .html('SALVAR <i class="fas fa-save"></i>')
+                .removeClass('disabled');   
+
+            $('#tabelaDUE').show();
+            $('#tblItensDUE').show();
+            $('#tblItensDUE').html(resultado);
+
+                    
+
+        }).fail(function (data) {
+
+            var retorno = data.responseJSON;
+
+            if (retorno.erros != null) {
+
+                var msg = retorno.erros[0].ErrorMessage;
+
+                $('#msgErro').html(msg).removeClass('invisivel');
+                $("#tblItensDUE td").empty();
+                
+            } else {
+                if (data.statusText) {
+                    toastr.error(data.statusText, 'Agendamento');
+                } else {
+                    toastr.error('Falha ao incluir a DUE', 'Agendamento');
+                }
+            }
+
+            toastr.error(data.statusText, 'Agendamento');
+            $(this)
+                .html('SALVAR <i class="fas fa-save"></i>')
+                .removeClass('disabled');
+        }).always(function () {
+            $(this)
+                .html('SALVAR <i class="fas fa-save"></i>')
+                .removeClass('disabled');
+
+
+        });        
+    }
+});
+$('#btnAdicionarDAT').click(function () {
+    $('#btnAdicionarDAT')
+        .html('<i class="fa fa-spinner fa-spin"></i>')
+        .addClass('disabled');
+
+
+    var DAT = $('#txtDAT').val();
+    var agId = $('#Id').val();
+    alert(agId);
+    var inserir = {
+        DAT: DAT,
+        AUTONUM_AGENDAMENTO: agId,
+    }
+
+    if (DAT == "") {
+        toastr.error('O campo DAT não pode estar em branco', 'Agendamento');
+
+        $(this)
+            .html('SALVAR <i class="fas fa-save"></i>')
+            .removeClass('disabled');
+    }
+    else if (DAT.length < 11) {
+        toastr.error('O campo DAT tem que ter 11 caracteres', 'Agendamento');
+        $(this)
+            .html('SALVAR <i class="fas fa-save"></i>')
+            .removeClass('disabled');
+    }
+    else if ($('#ItemReservaId').val() === '') {
+        toastr.error('Selecione um item', 'Agendamento');
+        $(this)
+            .html('SALVAR <i class="fas fa-save"></i>')
+            .removeClass('disabled');
+    }
+    else {
+        $.post('/Agendamento/CadastrarDAT', inserir, function (resultado) {
+
+            $(this)
+                .html('SALVAR <i class="fas fa-save"></i>')
+                .removeClass('disabled');
+
+            $('#tabelaDAT').show();
+            $('#tblItensDAT').show();
+            $('#tblItensDAT').html(resultado);
+
+
+
+        }).fail(function (data) {
+
+            var retorno = data.responseJSON;
+
+            if (retorno.erros != null) {
+
+                var msg = retorno.erros[0].ErrorMessage;
+
+                $('#msgErro').html(msg).removeClass('invisivel');
+                $("#tblItensDAT td").empty();
+
+            } else {
+                if (data.statusText) {
+                    toastr.error(data.statusText, 'Agendamento');
+                } else {
+                    toastr.error('Falha ao incluir a DAT', 'Agendamento');
+                }
+            }
+
+            toastr.error(data.statusText, 'Agendamento');
+            $(this)
+                .html('SALVAR <i class="fas fa-save"></i>')
+                .removeClass('disabled');
+        }).always(function () {
+            $(this)
+                .html('SALVAR <i class="fas fa-save"></i>')
+                .removeClass('disabled');
+
+
+        });
+    }
+
+});
 $('#btnAdicionarDanfe').click(function () {
-
     event.preventDefault();
-    //var input, file, fr;
-
-    //if (typeof window.FileReader !== 'function') {
-        
-    //    bodyAppend("p", "The file API isn't supported on this browser yet.");
-    //    return;
-    //}
-
-    //input = document.getElementById('fileinput');
-    //if (!input) {
-    //    bodyAppend("p", "Um, couldn't find the fileinput element.");
-    //}
-    //else if (!input.files) {
-    //    bodyAppend("p", "This browser doesn't seem to support the `files` property of file inputs.");
-    //}
-    //else if (!input.files[0]) {
-    //    bodyAppend("p", "Please select a file before clicking 'Load'");
-    //}
-    //else {
-    //    file = input.files[0];
-    //    fr = new FileReader();
-    //    fr.onload = receivedText;
-    //    fr.readAsText(file);
-    //}
-
-    //function receivedText() {
-    //    console.log(fr.result);
-    //    var doc = parser.parseFromString(fr.result, "text/xml");
-    //    document.getElementById("XmlDanfeCompleta").innerHTML = fr.result;
-    //    //document.getElementById("xml").innerHTML = fr.result;
-
-    //    shownode(doc.childNodes[0]);
-    //}
-    //
-
-    event.preventDefault();
-
+    
     $('#msgErro')
         .html('')
         .addClass('invisivel');
@@ -954,6 +1252,20 @@ function excluirDanfe(id, bookingCsItemId) {
 
 }
 
+function excluirItemDUE(id, bookingCSItemId) {
+    $('#modal-mensagem-due').text('Confirma a exclusão da DUE ? ');
+    $('#del-modal-due').data('id', id);
+    $('#del-modal-due').data('bookingCsItemId', bookingCSItemId);
+    $('#del-modal-due').modal('show');
+}
+
+function excluirItemDAT(id, bookinhgCSItemId) {
+    $('#modal-mensagem-dat').text('Confirm a exclusão da DAT ? ');
+    $('#del-modal-dat').data('id', id);
+    $('#del-modal-dat').data('bookingCSItemId', bookinhgCSItemId);
+    $('#del-modal-dat').modal('show');
+}
+
 function confirmarExclusaoDanfe(id) {
 
     var _url = urlBase + 'Agendamento/ExcluirDanfe';
@@ -980,6 +1292,47 @@ function confirmarExclusaoDanfe(id) {
     });
     limpar();
 
+}
+
+function confirmarExclusaoDUE(id) {
+    var url = urlBase + 'Agendamento/ExcluirDUE';
+    var id = $('#del-modal-due').data('id');
+
+    var agendamento = $('#del-modal-due').data('bookingCSItemId');
+
+
+    $.post(url, { id: id, agendamento: agendamento }, function (result) {
+        $('#tblItensDUE').html(result);
+    }).fail(function (data) {
+        if (data.statusText) {
+            toastr.error(data.statusText, 'Agendamento');
+        }
+        else {
+            toastr.error('Falha ao excluir DUE', 'Agendamento')
+        }
+    }).always(function () {
+        $('del-modal-due').data('id', '0').modal('hide');
+    });
+
+}
+
+function confirmarExclusaoDAT() {
+    var url = urlBase + 'Agendamento/ExcluirDAT';
+    var id = $('del-modal-dat').data('id');
+    var agendamento = $('#del-modal-dat').data('bookingCSItemId');
+
+    $.post(url, { id: id, agendamento: agendamento }, function (result) {
+        $('#tblItensDAT').html(result);
+    }).fail(function (data) {
+        if (data.statusText) {
+            toastr.error(data.statusText, 'Agendamento');
+        }
+        else {
+            toastr.error('Falha ao excluir DAT', 'Agendamento');
+        }
+    }).always(function () {
+        $('#del-modal-dat').data('id', '0').modal('hide');
+    });
 }
 
 function excluirUpload(id) {

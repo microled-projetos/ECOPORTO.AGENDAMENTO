@@ -6,6 +6,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 
 namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 {
@@ -183,6 +184,6 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                 return resultado != "BS";
             }
-        }
+        }       
     }
 }

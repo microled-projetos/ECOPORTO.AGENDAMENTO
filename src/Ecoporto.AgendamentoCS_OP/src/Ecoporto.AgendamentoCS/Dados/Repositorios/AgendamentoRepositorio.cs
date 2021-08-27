@@ -4,6 +4,7 @@ using Ecoporto.AgendamentoCS.Dados.Interfaces;
 using Ecoporto.AgendamentoCS.Extensions;
 using Ecoporto.AgendamentoCS.Models;
 using Ecoporto.AgendamentoCS.Models.DTO;
+using Ecoporto.AgendamentoCS.Helpers;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -117,43 +118,69 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                                 con.Execute(@"INSERT INTO OPERADOR.TB_AGENDAMENTO_CS_ITENS_CHASSI (AUTONUM, AUTONUM_AGENDAMENTO_ITEM, CHASSI) VALUES (OPERADOR.SEQ_AG_CS_ITENS_CHASSIS.NEXTVAL, :ItemId, :Chassi)", parametros, transaction);
                             }
-                        }                        
-
-                        foreach (var nota in item.NotasFiscais)
-                        {
-                            using (OracleCommand cmd = new OracleCommand("OPERADOR.GRAVA_XML_DANFE", con))
-                            {
-                                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-                                OracleParameter param1 = new OracleParameter("V_TIPO", OracleDbType.Varchar2);
-                                param1.Direction = System.Data.ParameterDirection.Input;
-
-                                OracleParameter param2 = new OracleParameter("V_AUTONUM_AGENDAMENTO_ITEM ", OracleDbType.Int64);
-                                param2.Direction = System.Data.ParameterDirection.Input;
-
-                                OracleParameter param3 = new OracleParameter("V_DANFE", OracleDbType.Varchar2);
-                                param3.Direction = System.Data.ParameterDirection.Input;
-
-                                OracleParameter param4 = new OracleParameter("V_CFOP", OracleDbType.Varchar2);
-                                param4.Direction = System.Data.ParameterDirection.Input;
-
-                                OracleParameter param5 = new OracleParameter("XML_NOTA", OracleDbType.Clob);
-                                param5.Direction = System.Data.ParameterDirection.Input;
-
-                                cmd.Parameters.Add(param1);
-                                cmd.Parameters.Add(param2);
-                                cmd.Parameters.Add(param3);
-                                cmd.Parameters.Add(param4);
-                                cmd.Parameters.Add(param5);
-
-                                param1.Value = "OPERCS";
-                                param2.Value = itemId;
-                                param3.Value = nota.Danfe;
-                                param4.Value = nota.CFOP;
-                                param5.Value = nota.xml.ToString();
-                                cmd.ExecuteNonQuery();
-                            }
                         }
+
+
+                        //Insere os dados na TB_AGENDAMENTO_CS_ITENS_DANFE, TB_AGENDAMENTO_CS_ITENS_DUE, ou TB_AGENDAMENTO_CS_ITENS_DAT
+
+                        int countDANFES = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
+                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
+                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
+
+                        if (countDANFES > 0) {
+                            foreach (var nota in item.NotasFiscais)
+                            {
+                                using (OracleCommand cmd = new OracleCommand("OPERADOR.GRAVA_XML_DANFE", con))
+                                {
+                                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                                    OracleParameter param1 = new OracleParameter("V_TIPO", OracleDbType.Varchar2);
+                                    param1.Direction = System.Data.ParameterDirection.Input;
+
+                                    OracleParameter param2 = new OracleParameter("V_AUTONUM_AGENDAMENTO_ITEM ", OracleDbType.Int64);
+                                    param2.Direction = System.Data.ParameterDirection.Input;
+
+                                    OracleParameter param3 = new OracleParameter("V_DANFE", OracleDbType.Varchar2);
+                                    param3.Direction = System.Data.ParameterDirection.Input;
+
+                                    OracleParameter param4 = new OracleParameter("V_CFOP", OracleDbType.Varchar2);
+                                    param4.Direction = System.Data.ParameterDirection.Input;
+
+                                    OracleParameter param5 = new OracleParameter("XML_NOTA", OracleDbType.Clob);
+                                    param5.Direction = System.Data.ParameterDirection.Input;
+
+                                    cmd.Parameters.Add(param1);
+                                    cmd.Parameters.Add(param2);
+                                    cmd.Parameters.Add(param3);
+                                    cmd.Parameters.Add(param4);
+                                    cmd.Parameters.Add(param5);
+
+                                    param1.Value = "OPERCS";
+                                    param2.Value = itemId;
+                                    param3.Value = nota.Danfe;
+                                    param4.Value = nota.CFOP;
+                                    param5.Value = nota.xml.ToString();
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            if (countDAT > 0)
+                            {
+                                foreach (var dat in item.AG_DAT)
+                                {
+                                    InserirDAT(itemId, dat.DAT);
+                                }
+
+                            }
+
+                            if (countDUE > 0) 
+                            {
+                                foreach (var due in item.AG_DUE)
+                                {
+                                    InserirDUE(itemId, due.DUE);
+                                }
+                            }
+                        }                        
                     }
 
                     transaction.Commit();
@@ -185,6 +212,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                     con.Execute(@"UPDATE OPERADOR.TB_AGENDAMENTO_CS SET AUTONUM_MOTORISTA = :MotoristaId, AUTONUM_VEICULO = :VeiculoId, FLAG_CEGONHA = :Cegonha, FLAG_DESEMBARACADO = :Desembaracada, AUTONUM_PERIODO = :PeriodoId, CTE = :CTE, EMAIL_REGISTRO = :EmailRegistro WHERE AUTONUM = :Id", parametros, transaction);
 
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DANFES WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
+                    con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
+                    con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_CHASSI WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id", parametros, transaction);
 
@@ -217,6 +246,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                         var itemId = parametros.Get<int>("Id");
 
+                        //insere chassis caso não seja vazio 
                         if (!string.IsNullOrEmpty(item.Chassis))
                         {
                             var chassis = item.Chassis.Split(',');
@@ -232,49 +262,77 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                             }
                         }
 
-                        foreach (var nota in item.NotasFiscais)
+                        int countDANFES = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
+                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
+                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
+
+
+                        if (countDANFES > 0)
                         {
-                            using (OracleCommand cmd = new OracleCommand("OPERADOR.GRAVA_XML_DANFE", con))
+                            foreach (var nota in item.NotasFiscais)
                             {
-                                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                                using (OracleCommand cmd = new OracleCommand("OPERADOR.GRAVA_XML_DANFE", con))
+                                {
+                                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                                OracleParameter param1 = new OracleParameter("V_TIPO", OracleDbType.Varchar2);
-                                param1.Direction = System.Data.ParameterDirection.Input;
+                                    OracleParameter param1 = new OracleParameter("V_TIPO", OracleDbType.Varchar2);
+                                    param1.Direction = System.Data.ParameterDirection.Input;
 
-                                OracleParameter param2 = new OracleParameter("V_AUTONUM_AGENDAMENTO_ITEM ", OracleDbType.Int64);
-                                param2.Direction = System.Data.ParameterDirection.Input;
+                                    OracleParameter param2 = new OracleParameter("V_AUTONUM_AGENDAMENTO_ITEM ", OracleDbType.Int64);
+                                    param2.Direction = System.Data.ParameterDirection.Input;
 
-                                OracleParameter param3 = new OracleParameter("V_DANFE", OracleDbType.Varchar2);
-                                param3.Direction = System.Data.ParameterDirection.Input;
+                                    OracleParameter param3 = new OracleParameter("V_DANFE", OracleDbType.Varchar2);
+                                    param3.Direction = System.Data.ParameterDirection.Input;
 
-                                OracleParameter param4 = new OracleParameter("V_CFOP", OracleDbType.Varchar2);
-                                param4.Direction = System.Data.ParameterDirection.Input;
+                                    OracleParameter param4 = new OracleParameter("V_CFOP", OracleDbType.Varchar2);
+                                    param4.Direction = System.Data.ParameterDirection.Input;
 
-                                OracleParameter param5 = new OracleParameter("XML_NOTA", OracleDbType.Clob);
-                                param5.Direction = System.Data.ParameterDirection.Input;
+                                    OracleParameter param5 = new OracleParameter("XML_NOTA", OracleDbType.Clob);
+                                    param5.Direction = System.Data.ParameterDirection.Input;
 
-                                cmd.Parameters.Add(param1);
-                                cmd.Parameters.Add(param2);
-                                cmd.Parameters.Add(param3);
-                                cmd.Parameters.Add(param4);
-                                cmd.Parameters.Add(param5);
+                                    cmd.Parameters.Add(param1);
+                                    cmd.Parameters.Add(param2);
+                                    cmd.Parameters.Add(param3);
+                                    cmd.Parameters.Add(param4);
+                                    cmd.Parameters.Add(param5);
 
-                                param1.Value = "OPERCS";
-                                param2.Value = itemId;
-                                param3.Value = nota.Danfe;
-                                param4.Value = nota.CFOP;
-                                param5.Value = nota.xml;
-                                cmd.ExecuteNonQuery();
+                                    param1.Value = "OPERCS";
+                                    param2.Value = itemId;
+                                    param3.Value = nota.Danfe;
+                                    param4.Value = nota.CFOP;
+                                    param5.Value = nota.xml;
+                                    cmd.ExecuteNonQuery();
+                                }
+
+                                //parametros = new DynamicParameters();
+
+                                //parametros.Add(name: "ItemId", value: itemId, direction: ParameterDirection.Input);
+                                //parametros.Add(name: "Danfe", value: nota.Danfe, direction: ParameterDirection.Input);
+                                //parametros.Add(name: "CFOP", value: nota.CFOP, direction: ParameterDirection.Input);
+
+                                //con.Execute(@"INSERT INTO OPERADOR.TB_AGENDAMENTO_CS_ITENS_DANFES (AUTONUM, AUTONUM_AGENDAMENTO_ITEM, DANFE, CFOP) VALUES (OPERADOR.SEQ_AG_CS_ITENS_DANFES.NEXTVAL, :ItemId, :Danfe, :CFOP)", parametros, transaction);
                             }
-                            //parametros = new DynamicParameters();
-
-                            //parametros.Add(name: "ItemId", value: itemId, direction: ParameterDirection.Input);
-                            //parametros.Add(name: "Danfe", value: nota.Danfe, direction: ParameterDirection.Input);
-                            //parametros.Add(name: "CFOP", value: nota.CFOP, direction: ParameterDirection.Input);
-
-                            //con.Execute(@"INSERT INTO OPERADOR.TB_AGENDAMENTO_CS_ITENS_DANFES (AUTONUM, AUTONUM_AGENDAMENTO_ITEM, DANFE, CFOP) VALUES (OPERADOR.SEQ_AG_CS_ITENS_DANFES.NEXTVAL, :ItemId, :Danfe, :CFOP)", parametros, transaction);
                         }
+                        if (countDAT > 0)
+                        {
+                            foreach (var dat in agendamento.AgDatItens)
+                            {
+                                InserirDAT(itemId, dat.DAT);
+                            }
+
+                        }
+
+                        if (countDUE > 0)
+                        {
+                            foreach (var due in agendamento.AgDueItens)
+                            {
+                                InserirDUE(itemId, due.DUE);
+                            }
+                        }
+
                     }
+
+                        
 
                     transaction.Commit();
                 }
@@ -304,6 +362,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                     parametros.Add(name: "Id", value: id, direction: ParameterDirection.Input);
 
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DANFES WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
+                    con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
+                    con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_CHASSI WHERE AUTONUM_AGENDAMENTO_ITEM IN (SELECT AUTONUM FROM TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS WHERE AUTONUM_AGENDAMENTO = :Id", parametros, transaction);
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CS WHERE AUTONUM = :Id", parametros, transaction);
@@ -888,7 +948,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
             {
                 using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
                 {
-                   
+
                     var query = con.Query<UploadXMLNfeDTO>(@" 
                        SELECT
                        A.AUTONUM AS Id,
@@ -923,6 +983,250 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                        SGIPA.TB_UPLOAD_XML A
                        WHERE 
                        DANFE = :Danfe ", parametros).FirstOrDefault();
+            }
+        }
+        public IEnumerable<AgendamentoDUE> GetAllDadosDUE(int id)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" SELECT  ");
+                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO, DUE, AUTONUM  ");
+                    sb.AppendLine(" FROM  ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE ");
+                    sb.AppendLine(" WHERE  ");
+                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM = " + id);
+
+
+                    var query = con.Query<AgendamentoDUE>(sb.ToString()).AsEnumerable();
+
+                    return query;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public IEnumerable<AgendamentoDAT> GetAllDadosDAT(int id)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" SELECT  ");
+                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO , DAT , AUTONUM ");
+                    sb.AppendLine(" FROM  ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT ");
+                    sb.AppendLine(" WHERE  ");
+                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM = " + id);
+
+
+                    var query = con.Query<AgendamentoDAT>(sb.ToString()).AsEnumerable();
+
+                    return query;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public bool InserirDUE(int agendamentoId, string DUE)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+
+
+                    sb.AppendLine(" INSERT INTO OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE  ");
+                    sb.AppendLine(" ( ");
+                    sb.AppendLine(" AUTONUM, ");
+                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM, ");
+                    sb.AppendLine(" DUE ");
+                    sb.AppendLine(" ) ");
+                    sb.AppendLine(" VALUES  ");
+                    sb.AppendLine(" ( ");
+                    sb.AppendLine(" OPERADOR.SEQ_AGENDAMENTO_CS_ITENS_DUE.NEXTVAL,  ");
+                    sb.AppendLine(" " + agendamentoId + ", ");
+                    sb.AppendLine(" '" + DUE + "' ");
+                    sb.AppendLine(" ) ");
+
+
+                    con.Query<bool>(sb.ToString()).FirstOrDefault();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool InserirDAT(int agendamentoId, string DAT)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" INSERT INTO OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT  ");
+                    sb.AppendLine(" ( ");
+                    sb.AppendLine(" AUTONUM, ");
+                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM, ");
+                    sb.AppendLine(" DAT ");
+                    sb.AppendLine(" ) ");
+                    sb.AppendLine(" VALUES  ");
+                    sb.AppendLine(" ( ");
+                    sb.AppendLine(" OPERADOR.SEQ_AGENDAMENTO_CS_ITENS_DAT.NEXTVAL,  ");
+                    sb.AppendLine(" "+ agendamentoId +", ");
+                    sb.AppendLine(" '"+ DAT +"' ");
+                    sb.AppendLine(" ) ");
+
+
+                    con.Query<bool>(sb.ToString()).FirstOrDefault();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool ExcluirDUE(int id)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE WHERE AUTONUM =  " + id);
+
+                    con.Query<bool>(sb.ToString()).FirstOrDefault();
+
+                    return true;                        
+                       
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool ExcluirDAT(int id)
+        {
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" DELETE FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE AUTONUM =  " + id);
+
+                    con.Query<bool>(sb.ToString()).FirstOrDefault();
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public int countDUEAgendamento(string due, int agendamento)
+        {
+            int count = 0;
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" SELECT count(1) FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE WHERE = DUE = '" + due + "' AND AUTONUM_AGENDAMENTO = " + agendamento);
+
+                    count = con.Query<int>(sb.ToString()).FirstOrDefault();
+
+                    return count;
+                }
+            }
+            catch (Exception ex)
+            {
+                return count; 
+            }
+        }
+        public int countDATAgendamento(string dat, int agendamento)
+        {
+            int count = 0;
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+
+                    sb.AppendLine(" SELECT count(1) FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE DAT = '" + dat + "' AND  AUTONUM_AGENDAMENTO = " + agendamento);
+
+                    count = con.Query<int>(sb.ToString()).FirstOrDefault();
+
+                    return count;
+                }
+            }
+            catch(Exception ex)
+            {
+                return count;
+            }
+        }
+        public int countDUE(string due)
+        {
+            int count = 0;
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" SELECT COUNT(1) FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE  WHERE DUE = '" + due + "' ");
+
+                    count = con.Query<int>(sb.ToString()).FirstOrDefault();
+
+                    return count;
+                }
+            }
+            catch (Exception ex)
+            {
+                return count;
+            }
+        }
+        public int countDAT(string dat)
+        {
+            int count = 0;
+            try
+            {
+                using (OracleConnection con = new OracleConnection(AppConfig.StringConexao()))
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    sb.AppendLine(" SELECT Count(1) FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE DAT '" + dat + "' ");
+
+                    count = con.Query<int>(sb.ToString()).FirstOrDefault();
+
+                    return count;
+                }
+            }
+            catch(Exception ex)
+            {
+                return count;
             }
         }
     }

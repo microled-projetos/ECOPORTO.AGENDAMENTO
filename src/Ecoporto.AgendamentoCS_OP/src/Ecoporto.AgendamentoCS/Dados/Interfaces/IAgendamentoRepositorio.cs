@@ -30,5 +30,15 @@ namespace Ecoporto.AgendamentoCS.Dados.Interfaces
         bool ItemCargaProjeto(int id);
         IEnumerable<UploadXMLNfeDTO> ObterArquivosUploadPorIdTransportadora(int idTransportadora);
         UploadXMLNfe BuscarArquivoPorIdTransportadora(string danfe);
+        IEnumerable<AgendamentoDUE> GetAllDadosDUE(int id);
+        IEnumerable<AgendamentoDAT> GetAllDadosDAT(int id);
+        bool InserirDUE(int agendamentoId, string DUE);
+        bool InserirDAT(int agendamentoId, string DAT);
+        bool ExcluirDUE(int id);
+        bool ExcluirDAT(int id);
+        int countDUEAgendamento(string due, int agendamento);
+        int countDATAgendamento(string dat, int agendamento);
+        int countDUE(string due);
+        int countDAT(string dat);
     }
 }

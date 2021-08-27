@@ -12,6 +12,8 @@ namespace Ecoporto.AgendamentoCS.Models.ViewModels
             Veiculos = new List<Veiculo>();
             Reservas = new List<Reserva>();
             ItensReserva = new List<ReservaItem>();
+            AG_DUE = new List<AgendamentoDUE>();
+            AG_DAT = new List<AgendamentoDAT>();
             Periodos = new List<Janela>();
             UploadXmlNfe = new List<UploadXMLNfe>();
         }
@@ -109,7 +111,6 @@ namespace Ecoporto.AgendamentoCS.Models.ViewModels
         public string EmailRegistro { get; set; }
 
         public bool PossuiEntrada { get; set; }
-
         public Empresa Empresa { get; set; }
 
         public DateTime DataCadastro { get; set; }
@@ -127,6 +128,10 @@ namespace Ecoporto.AgendamentoCS.Models.ViewModels
         public List<Reserva> Reservas { get; set; }
 
         public List<Janela> Periodos { get; set; }
+
+        public List<AgendamentoDUE> AG_DUE { get; set; } = new List<AgendamentoDUE>();
+
+        public List<AgendamentoDAT> AG_DAT { get; set; } = new List<AgendamentoDAT>();
 
         public List<ReservaItem> ItensReserva { get; set; }
 

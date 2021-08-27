@@ -43,10 +43,11 @@ namespace Ecoporto.AgendamentoCS
             bundles.Add(new ScriptBundle("~/bundles/jquery-mask")
                 .Include("~/Content/plugins/jquery-mask/jquery.mask.js"));
 
+
             bundles.Add(new StyleBundle("~/bundles/css")
                 .Include("~/Content/css/bootstrap.css",
                          "~/Content/css/estilos.css",
-                         "~/Content/css/fontawesome-all.css",
+                         "~/Content/css/fontawesome-all.css",                         
                          "~/Content/plugins/toastr/toastr.css",
                          "~/Content/plugins/easyAutocomplete/easy-autocomplete.css"));
 

@@ -38,11 +38,11 @@
             </div>
         </div>
 
-        @if (Model.NotasFiscais.Count() == 0 && Model.Bagagem == 0)
+        @if (Model.NotasFiscais.Count() == 0 && Model.Bagagem == 0 && Model.AG_DUE.Count() == 0 && Model.AG_DAT.Count() == 0)
         {
             <div class="row mt-5">
                 <div class="col-md-10 offset-md-1">
-                    <h5 style="color: red; font-weight: bold">Seu Protocolo só poderá ser impresso quando o XML da DANFE estiver vinculado ao Agendamento</h5>
+                    <h5 style="color: red; font-weight: bold">Seu Protocolo só poderá ser impresso quando os documentos (XML da DANFE, DUE OU DAT), estiver vinculado ao Agendamento</h5>
                 </div>
             </div>
         }

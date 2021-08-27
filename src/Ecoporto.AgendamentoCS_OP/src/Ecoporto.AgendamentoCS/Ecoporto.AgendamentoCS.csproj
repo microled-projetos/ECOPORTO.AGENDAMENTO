@@ -255,6 +255,8 @@
     <Compile Include="Helpers\Identity.cs" />
     <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Models\Agendamento.cs" />
+    <Compile Include="Models\AgendamentoDAT.cs" />
+    <Compile Include="Models\AgendamentoDUE.cs" />
     <Compile Include="Models\AgendamentoItemDanfe.cs" />
     <Compile Include="Models\CFOP.cs" />
     <Compile Include="Models\DocumentoUpload.cs" />
@@ -300,6 +302,7 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\estilos.css" />
     <Content Include="Content\css\fontawesome-all.css" />
+    <Content Include="Content\css\lc_switch.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\upload\bootstrap-image-gallery.min.css" />
     <Content Include="Content\css\upload\jquery.fileupload-ui.css" />
@@ -330,6 +333,7 @@
     <Content Include="Content\js\jquery-3.3.1.js" />
     <Content Include="Content\js\jquery-3.4.1.js" />
     <Content Include="Content\js\jquery.unobtrusive-ajax.js" />
+    <Content Include="Content\js\lc_switch.js" />
     <Content Include="Content\js\popper.min.js" />
     <Content Include="Content\js\upload\bootstrap-image-gallery.min.js" />
     <Content Include="Content\js\upload\bootstrap.js" />
@@ -491,6 +495,10 @@
     <Content Include="Views\Shared\_uploadXMLNfe\_grid.cshtml" />
     <Content Include="Views\Agendamento\_DanfesCarregadas.cshtml" />
     <Content Include="Views\Shared\_ModalExclusaoTodos.cshtml" />
+    <Content Include="Views\Agendamento\_DUE.cshtml" />
+    <Content Include="Views\Agendamento\_DAT.cshtml" />
+    <Content Include="Views\Agendamento\_ModalExclusaoDAT.cshtml" />
+    <Content Include="Views\Agendamento\_ModalExclusaoDUE.cshtml" />
     <None Include="Web References\WsBDCC\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

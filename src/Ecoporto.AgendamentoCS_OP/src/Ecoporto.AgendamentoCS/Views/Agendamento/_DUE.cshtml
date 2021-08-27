@@ -1,0 +1,49 @@
+﻿@model  IEnumerable<Ecoporto.AgendamentoCS.Models.AgendamentoDUE>
+
+<div class="row" id="divDUE" style="display:none; padding-bottom:20px;">
+    <div class="col-md-9">
+        <input type="text" class="form-control" id="txtDUE" placeholder="Preencha o campo DUE Ex: ##BR##########" />
+    </div>
+    <div class="col-md-3">
+        <a id="btnAdicionarDUE" href="#" class="btn btn-success btn-outline-info btn-block btn-as-block right">SALVAR   <i class="fas fa-save"></i></a>
+    </div>
+</div>
+<div class="table-responsive" style="display: initial" id="tabelaDUE">
+    <table id="tblItensDUE" class="table table-sm">
+        <thead class="">
+            <tr>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">Numero DUE</th>
+
+                <th scope="col">&nbsp;</th>
+
+            </tr>
+        </thead>
+        <tbody id="linhas-items-due">
+
+            @{
+                foreach (var itemDUE in Model)
+                {
+                        <tr>
+                            <td class="td-icone">
+                                <img src="@Url.Content("~/Content/img/icone-nf.png")" />
+                            </td>
+                            <td class="td-w-70" id="dueLine" width="90%">
+                                @itemDUE.DUE
+                            </td>
+                            <td></td>
+                            <td width="50" class="campo-acao"><a href="#" onclick="excluirItemDUE(@itemDUE.AUTONUM, @itemDUE.AUTONUM_AGENDAMENTO)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i></a></td>
+
+                        </tr>
+
+                }
+
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
