@@ -1365,8 +1365,16 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDanfes([Bind(Include = "Danfe, Reserva, CFOP, xml, BookingCsItemId")] NotaFiscal nf)
         {
-            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
-            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
+            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
+            //GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+            //GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+
+            if(agDat > 0)
+                return RetornarErro("Este atendimento já tem uma DAT associada ele - Danfe não cadastrada");
+
+            if(agDue > 0)
+                return RetornarErro("Este atendimento já tem uma DUE associada ele - Danfe não cadastrada");
 
             var danfeBusca = _agendamentoRepositorio.ObterNotasFiscaisPorDanfe(nf.Danfe);
 
@@ -1441,8 +1449,18 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDUE([Bind(Include = "AUTONUM_AGENDAMENTO, DUE, AUTONUM")] AgendamentoDUE obj)
         {
-            GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
-            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+
+            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
+            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
+            //GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
+            //GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+
+            if (agDat > 0)
+                return RetornarErro("Este atendimento já tem uma DAT associada ele - DUE não cadastrada");
+
+            if (agNF > 0)
+                return RetornarErro("Este atendimento já tem uma NF associada ele - DUE não cadastrada");
+            
 
             var countDUE = _agendamentoRepositorio.countDUE(obj.DUE);
 
@@ -1472,8 +1490,17 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDAT([Bind(Include = "AUTONUM, AUTONUM_AGENDAMENTO, DAT")] AgendamentoDAT obj)
         {
-            GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
-            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
+            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
+            //GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
+            //GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+
+            if (agDue > 0)
+                return RetornarErro("Este atendimento já tem uma DUE associada ele - DAT não cadastrada");
+
+            if (agNF > 0)
+                return RetornarErro("Este atendimento já tem uma NF associada ele - DAT não cadastrada");
+
 
             var countDAT = _agendamentoRepositorio.countDAT(obj.DAT);
 

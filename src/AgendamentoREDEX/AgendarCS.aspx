@@ -620,13 +620,14 @@
                                                     <ItemStyle HorizontalAlign="Right" />
                                                 </asp:BoundField>
                                                <%--  <%# IIf(Eval(&quot;ARQUIVO_DANFE&quot;) = &quot;X&quot;, False, True)  %>' " --%>
+                                                <%--Visible='<%# IIf(Eval("ARQUIVO_DANFE") = "X", False, True)  %>' --%>
                                                  <asp:TemplateField HeaderText="">
                                                     <ItemTemplate>
                                                         <asp:HyperLink 
                                                             ID="HyperLink1" 
                                                             runat="server" 
-                                                            Target="_blank"
-                                                             Visible='<%# IIf(Eval("ARQUIVO_DANFE") <> "X", True, False)  %>' 
+                                                            Target="_blank"                                                            
+                                                            Visible="True"
                                                             NavigateUrl='<%# "~/VisualizaDanfe.aspx?id=" & Eval("AUTONUM") & "&tipo=1" %>'>
                                                             <img src='<%= Page.ResolveUrl("~/imagens/nfe.jpg") %>' width="50px" height="50px"/>
                                                         </asp:HyperLink>
