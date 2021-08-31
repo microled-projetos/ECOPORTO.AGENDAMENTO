@@ -29,11 +29,11 @@
                                 <img src="@Url.Content("~/Content/img/icone-nf.png")" />
                             </td>
 
-                            <td class="td-w-10" id="dueLine">
+                            <td class="td-w-70" id="dueLine">
                                 @item.DAT
                             </td>
 
-                            <td class="campo-acao"><a href="#" onclick="excluirItemDUE(@item.AUTONUM)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i></a></td>
+                            <td width="50" class="campo-acao"><a href="#" onclick="excluirItemDAT(@item.AUTONUM_AGENDAMENTO,@item.AUTONUM)" class="btn btn-danger btn-sm btn-acao"><i class="fa fa-trash"></i></a></td>
 
                         </tr>
 

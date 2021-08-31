@@ -522,8 +522,7 @@ Public Class AgendarCS
                     End If
                     If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
                         SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)   ")
-                        SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") ")
-
+                        'SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") ")
                         SQL.AppendLine(" LIMITE_CAMINHOES  ")
 
                     Else
@@ -533,7 +532,8 @@ Public Class AgendarCS
                     SQL.AppendLine("  NVL(A.LIMITE_M3,0)       - NVL(AG.M3,0) LIMITE_M3, ")
                     SQL.AppendLine("  NVL(A.LIMITE_PESO,0)     - NVL(AG.PESO,0)  LIMITE_PESO, ")
                     SQL.AppendLine("  NVL(A.LIMITE_VOLUMES,0)  - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
-                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVLL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0) LIMITE_CAMINHOES  ")
+                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVLL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  ")
+
                 End If
                 SQL.AppendLine("  FROM REDEX.TB_GD_RESERVA A ")
                 SQL.AppendLine("   LEFT JOIN ( Select * From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text + ") RL ON RL.AUTONUM_GD_RESERVA=A.AUTONUM_GD_RESERVA ")
@@ -1353,8 +1353,7 @@ Public Class AgendarCS
                     SQL.AppendLine("  0 LIMITE_VOLUMES,  ")
                 End If
                 If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
-                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  ")
-                    SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") LIMITE_CAMINHOES ")
+                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  LIMITE_CAMINHOES ")
                 Else
                     SQL.AppendLine("  0 LIMITE_CAMINHOES  ")
                 End If
@@ -1363,7 +1362,8 @@ Public Class AgendarCS
                 SQL.AppendLine("  NVL(A.LIMITE_PESO,0)     - NVL(AG.PESO,0)  LIMITE_PESO, ")
                 SQL.AppendLine("  NVL(A.LIMITE_VOLUMES,0)  - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
                 SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  ")
-                SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") LIMITE_CAMINHOES ")
+                'SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") ")
+                SQL.AppendLine(" LIMITE_CAMINHOES ")
             End If
             SQL.AppendLine("  FROM Redex.TB_GD_RESERVA A ")
             SQL.AppendLine("   LEFT JOIN ( Select * From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text + ") RL ON RL.AUTONUM_GD_RESERVA=A.AUTONUM_GD_RESERVA ")
@@ -2226,7 +2226,7 @@ Public Class AgendarCS
             mpePergunta.Hide()
             Me.lblCodigoPeriodo.Text = ""
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Favor selecionar um novo periodo.','');", True)
-
+            Me.dgConsultaPeriodos.Enabled = True 
             Me.AccordionIndex.Value = 4
 
             Exit Sub

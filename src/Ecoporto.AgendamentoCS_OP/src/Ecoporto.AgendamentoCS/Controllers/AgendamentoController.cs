@@ -121,8 +121,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
             GerenciadorDeEstado<Upload>.RemoverTodos();
             GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
             GerenciadorDeEstado<ReservaItem>.RemoverTodos();
-            GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
-            GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
 
             return View(viewModel);
         }
@@ -387,9 +387,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
             GerenciadorDeEstado<Upload>.RemoverTodos();
             GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
             GerenciadorDeEstado<ReservaItem>.RemoverTodos();
-            GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
-            GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
-
+            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
+            
             var itens = _agendamentoRepositorio
                 .ObterItensAgendamento(agendamento.Id).ToList();
 
@@ -440,6 +440,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
             GerenciadorDeEstado<AgendamentoDAT>.ArmazenarLista(dat);
 
 
+            viewModel.AG_DAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
+
+
             ObterCFOPS(viewModel);
             ObterPeriodos(viewModel);
 
@@ -484,6 +487,8 @@ namespace Ecoporto.AgendamentoCS.Controllers
             GerenciadorDeEstado<Upload>.RemoverTodos();
             GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
             GerenciadorDeEstado<ReservaItem>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
+            GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
 
             var itens = _agendamentoRepositorio
                 .ObterItensAgendamento(agendamento.Id).ToList();
@@ -510,6 +515,22 @@ namespace Ecoporto.AgendamentoCS.Controllers
                 .ObterPeriodoPorId(agendamento.PeriodoId);
 
             viewModel.Periodos.Add(periodoAgendamento);
+
+            var due = _agendamentoRepositorio
+               .GetAllDadosDUE(agendamento.Id).ToList();
+
+            GerenciadorDeEstado<AgendamentoDUE>.ArmazenarLista(due);
+
+            viewModel.AG_DUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+
+
+            var dat = _agendamentoRepositorio
+                .GetAllDadosDAT(agendamento.Id).ToList();
+
+            GerenciadorDeEstado<AgendamentoDAT>.ArmazenarLista(dat);
+
+
+            viewModel.AG_DAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
 
             return View(viewModel);
         }
@@ -924,9 +945,23 @@ namespace Ecoporto.AgendamentoCS.Controllers
                     .ObterNotasFiscaisPorItemAgendamento(agendamento.Id, item.Id).ToList();
 
                 item.NotasFiscais.AddRange(notas);
-                if (agendamentoBagagem.Bagagem == 0 && item.NotasFiscais.Count() == 0)
+
+
+                var due = _agendamentoRepositorio
+                    .GetAllDadosDUE(agendamento.Id);
+
+                item.AG_DUE.AddRange(due);
+
+
+                var dat = _agendamentoRepositorio
+                    .GetAllDadosDAT(agendamento.Id);
+
+                item.AG_DAT.AddRange(dat);
+
+
+                if (agendamentoBagagem.Bagagem == 0 && item.NotasFiscais.Count() == 0 && item.AG_DUE.Count() == 0 && item.AG_DAT.Count() == 0)
                 {
-                    var message = new AgendamentoViewModel() { Message = "Pendente upload do XML da DANFE", Protocolo = agendamento.Protocolo };
+                    var message = new AgendamentoViewModel() { Message = "Pendente upload do XML da DANFE/DUE ou DAT", Protocolo = agendamento.Protocolo };
                     return RedirectToAction(nameof(Index), message);
                 }
             }
@@ -1365,11 +1400,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDanfes([Bind(Include = "Danfe, Reserva, CFOP, xml, BookingCsItemId")] NotaFiscal nf)
         {
-            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
-            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
-            //GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
-            //GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
-
+            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == nf.BookingCsItemId).Count();
+            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == nf.BookingCsItemId).Count();
+            
             if(agDat > 0)
                 return RetornarErro("Este atendimento já tem uma DAT associada ele - Danfe não cadastrada");
 
@@ -1449,18 +1482,16 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDUE([Bind(Include = "AUTONUM_AGENDAMENTO, DUE, AUTONUM")] AgendamentoDUE obj)
         {
+            
+            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO).Count(); 
+            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Where(a => a.BookingCsItemId == obj.AUTONUM_AGENDAMENTO).Count();
 
-            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
-            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
-            //GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
-            //GerenciadorDeEstado<AgendamentoDAT>.RemoverTodos();
 
             if (agDat > 0)
                 return RetornarErro("Este atendimento já tem uma DAT associada ele - DUE não cadastrada");
 
             if (agNF > 0)
-                return RetornarErro("Este atendimento já tem uma NF associada ele - DUE não cadastrada");
-            
+                return RetornarErro("Este atendimento já tem uma NF associada ele - DUE não cadastrada");            
 
             var countDUE = _agendamentoRepositorio.countDUE(obj.DUE);
 
@@ -1490,11 +1521,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [ValidateInput(false)]
         public ActionResult CadastrarDAT([Bind(Include = "AUTONUM, AUTONUM_AGENDAMENTO, DAT")] AgendamentoDAT obj)
         {
-            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
-            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
-            //GerenciadorDeEstado<NotaFiscal>.RemoverTodos();
-            //GerenciadorDeEstado<AgendamentoDUE>.RemoverTodos();
-
+            int agDue = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO).Count();
+            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Where(a => a.BookingCsItemId == obj.AUTONUM_AGENDAMENTO).Count();
+            
             if (agDue > 0)
                 return RetornarErro("Este atendimento já tem uma DUE associada ele - DAT não cadastrada");
 
@@ -1532,15 +1561,14 @@ namespace Ecoporto.AgendamentoCS.Controllers
             var due = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == agendamento).ToList();
 
             return PartialView("_DUE", due);
-
         }
 
         [HttpPost]
         public ActionResult ExcluirDAT(int id, int agendamento)
         {
-            GerenciadorDeEstado<AgendamentoDUE>.Remover(id);
+            GerenciadorDeEstado<AgendamentoDAT>.Remover(id);
 
-            var dat = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == agendamento).ToList();
+            var dat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == agendamento).ToList();
 
             return PartialView("_DAT", dat);
         }

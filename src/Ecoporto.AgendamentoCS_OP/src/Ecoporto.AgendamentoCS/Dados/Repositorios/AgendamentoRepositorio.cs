@@ -124,8 +124,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                         //Insere os dados na TB_AGENDAMENTO_CS_ITENS_DANFE, TB_AGENDAMENTO_CS_ITENS_DUE, ou TB_AGENDAMENTO_CS_ITENS_DAT
 
                         int countDANFES = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
-                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
-                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
+                        var countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
+                        var countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
 
                         if (countDANFES > 0) {
                             foreach (var nota in item.NotasFiscais)
@@ -163,24 +163,24 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                                     cmd.ExecuteNonQuery();
                                 }
                             }
+                        }
 
-                            if (countDAT > 0)
+                        if (countDAT != null)
+                        {
+                            foreach (var dat in item.AG_DAT)
                             {
-                                foreach (var dat in item.AG_DAT)
-                                {
-                                    InserirDAT(itemId, dat.DAT);
-                                }
-
+                                InserirDAT(itemId, dat.DAT);
                             }
 
-                            if (countDUE > 0) 
+                        }
+
+                        if (countDUE != null)
+                        {
+                            foreach (var due in item.AG_DUE)
                             {
-                                foreach (var due in item.AG_DUE)
-                                {
-                                    InserirDUE(itemId, due.DUE);
-                                }
+                                InserirDUE(itemId, due.DUE);
                             }
-                        }                        
+                        }
                     }
 
                     transaction.Commit();
@@ -263,8 +263,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                         }
 
                         int countDANFES = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
-                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
-                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
+                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(c=>c.AUTONUM_AGENDAMENTO == agendamento.Id).Count();
+                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(c => c.AUTONUM_AGENDAMENTO == agendamento.Id).Count();
 
 
                         if (countDANFES > 0)
@@ -993,12 +993,33 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" SELECT  ");
-                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO, DUE, AUTONUM  ");
-                    sb.AppendLine(" FROM  ");
-                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE ");
-                    sb.AppendLine(" WHERE  ");
-                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM = " + id);
+                    //sb.AppendLine(" SELECT  ");
+                    //sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO, DUE, AUTONUM  ");
+                    //sb.AppendLine(" FROM  ");
+                    //sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE ");
+                    //sb.AppendLine(" WHERE  ");
+                    //sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM = " + id);
+
+
+                    sb.AppendLine(" SELECT ");
+                    sb.AppendLine(" A.AUTONUM As Id, ");
+                    sb.AppendLine(" A.AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO,  ");
+                    sb.AppendLine(" A.DUE, ");
+                    sb.AppendLine(" B.AUTONUM_CS_BOOKING_ITEM As BookingCsItemId,                         ");
+                    sb.AppendLine(" D.REFERENCE As Reserva, ");
+                    sb.AppendLine(" E.AUTONUM ");
+                    sb.AppendLine(" FROM ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DUE A ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS B ON A.AUTONUM_AGENDAMENTO_ITEM = B.AUTONUM ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_CS_BOOKING_ITEM C ON B.AUTONUM_CS_BOOKING_ITEM = C.AUTONUM ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_CS_BOOKING D ON C.AUTONUM_CS_BOOKING = D.AUTONUM ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS E ON B.AUTONUM_AGENDAMENTO = E.AUTONUM ");
+                    sb.AppendLine(" WHERE ");
+                    sb.AppendLine(" E.AUTONUM =" + id);
 
 
                     var query = con.Query<AgendamentoDUE>(sb.ToString()).AsEnumerable();
@@ -1019,12 +1040,34 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" SELECT  ");
-                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO , DAT , AUTONUM ");
-                    sb.AppendLine(" FROM  ");
-                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT ");
-                    sb.AppendLine(" WHERE  ");
-                    sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM = " + id);
+                    //sb.AppendLine(" SELECT  ");
+                    //sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO , DAT , AUTONUM ");
+                    //sb.AppendLine(" FROM  ");
+                    //sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT ");
+                    //sb.AppendLine(" WHERE  ");
+                    //sb.AppendLine(" AUTONUM_AGENDAMENTO_ITEM = " + id);
+
+
+                    sb.AppendLine(" SELECT ");
+                    sb.AppendLine(" A.AUTONUM As Id, ");
+                    sb.AppendLine(" A.AUTONUM_AGENDAMENTO_ITEM AS AUTONUM_AGENDAMENTO,  ");
+                    sb.AppendLine(" A.DAT, ");
+                    sb.AppendLine(" B.AUTONUM_CS_BOOKING_ITEM As BookingCsItemId,                         ");
+                    sb.AppendLine(" D.REFERENCE As Reserva, ");
+                    sb.AppendLine(" E.AUTONUM ");
+                    sb.AppendLine(" FROM ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT A ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS_ITENS B ON A.AUTONUM_AGENDAMENTO_ITEM = B.AUTONUM ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_CS_BOOKING_ITEM C ON B.AUTONUM_CS_BOOKING_ITEM = C.AUTONUM ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_CS_BOOKING D ON C.AUTONUM_CS_BOOKING = D.AUTONUM ");
+                    sb.AppendLine(" INNER JOIN ");
+                    sb.AppendLine(" OPERADOR.TB_AGENDAMENTO_CS E ON B.AUTONUM_AGENDAMENTO = E.AUTONUM ");
+                    sb.AppendLine(" WHERE ");
+                    sb.AppendLine(" E.AUTONUM =" + id);
+
 
 
                     var query = con.Query<AgendamentoDAT>(sb.ToString()).AsEnumerable();
@@ -1217,7 +1260,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.AppendLine(" SELECT Count(1) FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE DAT '" + dat + "' ");
+                    sb.AppendLine(" SELECT Count(1) FROM OPERADOR.TB_AGENDAMENTO_CS_ITENS_DAT WHERE DAT = '" + dat + "' ");
 
                     count = con.Query<int>(sb.ToString()).FirstOrDefault();
 
