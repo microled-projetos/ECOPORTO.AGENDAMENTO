@@ -1318,118 +1318,118 @@ Public Class AgendarCS
         Dim Contar As Integer
 
         If Me.lblCodigoBooking.Text > "" Then
-
-            sSql = "Select count(1) contar From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text
-            DsDes = Banco.List(sSql)
-            Contar = Convert.ToInt32(DsDes.Rows(0)("contar").ToString())
-
-            sSql = "SELECT FLAG_CS_M3, FLAG_CS_PESO, FLAG_CS_VOLUME, FLAG_CS_CAMINHAO, FLAG_CN_CAMINHAO FROM Redex.TB_AGENDAMENTO_WEB_PERIODO_DES "
-            'sSql = sSql & "  WHERE PATIO =" & Val(Me.lblCodigoPatio.Text)
-            DsDes = Banco.List(sSql)
-
-            SQL.AppendLine(" SELECT DISTINCT AUTONUM_GD_RESERVA, PERIODO_INICIAL, PERIODO_FINAL, ")
-            SQL.AppendLine(" CASE WHEN LIMITE_PESO < 0 THEN 0 ELSE LIMITE_PESO END LIMITE_PESO,")
-            SQL.AppendLine(" CASE WHEN LIMITE_VOLUMES < 0 THEN 0 ELSE LIMITE_VOLUMES END LIMITE_VOLUMES,")
-            SQL.AppendLine(" CASE WHEN LIMITE_M3 < 0 THEN 0 ELSE LIMITE_M3 END LIMITE_M3,")
-            SQL.AppendLine(" CASE WHEN LIMITE_CAMINHOES < 0 THEN 0 ELSE LIMITE_CAMINHOES END LIMITE_CAMINHOES,PERIODO_ORDER")
-            SQL.AppendLine(" FROM (")
-            SQL.AppendLine("  SELECT A.AUTONUM_GD_RESERVA,A.PERIODO_INICIAL PERIODO_ORDER, ")
-            SQL.AppendLine("  TO_CHAR(A.PERIODO_INICIAL,'DD/MM/YYYY HH24:MI') PERIODO_INICIAL, ")
-            SQL.AppendLine("  TO_CHAR(A.PERIODO_FINAL,'DD/MM/YYYY HH24:MI') PERIODO_FINAL, ")
-            If DsDes.Rows.Count > 0 Then
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) > 0 Then
-                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_M3,0)        end   - NVL(AG.M3,0) LIMITE_M3, ")
-                Else
-                    SQL.AppendLine("   0 LIMITE_M3, ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) > 0 Then
-                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_PESO,0)      end   - NVL(AG.PESO,0)  LIMITE_PESO, ")
-                Else
-                    SQL.AppendLine(" 0  LIMITE_PESO, ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) > 0 Then
-                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_VOLUMES,0)   end   - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
-                Else
-                    SQL.AppendLine("  0 LIMITE_VOLUMES,  ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
-                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  LIMITE_CAMINHOES ")
-                Else
-                    SQL.AppendLine("  0 LIMITE_CAMINHOES  ")
-                End If
-            Else
-                SQL.AppendLine("  NVL(A.LIMITE_M3,0)       - NVL(AG.M3,0) LIMITE_M3, ")
-                SQL.AppendLine("  NVL(A.LIMITE_PESO,0)     - NVL(AG.PESO,0)  LIMITE_PESO, ")
-                SQL.AppendLine("  NVL(A.LIMITE_VOLUMES,0)  - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
-                SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  ")
-                'SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") ")
-                SQL.AppendLine(" LIMITE_CAMINHOES ")
-            End If
-            SQL.AppendLine("  FROM Redex.TB_GD_RESERVA A ")
-            SQL.AppendLine("   LEFT JOIN ( Select * From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text + ") RL ON RL.AUTONUM_GD_RESERVA=A.AUTONUM_GD_RESERVA ")
-            SQL.AppendLine("  LEFT JOIN (")
-            SQL.AppendLine("    SELECT NVL(SUM(QTDE),0) AS QTD, NVL(SUM(M3),0) M3, NVL(SUM(PESO_BRUTO),0) PESO, AUTONUM_GD_RESERVA ")
-            SQL.AppendLine("    FROM Redex.TB_AGENDAMENTO_WEB_CS_NF ")
-            SQL.AppendLine("    LEFT JOIN Redex.TB_AGENDAMENTO_WEB_CS ON TB_AGENDAMENTO_WEB_CS_NF.AUTONUM_AGENDAMENTO = TB_AGENDAMENTO_WEB_CS.AUTONUM ")
-            If Contar > 0 Then
-                SQL.AppendLine(" WHERE AUTONUM_BOOKING =" + Me.lblCodigoBooking.Text)
-            End If
-            SQL.AppendLine("    GROUP BY AUTONUM_GD_RESERVA")
-            SQL.AppendLine("  ) AG On A.AUTONUM_GD_RESERVA = AG.AUTONUM_GD_RESERVA")
-            SQL.AppendLine("  LEFT JOIN (")
             Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
             If Me.lblCodigoVeiculo.Text > "0" Then
+
+
+                sSql = "Select count(1) contar From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text
+                DsDes = Banco.List(sSql)
+                Contar = Convert.ToInt32(DsDes.Rows(0)("contar").ToString())
+
+                sSql = "SELECT FLAG_CS_M3, FLAG_CS_PESO, FLAG_CS_VOLUME, FLAG_CS_CAMINHAO, FLAG_CN_CAMINHAO FROM Redex.TB_AGENDAMENTO_WEB_PERIODO_DES "
+                'sSql = sSql & "  WHERE PATIO =" & Val(Me.lblCodigoPatio.Text)
+                DsDes = Banco.List(sSql)
+
+                SQL.AppendLine(" SELECT DISTINCT AUTONUM_GD_RESERVA, PERIODO_INICIAL, PERIODO_FINAL, ")
+                SQL.AppendLine(" CASE WHEN LIMITE_PESO < 0 THEN 0 ELSE LIMITE_PESO END LIMITE_PESO,")
+                SQL.AppendLine(" CASE WHEN LIMITE_VOLUMES < 0 THEN 0 ELSE LIMITE_VOLUMES END LIMITE_VOLUMES,")
+                SQL.AppendLine(" CASE WHEN LIMITE_M3 < 0 THEN 0 ELSE LIMITE_M3 END LIMITE_M3,")
+                SQL.AppendLine(" CASE WHEN LIMITE_CAMINHOES < 0 THEN 0 ELSE LIMITE_CAMINHOES END LIMITE_CAMINHOES,PERIODO_ORDER")
+                SQL.AppendLine(" FROM (")
+                SQL.AppendLine("  SELECT A.AUTONUM_GD_RESERVA,A.PERIODO_INICIAL PERIODO_ORDER, ")
+                SQL.AppendLine("  TO_CHAR(A.PERIODO_INICIAL,'DD/MM/YYYY HH24:MI') PERIODO_INICIAL, ")
+                SQL.AppendLine("  TO_CHAR(A.PERIODO_FINAL,'DD/MM/YYYY HH24:MI') PERIODO_FINAL, ")
+                If DsDes.Rows.Count > 0 Then
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) > 0 Then
+                        SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_M3,0)        end   - NVL(AG.M3,0) LIMITE_M3, ")
+                    Else
+                        SQL.AppendLine("   0 LIMITE_M3, ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) > 0 Then
+                        SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_PESO,0)      end   - NVL(AG.PESO,0)  LIMITE_PESO, ")
+                    Else
+                        SQL.AppendLine(" 0  LIMITE_PESO, ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) > 0 Then
+                        SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_VOLUMES,0)   end   - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
+                    Else
+                        SQL.AppendLine("  0 LIMITE_VOLUMES,  ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
+                        SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  LIMITE_CAMINHOES ")
+                    Else
+                        SQL.AppendLine("  0 LIMITE_CAMINHOES  ")
+                    End If
+                Else
+                    SQL.AppendLine("  NVL(A.LIMITE_M3,0)       - NVL(AG.M3,0) LIMITE_M3, ")
+                    SQL.AppendLine("  NVL(A.LIMITE_PESO,0)     - NVL(AG.PESO,0)  LIMITE_PESO, ")
+                    SQL.AppendLine("  NVL(A.LIMITE_VOLUMES,0)  - NVL(AG.QTD,0) LIMITE_VOLUMES,  ")
+                    SQL.AppendLine("  case when NVL(rl.limite,0)>0 then rl.limite else NVL(A.LIMITE_CAMINHOES,0) end   - NVL(CAM.QTD,0)  ")
+                    'SQL.AppendLine("  + (select count(distinct(AUTONUM_VEICULO)) from REDEX.TB_AGENDAMENTO_WEB_CS where AUTONUM_GD_RESERVA = " & Me.lblCodigoPeriodo.Text & " and AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & ") ")
+                    SQL.AppendLine(" LIMITE_CAMINHOES ")
+                End If
+                SQL.AppendLine("  FROM Redex.TB_GD_RESERVA A ")
+                SQL.AppendLine("   LEFT JOIN ( Select * From redex.TB_RESERVA_PERIODO WHERE AUTONUM_BOO=" + Me.lblCodigoBooking.Text + ") RL ON RL.AUTONUM_GD_RESERVA=A.AUTONUM_GD_RESERVA ")
+                SQL.AppendLine("  LEFT JOIN (")
+                SQL.AppendLine("    SELECT NVL(SUM(QTDE),0) AS QTD, NVL(SUM(M3),0) M3, NVL(SUM(PESO_BRUTO),0) PESO, AUTONUM_GD_RESERVA ")
+                SQL.AppendLine("    FROM Redex.TB_AGENDAMENTO_WEB_CS_NF ")
+                SQL.AppendLine("    LEFT JOIN Redex.TB_AGENDAMENTO_WEB_CS ON TB_AGENDAMENTO_WEB_CS_NF.AUTONUM_AGENDAMENTO = TB_AGENDAMENTO_WEB_CS.AUTONUM ")
+                If Contar > 0 Then
+                    SQL.AppendLine(" WHERE AUTONUM_BOOKING =" + Me.lblCodigoBooking.Text)
+                End If
+                SQL.AppendLine("    GROUP BY AUTONUM_GD_RESERVA")
+                SQL.AppendLine("  ) AG On A.AUTONUM_GD_RESERVA = AG.AUTONUM_GD_RESERVA")
+                SQL.AppendLine("  LEFT JOIN (")
                 SQL.AppendLine(" Select Case when max(NVL(cm.qtde,0))=0 then SUM(1) else ")
                 SQL.AppendLine(" 0 End QTD, cs.AUTONUM_GD_RESERVA  ")
-                SQL.AppendLine(" From (select  distinct autonum_veiculo ,  AUTONUM_GD_RESERVA from  redex.TB_AGENDAMENTO_WEB_CS) cs ")
-                SQL.AppendLine(" Left Join( select distinct 1 qtde , AUTONUM_GD_RESERVA from ")
-                SQL.AppendLine(" redex.TB_AGENDAMENTO_WEB_CS where ")
-                SQL.AppendLine(" AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & " And AUTONUM_GD_RESERVA > 0)  cm ")
-                SQL.AppendLine(" On cs.AUTONUM_GD_RESERVA=cm.AUTONUM_GD_RESERVA ")
-                SQL.AppendLine(" Group BY CS.AUTONUM_GD_RESERVA   ")
+                    SQL.AppendLine(" From (select  distinct autonum_veiculo ,  AUTONUM_GD_RESERVA from  redex.TB_AGENDAMENTO_WEB_CS) cs ")
+                    SQL.AppendLine(" Left Join( select distinct 1 qtde , AUTONUM_GD_RESERVA from ")
+                    SQL.AppendLine(" redex.TB_AGENDAMENTO_WEB_CS where ")
+                    SQL.AppendLine(" AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & " And AUTONUM_GD_RESERVA > 0)  cm ")
+                    SQL.AppendLine(" On cs.AUTONUM_GD_RESERVA=cm.AUTONUM_GD_RESERVA ")
+                    SQL.AppendLine(" Group BY CS.AUTONUM_GD_RESERVA   ")
+
+                    SQL.AppendLine("  ) CAM ")
+                SQL.AppendLine("   On A.AUTONUM_GD_RESERVA = CAM.AUTONUM_GD_RESERVA")
+                SQL.AppendLine(" WHERE  A.SERVICO_GATE = 'A' AND A.TIPO = 'CS' AND TO_CHAR(A.PERIODO_INICIAL,'YYYYMMDDHH24MI') >= TO_CHAR(SYSDATE,'YYYYMMDDHH24MI') ")
+                If Val(Me.lblCodigoPatio.Text) <> 0 Then
+                    SQL.AppendLine("  AND A.PATIO = " & Val(Me.lblCodigoPatio.Text))
+                Else
+                    SQL.AppendLine(" AND A.PATIO = 9999 ")
+                End If
+
+                Dim HoraAtual = DateTime.Now.ToString("yyyyMMdd")
+                SQL.AppendLine("    AND TO_CHAR(A.periodo_inicial,'YYYYMMDD HH24:MI:SS') > '" & HoraAtual & " 23:59:59' ")
+
+
+                SQL.AppendLine("  ) R ")
+                SQL.AppendLine("  WHERE AUTONUM_GD_RESERVA > 0 ")
+
+                If DsDes.Rows.Count > 0 Then
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) > 0 Then
+                        SQL.AppendLine(" AND LIMITE_M3 > 0 ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) > 0 Then
+                        SQL.AppendLine(" AND LIMITE_PESO > 0 ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) > 0 Then
+                        SQL.AppendLine(" AND LIMITE_VOLUMES > 0 ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
+                        SQL.AppendLine(" AND LIMITE_CAMINHOES > 0 ")
+                    End If
+                    If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) = 0 Then
+                        SQL.AppendLine(" AND LIMITE_CAMINHOES > 0 ")
+                    End If
+                End If
+                SQL.AppendLine(" AND (LIMITE_M3 > 0 or LIMITE_PESO > 0 or LIMITE_VOLUMES > 0 or LIMITE_CAMINHOES > 0 ) ")
+
+                SQL.AppendLine("ORDER BY TO_DATE(PERIODO_INICIAL,'DD/MM/YYYY HH24:MI') ")
+                Me.dgConsultaPeriodos.DataSource = Banco.List(SQL.ToString())
+                Me.dgConsultaPeriodos.DataBind()
             Else
-                SQL.AppendLine("    Select SUM(1) QTD, AUTONUM_GD_RESERVA")
-                SQL.AppendLine("    FROM  Redex.TB_AGENDAMENTO_WEB_CS")
-                SQL.AppendLine("    GROUP BY AUTONUM_GD_RESERVA")
+                SQL.Clear()
             End If
-            SQL.AppendLine("  ) CAM ")
-            SQL.AppendLine("   On A.AUTONUM_GD_RESERVA = CAM.AUTONUM_GD_RESERVA")
-            SQL.AppendLine(" WHERE  A.SERVICO_GATE = 'A' AND A.TIPO = 'CS' AND TO_CHAR(A.PERIODO_INICIAL,'YYYYMMDDHH24MI') >= TO_CHAR(SYSDATE,'YYYYMMDDHH24MI') ")
-            If Val(Me.lblCodigoPatio.Text) <> 0 Then
-                SQL.AppendLine("  AND A.PATIO = " & Val(Me.lblCodigoPatio.Text))
-            Else
-                SQL.AppendLine(" AND A.PATIO = 9999 ")
-            End If
-
-            Dim HoraAtual = DateTime.Now.ToString("yyyyMMdd")
-            SQL.AppendLine("    AND TO_CHAR(A.periodo_inicial,'YYYYMMDD HH24:MI:SS') > '" & HoraAtual & " 23:59:59' ")
-
-
-            SQL.AppendLine("  ) R ")
-            SQL.AppendLine("  WHERE AUTONUM_GD_RESERVA > 0 ")
-
-            If DsDes.Rows.Count > 0 Then
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) > 0 Then
-                    SQL.AppendLine(" AND LIMITE_M3 > 0 ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) > 0 Then
-                    SQL.AppendLine(" AND LIMITE_PESO > 0 ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) > 0 Then
-                    SQL.AppendLine(" AND LIMITE_VOLUMES > 0 ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) > 0 Then
-                    SQL.AppendLine(" AND LIMITE_CAMINHOES > 0 ")
-                End If
-                If Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_M3").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_PESO").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_VOLUME").ToString()) = 0 And Convert.ToInt32(DsDes.Rows(0)("FLAG_CS_CAMINHAO").ToString()) = 0 Then
-                    SQL.AppendLine(" AND LIMITE_CAMINHOES > 0 ")
-                End If
-            End If
-            SQL.AppendLine(" AND (LIMITE_M3 > 0 or LIMITE_PESO > 0 or LIMITE_VOLUMES > 0 or LIMITE_CAMINHOES > 0 ) ")
-
-            SQL.AppendLine("ORDER BY TO_DATE(PERIODO_INICIAL,'DD/MM/YYYY HH24:MI') ")
-            Me.dgConsultaPeriodos.DataSource = Banco.List(SQL.ToString())
-            Me.dgConsultaPeriodos.DataBind()
         Else
             SQL.Clear()
         End If
@@ -2226,7 +2226,7 @@ Public Class AgendarCS
             mpePergunta.Hide()
             Me.lblCodigoPeriodo.Text = ""
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "msgAlerta", "exibeMensagem('Favor selecionar um novo periodo.','');", True)
-            Me.dgConsultaPeriodos.Enabled = True 
+            Me.dgConsultaPeriodos.Enabled = True
             Me.AccordionIndex.Value = 4
 
             Exit Sub
