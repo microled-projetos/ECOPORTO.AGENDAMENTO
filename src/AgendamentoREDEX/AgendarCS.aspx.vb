@@ -1381,7 +1381,7 @@ Public Class AgendarCS
             If Me.lblCodigoVeiculo.Text > "0" Then
                 SQL.AppendLine(" Select Case when max(NVL(cm.qtde,0))=0 then SUM(1) else ")
                 SQL.AppendLine(" 0 End QTD, cs.AUTONUM_GD_RESERVA  ")
-                SQL.AppendLine(" From redex.TB_AGENDAMENTO_WEB_CS  cs ")
+                SQL.AppendLine(" From (select  distinct autonum_veiculo ,  AUTONUM_GD_RESERVA from  redex.TB_AGENDAMENTO_WEB_CS) cs ")
                 SQL.AppendLine(" Left Join( select distinct 1 qtde , AUTONUM_GD_RESERVA from ")
                 SQL.AppendLine(" redex.TB_AGENDAMENTO_WEB_CS where ")
                 SQL.AppendLine(" AUTONUM_VEICULO = " & Me.lblCodigoVeiculo.Text & " And AUTONUM_GD_RESERVA > 0)  cm ")
