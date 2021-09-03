@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\..\..\..\Dropbox\ecoporto\Ecoporto .NET\Ecoporto.Agendamentos\src\Agendamento Carga Solta SGIPA\UI\bin\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\packages\AjaxControlToolkit.20.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

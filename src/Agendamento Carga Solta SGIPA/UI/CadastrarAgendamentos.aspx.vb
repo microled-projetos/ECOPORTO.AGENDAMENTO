@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 
+
 Public Class CadastrarAgendamentos
     Inherits System.Web.UI.Page
 
@@ -560,7 +561,6 @@ Public Class CadastrarAgendamentos
     End Sub
 
     Private Sub ConsultaPeriodo()
-
         Dim Lotes As String = String.Empty
 
         If Me.dgNotas.Rows.Count > 0 Then
@@ -852,21 +852,28 @@ Public Class CadastrarAgendamentos
 
     End Function
 
-    Public Function ValidarPeriodo() As Boolean
+
+    Public Function ValidarPeriodo(DDC As String) As Boolean
         Dim SiglaAcao As Char
 
-        If Not Request.QueryString("action") Is Nothing Then
-            If Request.QueryString("action") = "edit" Then
-                SiglaAcao = "E"
-            Else
-                SiglaAcao = "N"
-            End If
-        Else 'new
-            SiglaAcao = "N"
+        If DDC > "0" Then
+            Return True
         End If
 
+        If Not Request.QueryString("action") Is Nothing Then
+                If Request.QueryString("action") = "edit" Then
+                    SiglaAcao = "E"
+                Else
+                    SiglaAcao = "N"
+                End If
+            Else 'new
+                SiglaAcao = "N"
+            End If
+
         If SiglaAcao = "N" Then
+
             If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text, hddnCbCavaloCarreta.Value) = True Then
+
                 Return True
             Else
                 Return False
@@ -876,6 +883,7 @@ Public Class CadastrarAgendamentos
                 Return True
             Else
                 If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text, hddnCbCavaloCarreta.Value) = True Then
+
                     Return True
                 Else
                     Return False
@@ -1031,6 +1039,7 @@ Public Class CadastrarAgendamentos
         lblPeriodo.Text = Periodo_Inicial & " - " & Periodo_Final
 
     End Sub
+
 
     Protected Sub btSalvar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btSalvar.Click
         Salvar()
@@ -1406,7 +1415,38 @@ Public Class CadastrarAgendamentos
         Return False
 
     End Function
+    Public Function ValidarPeriodo() As Boolean
+        Dim SiglaAcao As Char
 
+        If Not Request.QueryString("action") Is Nothing Then
+            If Request.QueryString("action") = "edit" Then
+                SiglaAcao = "E"
+            Else
+                SiglaAcao = "N"
+            End If
+        Else 'new
+            SiglaAcao = "N"
+        End If
+
+        If SiglaAcao = "N" Then
+            If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text, hddnCbCavaloCarreta.Value) = True Then
+                Return True
+            Else
+                Return False
+            End If
+        Else 'E
+            If lblCodigoPeriodo.Text = Session("PERIODO_ANTERIOR_COD").ToString Then
+                Return True
+            Else
+                If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text, hddnCbCavaloCarreta.Value) = True Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End If
+        End If
+
+    End Function
     Private Function ValidarBDCC(ByVal CPF As String) As Boolean
 
         Dim Autonomo As New Integer
@@ -1701,7 +1741,6 @@ Public Class CadastrarAgendamentos
             ConsultarNotas()
 
             If dgNotas.Rows.Count > 0 Then
-
                 ConsultaPeriodo()
                 cbLote.Enabled = False
                 btnExcluirProduto.Visible = True
@@ -1746,6 +1785,7 @@ Public Class CadastrarAgendamentos
         End If
         btnExcluirProduto.Visible = False
     End Sub
+
     Private Sub cbCavalo_TextChanged(sender As Object, e As EventArgs) Handles cbCavalo.TextChanged
 
         Dim Lotes As String = String.Empty
@@ -1791,20 +1831,5 @@ Public Class CadastrarAgendamentos
         dgPeriodos.DataSource = Agendamento.BuscarPeriodos(Lotes, TransportadoraOBJ.ID, VeiculoOBJ.ID)
         dgPeriodos.DataBind()
 
-    End Sub
-    Private Sub btnSim_Click(sender As Object, e As EventArgs) Handles btnSim.Click
-        Me.LblResp.Text = "S"
-        mpePergunta.Hide()
-        Salvar()
-    End Sub
-    Private Sub btnNao_Click(sender As Object, e As EventArgs) Handles btnNao.Click
-        Me.LblResp.Text = "N"
-        If Me.LblResp.Text = "N" Then
-            mpePergunta.Hide()
-            Me.lblCodigoPeriodo.Text = ""
-            ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Favor selecionar um novo periodo.');</script>", False)
-            Me.AccordionIndex.Value = 3
-            Exit Sub
-        End If
     End Sub
 End Class

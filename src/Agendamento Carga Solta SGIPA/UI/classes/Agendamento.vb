@@ -533,8 +533,8 @@ Public Class Agendamento
             SQL.Append("    SGIPA.DTE_TB_EMBALAGENS B ON A.EMBALAGEM = B.CODE ")
             SQL.Append("WHERE ")
             SQL.Append("    A.BL = {0} ")
-            SQL.Append("AND ")
-            SQL.Append("    NVL(A.USUARIO_DDC,0) = 0 ")
+            ' SQL.Append("AND ")
+            ' SQL.Append("    NVL(A.USUARIO_DDC,0) = 0 ")
 
             Rst.Open(String.Format(SQL.ToString(), Lote), Banco.Conexao, 3, 3)
 
@@ -570,7 +570,6 @@ Public Class Agendamento
         SQL.Append("    AUTONUM, MERCADORIA, ")
         SQL.Append("    (A.QUANTIDADE_REAL) - ")
         If Banco.BancoEmUso = "ORACLE" Then
-            'SQL.Append(" NVL((SELECT sum(NF.Qtde) FROM SGIPA.TB_AG_CS_NF NF , SGIPA.TB_AG_CS AG WHERE NF.AUTONUM_AGENDAMENTO=AG.AUTONUM AND AG.AUTONUM_TRANSPORTADORA>0 AND AG.AUTONUM_VEICULO>0 and NF.autonum_cs=A.AUTONUM),0)  AS SALDO ")
             SQL.Append("NVL((SELECT SUM(QTDE) FROM SGIPA.TB_AG_CS_NF WHERE AUTONUM_CS = A.AUTONUM), 0) AS SALDO")
         Else
             SQL.Append("ISNULL")
@@ -580,11 +579,8 @@ Public Class Agendamento
             SQL.Append("    AUTONUM_CS = A.AUTONUM),0) AS SALDO")
         End If
         SQL.Append("    FROM ")
-        If Banco.BancoEmUso = "ORACLE" Then
-            SQL.Append("    SGIPA.TB_CARGA_SOLTA A ")
-        Else
-            SQL.Append("    SGIPA.DBO.TB_CARGA_SOLTA A ")
-        End If
+        SQL.Append("    SGIPA.TB_CARGA_SOLTA A ")
+
         SQL.Append("    WHERE ")
         SQL.Append("    A.AUTONUM = {0}")
 
@@ -597,7 +593,6 @@ Public Class Agendamento
         End If
 
     End Function
-
 
     Public Function BuscarPeriodos(ByVal Lote As String, ByVal Transportadora As String, ByVal Veiculo As String) As DataTable
 
@@ -798,8 +793,6 @@ Public Class Agendamento
 
     End Function
 
-
-
     Public Function VerificarLimiteMovPeriodo(Reserva As String, Veiculo As Integer) As Boolean
         'Retorna True: se período é disponível para agendar
         'Retorna False: se período já alcançou o limite de qtde de agendamentos
@@ -876,7 +869,6 @@ Public Class Agendamento
 
 
     End Function
-
 
     ''' <summary>
     ''' Consulta Lotes Disponíveis para um determinado agendamento
@@ -956,6 +948,7 @@ Public Class Agendamento
         Return String.Format(SQL.ToString(), ID)
 
     End Function
+
 
 
     Public Function ConsultarLoteDocumentoDoAgendamento(ByVal Lote As String) As String
@@ -1065,14 +1058,7 @@ Public Class Agendamento
 
     End Function
 
-    ''' <summary>
-    ''' Insere ou atualiza lote do Agendamento de Carga Solta
-    ''' </summary>
-    ''' <param name="Lote">Lote selecionado</param>
-    ''' <param name="CodAgendamento">Autonum do Agendamento de Carga Solta</param>
-    ''' <returns>True: Se Função foi executada corretamente; False: Se houve erro ao executar função</returns>
-    ''' <remarks></remarks>
-    Public Function ColocarLoteAgendamento(ByVal Lote As String, ByVal CodAgendamento As String) As Boolean
+    Function ColocarLoteAgendamento(ByVal Lote As String, ByVal CodAgendamento As String) As String
         Dim Rst As New ADODB.Recordset
         Dim SQL As New StringBuilder
 
@@ -1088,12 +1074,27 @@ Public Class Agendamento
             SQL.Append("    AUTONUM = {1} ")
 
             Rst.Open(String.Format(SQL.ToString(), Lote, CodAgendamento), Banco.Conexao, 3, 3)
-            Return True
+
+            SQL.Append("SELECT ")
+            SQL.Append("    nvl(usuario_ddc,0) DDC ")
+            SQL.Append("FROM ")
+            SQL.Append("    SGIPA.TB_CARGA_SOLTA ")
+            SQL.Append(" WHERE ")
+            SQL.Append("    BL = {0} ")
+
+            Rst.Open(String.Format(SQL.ToString(), Lote), Banco.Conexao, 3, 3)
+
+            If Not Rst.EOF Then
+                Return Rst.Fields("DDC").Value.ToString()
+            End If
+
+
+
         Catch ex As Exception
             Throw New Exception("Ocorreu um erro: " & ex.Message)
         End Try
 
-        Return False
+        Return ""
 
     End Function
 
@@ -1378,7 +1379,7 @@ Public Class Agendamento
         End If
 
         'Não mostra registros DDC
-        SQL.Append("    AND NVL(CS.USUARIO_DDC,0) = 0 ")
+        'SQL.Append("    AND NVL(CS.USUARIO_DDC,0) = 0 ")
 
         SQL.Append(Filtro)
         SQL.Append(" GROUP BY ")

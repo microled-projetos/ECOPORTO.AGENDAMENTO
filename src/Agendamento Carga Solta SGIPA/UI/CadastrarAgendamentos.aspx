@@ -99,7 +99,14 @@
                                                                     Enabled="true" PromptText="Digite" TargetControlID="cbCavalo"
                                                                     PromptCssClass="PromptCSS">
                                                                 </asp:ListSearchExtender>
+<<<<<<< HEAD
                                                                 <asp:HiddenField ID="hddnCbCavaloCarreta" runat="server" />
+=======
+
+                                                                <asp:HiddenField ID="hddnCbCavaloCarreta" runat="server" />
+
+
+>>>>>>> 7fbf539317095448d38713eea6365f2caaec3b22
                                                             </td>
                                                             <td align="right" width="90px">Placa Carreta:
                                                             </td>
@@ -277,7 +284,15 @@
                                                     <asp:TextBox ID="txtPackingList" runat="server" Enabled="False" Font-Names="Verdana" Font-Size="12px" MaxLength="150" Width="98%"></asp:TextBox>
                                                 </td>
                                                 <td align="right">
+<<<<<<< HEAD
                                                     <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Excluir" Visible="false" Width="100%" />
+=======
+
+                                                    <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Excluir" Visible="false" Width="100%" />
+
+                                                    <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Exclur" Visible="false" Width="100%" />
+
+>>>>>>> 7fbf539317095448d38713eea6365f2caaec3b22
                                                 </td>
                                                 <td align="right">
                                                     <asp:Button ID="btnAdicProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CommandName="ADICIONAR" Font-Names="Verdana" Font-Size="9px" Height="18px" Text="Adicionar" Width="100%" />
@@ -473,7 +488,8 @@
                                     <asp:Label ID="Label2" runat="server" Font-Bold="True" Font-Names="Verdana" Font-Size="10px" Text="CARGA DISPONÍVEL NO LOTE/BL:"></asp:Label>
                                     <asp:Label ID="lblLoteSelecionado1" runat="server" Font-Bold="True" Font-Names="Verdana" Font-Size="11px" ForeColor="#CC0000"></asp:Label>
                                     <asp:Label ID="lblPatio" runat="server" Visible="False"></asp:Label>
-                                </asp:Panel>
+                                   <asp:Label ID="lblddc" runat="server" Visible="False"></asp:Label>
+                     </asp:Panel>
                             </div>
                         </td>
                     </tr>
