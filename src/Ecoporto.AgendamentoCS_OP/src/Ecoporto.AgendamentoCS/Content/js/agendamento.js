@@ -851,6 +851,20 @@ function obterDanfesPorItem(bookingCsItemId) {
         toastr.error(data.statusText, 'Agendamento');
     });
 }
+function obterDUEPorItem(bookingCsItemId) {
+    $.get(urlBase + 'Agendamento/ObteDUEPorItemId?bookingCsId=' + bookingCsItemId, function (resultado) {
+        if (resultado) {
+            $('#tabelaDUE').html(resultado);
+        }
+    });
+}
+function obterDATPorItem(bookingCsItemId) {
+    $.get(urlBase + 'Agendamento/ObteDATPorItemId?bookingCsId=' + bookingCsItemId, function (resultado) {
+        if (resultado) {
+            $('#tabelaDAT').html(resultado);
+        }
+    });
+}
 function obterUploadDanfesCarregadas(idTransportadora) {
 
     $.get(urlBase + 'Agendamento/ObterUploadDanfesNfe?idTransportadora=' + idTransportadora, function (resultado) {

@@ -13,7 +13,7 @@
                     Dim Transportadora As Transportadora
                     Dim Usuario As New Usuario
 
-                   Transportadora = Login.Acesso(Request.QueryString("ID"))
+                    Transportadora = Login.Acesso(Request.QueryString("ID"))
                     'Login.DeletarAcesso(Request.QueryString("ID"))
 
                     Session("SIS_TIAID") = Request.QueryString("ID")
@@ -41,17 +41,10 @@
                     Response.Redirect("Principal.aspx")
 
                 Else
-<<<<<<< HEAD
                     Response.Redirect("/ICC/")
                 End If
             Else
                 Response.Redirect("/ICC/")
-=======
-                    'Response.Redirect("/ICC/")
-                End If
-            Else
-                'Response.Redirect("/ICC/")
->>>>>>> dev-kleiton
             End If
 
         End If

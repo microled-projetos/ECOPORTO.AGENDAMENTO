@@ -263,8 +263,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                         }
 
                         int countDANFES = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
-                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(c=>c.AUTONUM_AGENDAMENTO == agendamento.Id).Count();
-                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(c => c.AUTONUM_AGENDAMENTO == agendamento.Id).Count();
+                        int countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
+                        int countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
 
 
                         if (countDANFES > 0)

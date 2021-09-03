@@ -33,10 +33,7 @@ Public Class CadastrarAgendamentos
             End If
 
             If Request.QueryString("lote") IsNot Nothing Then
-<<<<<<< HEAD
 
-=======
->>>>>>> dev-kleiton
                 Dim IdAgendamento = Agendamento.ExistePreAgendamento(Request.QueryString("lote").ToString(), Session("SIS_ID").ToString(), Val(Session("SIS_TRANSPEMPRESA")))
 
                 If IdAgendamento > 0 Then
@@ -44,7 +41,6 @@ Public Class CadastrarAgendamentos
                 End If
 
                 Me.cbLote.SelectedValue = Request.QueryString("lote").ToString()
-<<<<<<< HEAD
                     Me.pnlMsgErro.Visible = False
                     Me.lblMsgErro.Text = ""
                     lblLoteSelecionado1.Text = Request.QueryString("lote").ToString()
@@ -57,19 +53,6 @@ Public Class CadastrarAgendamentos
             End If
 
                 If Not Page.IsPostBack Then
-=======
-                Me.pnlMsgErro.Visible = False
-                Me.lblMsgErro.Text = ""
-                lblLoteSelecionado1.Text = Request.QueryString("lote").ToString()
-                CarregarItensCS(Request.QueryString("lote").ToString())
-                cbItensCS.Enabled = True
-                Session("LOTE_DOCUMENTO") = Agendamento.ObterDocumentoLote(Request.QueryString("lote").ToString())
-                'CarregarFrames()
-                ConsultarPeriodos(Request.QueryString("lote").ToString())
-            End If
-
-            If Not Page.IsPostBack Then
->>>>>>> dev-kleiton
                 Session("DOC_ALTERADO") = Nothing
             End If
 
@@ -133,11 +116,7 @@ Public Class CadastrarAgendamentos
         btNovo.Font.Bold = btSalvar.Font.Bold
         btnExcluirProduto.Visible = True
 
-<<<<<<< HEAD
         ConsultaPeriodo()
-=======
-        ConsultarPeriodos()
->>>>>>> dev-kleiton
         lblPeriodo.Visible = True
 
         Lote = Agendamento.ConsultarLoteAgendamento(lblID.Text)
@@ -213,7 +192,6 @@ Public Class CadastrarAgendamentos
 
     Private Sub ConsultarPeriodos(ByVal Lote As String)
 
-<<<<<<< HEAD
         Dim TransportadoraOBJ As New Transportadora
         TransportadoraOBJ.ID = Session("SIS_ID")
         Dim VeiculoOBJ As New Veiculo With {
@@ -225,9 +203,6 @@ Public Class CadastrarAgendamentos
         VeiculoOBJ.ID = Veiculo.ObterID(VeiculoOBJ)
 
         dgPeriodos.DataSource = Agendamento.BuscarPeriodos(Lote, TransportadoraOBJ.ID, VeiculoOBJ.ID)
-=======
-        dgPeriodos.DataSource = Agendamento.ConsultarPeriodos(Lote)
->>>>>>> dev-kleiton
         dgPeriodos.DataBind()
 
     End Sub
@@ -476,14 +451,6 @@ Public Class CadastrarAgendamentos
             cbCarreta.Enabled = True
 
         End If
-<<<<<<< HEAD
-=======
-        If ListaCNH Is Nothing Then
-            Me.pnlMsgErro.Visible = True
-            Me.lblMsgErro.Text = "Atenção: Nenhuma CNH encontrada com esse nome"
-            Exit Sub
-        End If
->>>>>>> dev-kleiton
 
         Dim sSql = "SELECT COUNT(1) FROM OPERADOR.TB_MOTORISTAS WHERE FLAG_INATIVO = 1 AND TRIM(CNH) = '" & cbCNH.SelectedItem.Text.Trim() & "'"
 
@@ -592,11 +559,7 @@ Public Class CadastrarAgendamentos
 
     End Sub
 
-<<<<<<< HEAD
     Private Sub ConsultaPeriodo()
-=======
-    Private Sub ConsultarPeriodos()
->>>>>>> dev-kleiton
 
         Dim Lotes As String = String.Empty
 
@@ -903,11 +866,7 @@ Public Class CadastrarAgendamentos
         End If
 
         If SiglaAcao = "N" Then
-<<<<<<< HEAD
             If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text, hddnCbCavaloCarreta.Value) = True Then
-=======
-            If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text) = True Then
->>>>>>> dev-kleiton
                 Return True
             Else
                 Return False
@@ -916,11 +875,7 @@ Public Class CadastrarAgendamentos
             If lblCodigoPeriodo.Text = Session("PERIODO_ANTERIOR_COD").ToString Then
                 Return True
             Else
-<<<<<<< HEAD
                 If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text, hddnCbCavaloCarreta.Value) = True Then
-=======
-                If Agendamento.VerificarLimiteMovPeriodo(lblCodigoPeriodo.Text) = True Then
->>>>>>> dev-kleiton
                     Return True
                 Else
                     Return False
@@ -992,11 +947,7 @@ Public Class CadastrarAgendamentos
 
         Else
             pnLegenda.Visible = True
-<<<<<<< HEAD
             ConsultaPeriodo()
-=======
-            ConsultarPeriodos()
->>>>>>> dev-kleiton
         End If
 
     End Sub
@@ -1040,16 +991,6 @@ Public Class CadastrarAgendamentos
         Dim Saldo As String = dgPeriodos.DataKeys(Index)("SALDO").ToString()
         Dim DTA As String = dgPeriodos.DataKeys(Index)("FLAG_DTA").ToString()
 
-<<<<<<< HEAD
-=======
-        If DTA Then
-            If Saldo = 0 Then
-                Me.pnlMsgErro.Visible = True
-                Me.lblMsgErro.Text = "Saldo insuficiente para agendamento."
-                Exit Sub
-            End If
-        End If
->>>>>>> dev-kleiton
 
         Dim TransportadoraOBJ As New Transportadora With {.ID = Session("SIS_ID").ToString()}
         Dim VeiculoOBJ As New Veiculo With {.Cavalo = cbCavalo.Text, .Carreta = cbCarreta.Text, .Transportadora = TransportadoraOBJ}
@@ -1092,6 +1033,15 @@ Public Class CadastrarAgendamentos
     End Sub
 
     Protected Sub btSalvar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btSalvar.Click
+        Salvar()
+    End Sub
+    Public Sub Salvar()
+        Dim sb As StringBuilder
+        Dim Entrada As Boolean
+        Dim CodAntVeic As Long
+        Dim ContaVeic As Long
+        Dim CodPer As Long
+        Dim IdAgendamento As Integer
 
         Me.pnlMsgErro.Visible = False
         Me.lblMsgErro.Text = ""
@@ -1104,14 +1054,111 @@ Public Class CadastrarAgendamentos
             End If
         End If
 
+        Entrada = True
+        CodAntVeic = 0
+        CodPer = 0
+
+
+
+        If Request.QueryString("lote") IsNot Nothing Then
+            IdAgendamento = Agendamento.ExistePreAgendamento(Request.QueryString("lote").ToString(), Session("SIS_ID").ToString(), Val(Session("SIS_TRANSPEMPRESA")))
+        Else
+            IdAgendamento = Agendamento.ExistePreAgendamento(Me.cbLote.SelectedValue, Session("SIS_ID").ToString(), Val(Session("SIS_TRANSPEMPRESA")))
+        End If
+
+        Me.lblCodigoVeiculo.Text = Banco.Conexao.Execute(" SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_ID").ToString()).Fields(0).Value.ToString()
+
+        If Val(IdAgendamento) > 0 Then
+            CodPer = Banco.Conexao.Execute(" SELECT NVL(AUTONUM_GD_RESERVA, 0) FROM SGIPA.TB_AG_CS WHERE AUTONUM  = " & Val(IdAgendamento)).Fields(0).Value.ToString()
+            CodAntVeic = Banco.Conexao.Execute(" SELECT NVL(AUTONUM_VEICULO, 0) FROM  SGIPA.TB_AG_CS WHERE AUTONUM  = " & Val(IdAgendamento)).Fields(0).Value.ToString()
+            ContaVeic = Banco.Conexao.Execute("  SELECT Count(1) FROM SGIPA.TB_AG_CS WHERE AUTONUM_GD_RESERVA=" & Val(CodPer) & " AND AUTONUM_VEICULO = " & Val(CodAntVeic)).Fields(0).Value.ToString()
+
+            If ContaVeic > 1 And Me.LblResp.Text = "" Then
+                mpePergunta.Show()
+                Exit Sub
+            End If
+
+        End If
+
+        If CodPer <> Val(Me.lblCodigoPeriodo.Text) Or CodPer Then
+            If CodPer <> 0 Then
+
+                sb.AppendLine(" UPDATE SGIPA.TB_AG_CS SET  ")
+                sb.AppendLine(" AUTONUM_RESERVA = 0 ")
+                sb.AppendLine(" WHERE AUTONUM = " + IdAgendamento)
+
+                sb.Clear()
+                Banco.Conexao.Execute(sb.ToString())
+
+            End If
+
+
+            If Val(IdAgendamento) = 0 Then
+                Entrada = ValidarPeriodo()
+            End If
+
+            If Val(Me.lblCodigoPeriodo.Text) = 0 Then
+                Entrada = False
+            End If
+
+            If Entrada Then
+                Dim totalNotas = Banco.Conexao.Execute("  SELECT COUNT(1) FROM SGIPA.TB_AG_CS_NF WHERE AUTONUM_AGENDAMENTO = " & Val(IdAgendamento)).Fields(0).Value.ToString()
+
+                If Val(totalNotas) = 0 Then
+                    ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Nenhuma Nota Fiscal foi adicionada no Agendamento.');</script>", False)
+                    Me.AccordionIndex.Value = 2
+                    Exit Sub
+                End If
+
+                If Me.lblCodigoPeriodo.Text = String.Empty Then
+                    ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Nenhum período foi selecionado.');</script>", False)
+                    Me.AccordionIndex.Value = 3
+                    Exit Sub
+                End If
+
+                If Val(Me.lblCodigoPeriodo.Text) = 0 Then
+                    ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Nenhum período foi selecionado.');</script>", False)
+                    Me.AccordionIndex.Value = 3
+                    Exit Sub
+                End If
+
+                Dim reserva As Integer = Convert.ToInt32(Me.lblCodigoPeriodo.Text)
+
+                Banco.Conexao.Execute(" UPDATE SGIPA.TB_AG_CS SET AUTONUM_GD_RESERVA = " & reserva & " WHERE AUTONUM =  " & IdAgendamento)
+
+                Dim reservaID As Integer = Banco.Conexao.Execute(" SELECT NVL(AUTONUM_GD_RESERVA, 0) FROM SGIPA.TB_AG_CS WHERE AUTONUM  = " & Val(IdAgendamento)).Fields(0).Value.ToString()
+
+
+                If reservaID = 0 Then
+                    'sb.Clear()
+
+                    Entrada = False
+
+                    If Entrada = False Then
+                        Banco.Conexao.Execute(" UPDATE SGIPA.TB_AG_CS SET AUTONUM_GD_RESERVA = 0 WHERE AUTONUM =  " & IdAgendamento)
+                        ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Escolha um novo Periodo com Saldo disponível.');</script>", False)
+
+                        If Request.QueryString("lote") IsNot Nothing Then
+
+                            Me.ConsultarPeriodos(Request.QueryString("lote").ToString())
+
+                            Exit Sub
+                        Else
+                            Me.ConsultarPeriodos(Me.cbLote.SelectedValue)
+
+                            Exit Sub
+                        End If
+
+                    End If
+
+                End If
+
+
+            End If
+        End If
 
         If Validar() Then
-
-<<<<<<< HEAD
             If ValidarPeriodo() Then
-=======
-            If ValidarPeriodo() Or (Session("LOTE_DOCUMENTO").ToString() = "DTA" Or Session("LOTE_DOCUMENTO").ToString().Trim() = "DTA-S") Then
->>>>>>> dev-kleiton
 
                 Dim CPF As String = Motorista.ObterCPFMotorista(cbCNH.SelectedValue.Trim, Convert.ToInt32(Session("SIS_ID").ToString()))
 
@@ -1307,16 +1354,10 @@ Public Class CadastrarAgendamentos
                     lblPeriodo.Text = "Nenhum período foi selecionado." 'É o vazio desta lbl
                 End If
 
-<<<<<<< HEAD
                 ConsultaPeriodo()
-=======
-                ConsultarPeriodos()
->>>>>>> dev-kleiton
             End If
         End If
-
     End Sub
-
     Private Sub EnviarEmailPlanejamento()
 
         Dim EmailPlanejamento = Banco.Conexao.Execute("SELECT EMAIL_PLANEJAMENTO FROM SGIPA.TB_PARAMETROS_SISTEMA").Fields(0).Value.ToString()
@@ -1660,12 +1701,8 @@ Public Class CadastrarAgendamentos
             ConsultarNotas()
 
             If dgNotas.Rows.Count > 0 Then
-<<<<<<< HEAD
 
                 ConsultaPeriodo()
-=======
-                ConsultarPeriodos()
->>>>>>> dev-kleiton
                 cbLote.Enabled = False
                 btnExcluirProduto.Visible = True
             Else
@@ -1709,7 +1746,6 @@ Public Class CadastrarAgendamentos
         End If
         btnExcluirProduto.Visible = False
     End Sub
-<<<<<<< HEAD
     Private Sub cbCavalo_TextChanged(sender As Object, e As EventArgs) Handles cbCavalo.TextChanged
 
         Dim Lotes As String = String.Empty
@@ -1756,8 +1792,19 @@ Public Class CadastrarAgendamentos
         dgPeriodos.DataBind()
 
     End Sub
-=======
-
-
->>>>>>> dev-kleiton
+    Private Sub btnSim_Click(sender As Object, e As EventArgs) Handles btnSim.Click
+        Me.LblResp.Text = "S"
+        mpePergunta.Hide()
+        Salvar()
+    End Sub
+    Private Sub btnNao_Click(sender As Object, e As EventArgs) Handles btnNao.Click
+        Me.LblResp.Text = "N"
+        If Me.LblResp.Text = "N" Then
+            mpePergunta.Hide()
+            Me.lblCodigoPeriodo.Text = ""
+            ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Favor selecionar um novo periodo.');</script>", False)
+            Me.AccordionIndex.Value = 3
+            Exit Sub
+        End If
+    End Sub
 End Class

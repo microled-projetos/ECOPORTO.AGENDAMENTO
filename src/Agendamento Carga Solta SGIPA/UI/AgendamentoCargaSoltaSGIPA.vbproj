@@ -59,16 +59,15 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\GPD\GPD\GPD\bin\AjaxControlToolkit.dll</HintPath>
+    <Reference Include="AjaxControlToolkit, Version=20.1.0.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\AjaxControlToolkit.20.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Engine" />
-    <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.SharePoint.Client">
+      <HintPath>..\..\..\..\..\..\Dropbox\ecoporto\Ecoporto .NET\Ecoporto.Agendamentos\src\Agendamento Carga Solta SGIPA\UI\bin\Microsoft.SharePoint.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Dropbox\ecoporto\Ecoporto .NET\Ecoporto.Agendamentos\src\Agendamento Carga Solta SGIPA\UI\bin\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -312,13 +311,7 @@
       <DependentUpon>CadastrarVeiculos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="classes\Agendamento.vb" />
-=======
-    <Compile Include="classes\Agendamento.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
->>>>>>> dev-kleiton
     <Compile Include="classes\Banco.vb" />
     <Compile Include="classes\Documento.vb" />
     <Compile Include="classes\Email.vb" />
@@ -576,7 +569,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4308</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:32594/</IISUrl>
+          <IISUrl>http://localhost:32599/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -6,10 +6,6 @@
         Dim TransportadoraOBJ As New Transportadora
         Dim UsuarioOBJ As New Usuario
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dev-kleiton
         Rst.Open(String.Format("SELECT * FROM INTERNET.TB_INT_ACESSO WHERE TIAID={0}", ID), Banco.Conexao, 3, 3)
 
         If Not Rst.EOF Then
