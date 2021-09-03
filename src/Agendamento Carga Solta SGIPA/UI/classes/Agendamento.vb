@@ -1075,6 +1075,8 @@ Public Class Agendamento
 
             Rst.Open(String.Format(SQL.ToString(), Lote, CodAgendamento), Banco.Conexao, 3, 3)
 
+            SQL.Clear()
+
             SQL.Append("SELECT ")
             SQL.Append("    nvl(usuario_ddc,0) DDC ")
             SQL.Append("FROM ")

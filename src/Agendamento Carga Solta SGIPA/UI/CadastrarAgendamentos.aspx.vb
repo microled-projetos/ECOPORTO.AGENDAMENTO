@@ -1832,4 +1832,19 @@ Public Class CadastrarAgendamentos
         dgPeriodos.DataBind()
 
     End Sub
+    Private Sub btnSim_Click(sender As Object, e As EventArgs) Handles btnSim.Click
+        Me.LblResp.Text = "S"
+        mpePergunta.Hide()
+        Salvar()
+    End Sub
+    Private Sub btnNao_Click(sender As Object, e As EventArgs) Handles btnNao.Click
+        Me.LblResp.Text = "N"
+        If Me.LblResp.Text = "N" Then
+            mpePergunta.Hide()
+            Me.lblCodigoPeriodo.Text = ""
+            ScriptManager.RegisterClientScriptBlock(Me, [GetType](), "script", "<script>alert('Favor selecionar um novo periodo.');</script>", False)
+            Me.AccordionIndex.Value = 3
+            Exit Sub
+        End If
+    End Sub
 End Class

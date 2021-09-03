@@ -455,6 +455,15 @@ Partial Public Class CadastrarAgendamentos
     Protected WithEvents lblPatio As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''lblddc control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblddc As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''lblCodigoPatio control.
     '''</summary>
     '''<remarks>
