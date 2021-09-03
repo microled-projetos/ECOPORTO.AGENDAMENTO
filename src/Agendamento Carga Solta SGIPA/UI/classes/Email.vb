@@ -6,34 +6,39 @@ Public Class Email
 
         Dim EnderecoWebService = Banco.Conexao.Execute("SELECT WS_EMAIL FROM SGIPA.TB_PARAMETROS_SISTEMA").Fields(0).Value.ToString()
 
-        Using email As New WsEmail.Email()
+        If (EnderecoWebService <> "") Then
+            Using email As New WsEmail.Email()
 
-            email.Url = EnderecoWebService
+                email.Url = EnderecoWebService
 
-            Dim emailPara() As String = {tTo}
-            Dim emailCopia() As String = {Cc}
-            Dim emailCopiaOculta() As String = {Bcc}
-            Dim anexos() As String = {}
-            Dim emailRetornoErro() As String = {"sistemati@ecoportosantos.com.br"}
+                Dim emailPara() As String = {tTo}
+                Dim emailCopia() As String = {Cc}
+                Dim emailCopiaOculta() As String = {Bcc}
+                Dim anexos() As String = {}
+                Dim emailRetornoErro() As String = {"sistemati@ecoportosantos.com.br"}
 
-            Dim msg = email.EnviarEmail(
-                "Microled",
-                "microl&d@123",
-                fFrom,
-                emailPara,
-                emailCopia,
-                emailCopiaOculta,
-                Subject,
-                Message,
-                True,
-                True,
-                anexos,
-                String.Empty,
-                emailRetornoErro)
+                Dim msg = email.EnviarEmail(
+                    "Microled",
+                    "microl&d@123",
+                    fFrom,
+                    emailPara,
+                    emailCopia,
+                    emailCopiaOculta,
+                    Subject,
+                    Message,
+                    True,
+                    True,
+                    anexos,
+                    String.Empty,
+                    emailRetornoErro)
 
-            Return msg
+                Return msg
 
-        End Using
+            End Using
+        End If
+
+
+
 
     End Function
 
