@@ -60,7 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxControlToolkit">
-      <HintPath>..\..\GPD\GPD\GPD\bin\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\..\..\packages\AjaxControlToolkit.20.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
@@ -312,13 +312,9 @@
       <DependentUpon>CadastrarVeiculos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-<<<<<<< HEAD
-    <Compile Include="classes\Agendamento.vb" />
-=======
     <Compile Include="classes\Agendamento.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
->>>>>>> dev-kleiton
     <Compile Include="classes\Banco.vb" />
     <Compile Include="classes\Documento.vb" />
     <Compile Include="classes\Email.vb" />

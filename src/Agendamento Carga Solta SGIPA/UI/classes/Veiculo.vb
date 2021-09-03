@@ -361,11 +361,9 @@ Public Class Veiculo
 
     End Function
 
-<<<<<<< HEAD
+
     Public Function ObterID(ByVal VeiculoOBJ) As Integer
-=======
-    Public Function ObterID(ByVal VeiculoOBJ As Veiculo) As Integer
->>>>>>> dev-kleiton
+
 
         Dim Rst As New ADODB.Recordset
 
