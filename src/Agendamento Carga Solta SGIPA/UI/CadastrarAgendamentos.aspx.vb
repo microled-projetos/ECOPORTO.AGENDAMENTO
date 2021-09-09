@@ -30,6 +30,7 @@ Public Class CadastrarAgendamentos
 
             If Not Request.QueryString("action") IsNot Nothing Then
                 ConsultarLotes()
+                btSalvar.Enabled = False
 
             End If
 
@@ -42,18 +43,18 @@ Public Class CadastrarAgendamentos
                 End If
 
                 Me.cbLote.SelectedValue = Request.QueryString("lote").ToString()
-                    Me.pnlMsgErro.Visible = False
-                    Me.lblMsgErro.Text = ""
-                    lblLoteSelecionado1.Text = Request.QueryString("lote").ToString()
-                    CarregarItensCS(Request.QueryString("lote").ToString())
-                    cbItensCS.Enabled = True
-                    Session("LOTE_DOCUMENTO") = Agendamento.ObterDocumentoLote(Request.QueryString("lote").ToString())
+                Me.pnlMsgErro.Visible = False
+                Me.lblMsgErro.Text = ""
+                lblLoteSelecionado1.Text = Request.QueryString("lote").ToString()
+                CarregarItensCS(Request.QueryString("lote").ToString())
+                cbItensCS.Enabled = True
+                Session("LOTE_DOCUMENTO") = Agendamento.ObterDocumentoLote(Request.QueryString("lote").ToString())
                 'CarregarFrames()
                 ConsultarPeriodos(Request.QueryString("lote").ToString())
 
             End If
 
-                If Not Page.IsPostBack Then
+            If Not Page.IsPostBack Then
                 Session("DOC_ALTERADO") = Nothing
             End If
 
@@ -116,6 +117,7 @@ Public Class CadastrarAgendamentos
         btNovo.ForeColor = btSalvar.ForeColor
         btNovo.Font.Bold = btSalvar.Font.Bold
         btnExcluirProduto.Visible = True
+
 
         ConsultaPeriodo()
         lblPeriodo.Visible = True
@@ -495,6 +497,7 @@ Public Class CadastrarAgendamentos
 
         Dim TransportadoraOBJ As New Transportadora
         TransportadoraOBJ.ID = Transportadora
+        txtNomeMotorista.Enabled = True
 
         Dim MotoristaOBJ As New Motorista
         MotoristaOBJ.Nome = Nome
@@ -518,7 +521,7 @@ Public Class CadastrarAgendamentos
 
         Dim ListaCarretas As New List(Of String)
         ListaCarretas = Agendamento.ConsultarPlacasCarretaPorCavalo(cbCavalo.Text, Session("SIS_ID").ToString())
-
+        btSalvar.Enabled = True
         cbCarreta.Items.Clear()
 
         If Not ListaCarretas Is Nothing Then
@@ -614,6 +617,7 @@ Public Class CadastrarAgendamentos
         Me.pnlMsgErro.Visible = False
         Me.lblMsgErro.Text = ""
 
+
         If lblID.Text = String.Empty Then
 
             Transportadora.ID = Session("SIS_ID").ToString()
@@ -639,14 +643,20 @@ Public Class CadastrarAgendamentos
                 btNovo.Text = "Cancelar"
                 btNovo.ToolTip = "Cancelar o Agendamento."
 
-                txtNomeMotorista.Focus()
+
+                cbCNH.Focus()
 
             End If
         Else
 
             If Agendamento.CancelarAgendamento(lblID.Text) Then
-                Me.pnlMsgErro.Visible = True
-                Me.lblMsgErro.Text = "Agendamento Cancelado."
+                'pronto
+
+
+                Response.Redirect("ConsultarLotesImportacao.aspx")
+
+
+
             End If
 
         End If
@@ -1111,6 +1121,7 @@ Public Class CadastrarAgendamentos
             End If
 
             If Entrada Then
+                ' Dim totalNotas = "1"
                 Dim totalNotas = Banco.Conexao.Execute("  SELECT COUNT(1) FROM SGIPA.TB_AG_CS_NF WHERE AUTONUM_AGENDAMENTO = " & Val(IdAgendamento)).Fields(0).Value.ToString()
 
                 If Val(totalNotas) = 0 Then
@@ -1558,7 +1569,8 @@ Public Class CadastrarAgendamentos
 
         If Not lblID.Text = String.Empty Then
             If Agendamento.CancelarAgendamento(lblID.Text) Then
-                Response.Redirect("Agendamento Excluído com Sucesso!")
+                Response.Redirect("ConsultarAgendamentos.aspx")
+
             End If
         End If
 
@@ -1729,6 +1741,7 @@ Public Class CadastrarAgendamentos
 
             If btnAdicProduto.CommandName = "ADICIONAR" Then
                 InserirNotasFiscais()
+
             Else
                 If btnAdicProduto.CommandName = "ALTERAR" Then
                     AlterarNotasFiscais()

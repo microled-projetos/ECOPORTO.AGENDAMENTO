@@ -23,12 +23,13 @@
             Senha = My.Settings.Senha
         End Try
 
-        Return String.Format("Provider=OraOLEDB.Oracle;Data Source={0};User ID={1};Password={2};Unicode=True", Servidor, Usuario, Senha)
+        Return String.Format("Provider=OraOLEDB.ORACLE.1;Data Source={0};User ID={1};Password={2};Unicode=True", Servidor, Usuario, Senha)
 
     End Function
 
     Public Function Conexao() As ADODB.Connection
 
+        objConexao = Nothing
         If objConexao Is Nothing Then
             objConexao = New ADODB.Connection
             If objConexao.State = 0 Then

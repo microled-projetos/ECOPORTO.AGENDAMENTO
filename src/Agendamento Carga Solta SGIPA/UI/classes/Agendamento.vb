@@ -717,6 +717,7 @@ Public Class Agendamento
             Rst.Close()
         End If
         If Banco.BancoEmUso = "ORACLE" Then
+           
             Rst.Open(String.Format("SELECT DATA_INICIAL_AG FROM SGIPA.VW_DATA_INICIAL_AG WHERE PATIO={0}", Patio), Banco.Conexao, 3, 3)
         Else
             Rst.Open(String.Format("SELECT OPERADOR.DBO.TO_CHAR(DATA_INICIAL_AG,'DD/MM/YYYY HH24:MI') DATA_INICIAL_AG FROM SGIPA.DBO.VW_DATA_INICIAL_AG WHERE PATIO={0}", Patio), Banco.Conexao, 3, 3)
