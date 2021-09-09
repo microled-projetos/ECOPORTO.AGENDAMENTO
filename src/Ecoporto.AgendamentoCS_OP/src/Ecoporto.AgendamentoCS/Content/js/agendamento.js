@@ -898,13 +898,13 @@ $('#btnAdicionarDUE').click(function () {
     //    .html('<i class="fa fa-spinner fa-spin"></i>')
     //    .addClass('disabled');
 
-
     var DUE = $('#txtDUE').val();
     var agId = $('#Id').val();    
+    var BookingCsItemId = $('#ItemReservaId').val();
 
     var inserir = {
         DUE: DUE,
-        AUTONUM_AGENDAMENTO: agId,
+        BookingCsItemId: BookingCsItemId, 
     }
 
     if (DUE == "") {
@@ -976,13 +976,13 @@ $('#btnAdicionarDAT').click(function () {
     //    .html('<i class="fa fa-spinner fa-spin"></i>')
     //    .addClass('disabled');
 
-
     var DAT = $('#txtDAT').val();
     var agId = $('#Id').val();
+    var BookingCsItemId = $('#ItemReservaId').val();
     
     var inserir = {
         DAT: DAT,
-        AUTONUM_AGENDAMENTO: agId,
+        BookingCsItemId: BookingCsItemId, 
     }
 
     if (DAT == "") {
@@ -1267,16 +1267,18 @@ function excluirDanfe(id, bookingCsItemId) {
 }
 
 function excluirItemDUE(id, bookingCSItemId) {
-    $('#modal-mensagem-due').text('Confirma a exclusão da DUE ? ');
+   
+    $('#modal-mensagem-due').text('Confirm a a exclusão da DUE ? ');
     $('#del-modal-due').attr('data-id', id);
     $('#del-modal-due').attr('data-bookingCsItemId', bookingCSItemId);
     $('#del-modal-due').modal('show');
 }
 
-function excluirItemDAT(id, bookinhgCSItemId) {
+function excluirItemDAT(id, bookingCSItemId) {
+    alert(id + " " + bookingCSItemId);
     $('#modal-mensagem-dat').text('Confirm a exclusão da DAT ? ');
     $('#del-modal-dat').attr('data-id', id);
-    $('#del-modal-dat').attr('data-bookingCSItemId', bookinhgCSItemId);
+    $('#del-modal-dat').attr('data-bookingCSItemId', bookingCSItemId);
     $('#del-modal-dat').modal('show');
 }
 
@@ -1310,9 +1312,9 @@ function confirmarExclusaoDanfe(id) {
 function confirmarExclusaoDUE(id) {
     var url = urlBase + 'Agendamento/ExcluirDUE';
     var id = $('#del-modal-due').attr('data-id');    
-    var agendamento = $('#del-modal-due').attr('data-bookingCSItemId');
+    var bookingCsItemId = $('#del-modal-due').attr('data-bookingCSItemId');
     
-    $.post(url, { id: id, agendamento: agendamento }, function (result) {
+    $.post(url, { id: id, bookingCsItemId: bookingCsItemId }, function (result) {
         $('#tblItensDUE').html(result);
         //$.toastr.success('Dados inseridos com sucesso');
     }).fail(function (data) {
@@ -1331,9 +1333,9 @@ function confirmarExclusaoDUE(id) {
 function confirmarExclusaoDAT() {
     var url = urlBase + 'Agendamento/ExcluirDAT';
     var id = $('#del-modal-dat').attr('data-id');
-    var agendamento = $('#del-modal-dat').attr('data-bookingCSItemId');   
-
-    $.post(url, { id: id, agendamento: agendamento }, function (result) {
+    var bookingCsItemId = $('#del-modal-dat').attr('data-bookingCSItemId');
+    
+    $.post(url, { id: id, bookingCsItemId: bookingCsItemId }, function (result) {
         $('#tblItensDAT').html(result);
     }).fail(function (data) {
         if (data.statusText) {

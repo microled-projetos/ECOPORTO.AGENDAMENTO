@@ -1419,9 +1419,9 @@ namespace Ecoporto.AgendamentoCS.Controllers
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult CadastrarDanfes([Bind(Include = "Danfe, Reserva, CFOP, xml, BookingCsItemId")] NotaFiscal nf)
-        {
-            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == nf.BookingCsItemId).Count();
-            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.AUTONUM_AGENDAMENTO == nf.BookingCsItemId).Count();
+        {            
+            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.BookingCsItemId == nf.BookingCsItemId).Count();
+            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(a => a.BookingCsItemId == nf.BookingCsItemId).Count(); 
             
             if(agDat > 0)
                 return RetornarErro("Este atendimento já tem uma DAT associada ele - Danfe não cadastrada");
@@ -1500,11 +1500,11 @@ namespace Ecoporto.AgendamentoCS.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult CadastrarDUE([Bind(Include = "AUTONUM_AGENDAMENTO, DUE, AUTONUM")] AgendamentoDUE obj)
+        public ActionResult CadastrarDUE([Bind(Include = "AUTONUM_AGENDAMENTO, DUE, AUTONUM, BookingCsItemId")] AgendamentoDUE obj)
         {
             
-            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count(); 
-            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
+            int agDat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(a => a.BookingCsItemId == obj.BookingCsItemId).Count(); 
+            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Where(a => a.BookingCsItemId == obj.BookingCsItemId).Count(); 
 
 
             if (agDat > 0)
@@ -1523,26 +1523,27 @@ namespace Ecoporto.AgendamentoCS.Controllers
             
             if (dueAdd != null)
             {
-                if (dueAdd.Any(c => c.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO && c.DUE == obj.DUE))
-                    return RetornarErro($"A DUE {obj.DUE} já foi adicionada no item {obj.AUTONUM_AGENDAMENTO}");
+                if (dueAdd.Any(c => c.BookingCsItemId == obj.BookingCsItemId && c.DUE == obj.DUE))
+                    return RetornarErro($"A DUE {obj.DUE} já foi adicionada no item {obj.BookingCsItemId}");
             }            
 
 
             GerenciadorDeEstado<AgendamentoDUE>.Armazenar(new AgendamentoDUE
-            {
-                AUTONUM  = obj.Id,
-                AUTONUM_AGENDAMENTO = obj.AUTONUM_AGENDAMENTO,
+            {                               
+                BookingCsItemId = obj.BookingCsItemId, 
                 DUE = obj.DUE
             });
 
-            return PartialView("_DUE", GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().AsEnumerable());
+            var _due = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(c => c.BookingCsItemId == obj.BookingCsItemId).ToList();
+
+            return PartialView("_DUE", _due);
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult CadastrarDAT([Bind(Include = "AUTONUM, AUTONUM_AGENDAMENTO, DAT")] AgendamentoDAT obj)
+        public ActionResult CadastrarDAT([Bind(Include = "AUTONUM, AUTONUM_AGENDAMENTO, DAT, BookingCsItemId")] AgendamentoDAT obj)
         {
-            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
-            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
+            int agDue = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(c=>c.BookingCsItemId == obj.BookingCsItemId).Count();
+            int agNF = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Where(c => c.BookingCsItemId == obj.BookingCsItemId).Count();
             
             if (agDue > 0)
                 return RetornarErro("Este atendimento já tem uma DUE associada ele - DAT não cadastrada");
@@ -1554,18 +1555,17 @@ namespace Ecoporto.AgendamentoCS.Controllers
             var countDAT = _agendamentoRepositorio.countDAT(obj.DAT);
 
             if (countDAT > 0)
-                return RetornarErro("DAT já cadstrada em outro agendamento");
+                return RetornarErro("DAT já cadastrada em outro agendamento");
 
             var datAdd = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().AsEnumerable(); 
 
 
-            if (datAdd.Any(c => c.AUTONUM_AGENDAMENTO == obj.AUTONUM_AGENDAMENTO && c.DAT == obj.DAT))
-                return RetornarErro($"A DAT {obj.DAT} já foi adicionada no item {obj.AUTONUM_AGENDAMENTO}");
+            if (datAdd.Any(c => c.BookingCsItemId == obj.BookingCsItemId && c.DAT == obj.DAT))
+                return RetornarErro($"A DAT {obj.DAT} já foi adicionada no item {obj.BookingCsItemId}");
 
             GerenciadorDeEstado<AgendamentoDAT>.Armazenar(new AgendamentoDAT
             {
-                AUTONUM = obj.Id,
-                AUTONUM_AGENDAMENTO = obj.AUTONUM_AGENDAMENTO, 
+                BookingCsItemId = obj.BookingCsItemId,  
                 DAT = obj.DAT,
             });
 
@@ -1574,21 +1574,21 @@ namespace Ecoporto.AgendamentoCS.Controllers
             return PartialView("_DAT", dat);
         }
         [HttpPost]
-        public ActionResult ExcluirDUE(int id, int agendamento)
+        public ActionResult ExcluirDUE(int id, int bookingCsItemId)
         {
             GerenciadorDeEstado<AgendamentoDUE>.Remover(id);
 
-            var due = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+            var due = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Where(c=>c.BookingCsItemId == bookingCsItemId);
 
             return PartialView("_DUE", due);
         }
 
         [HttpPost]
-        public ActionResult ExcluirDAT(int id, int agendamento)
+        public ActionResult ExcluirDAT(int id, int bookingCsItemId)
         {
             GerenciadorDeEstado<AgendamentoDAT>.Remover(id);
 
-            var dat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
+            var dat = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Where(c=>c.BookingCsItemId == bookingCsItemId);
 
             return PartialView("_DAT", dat);
         }
