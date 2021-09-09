@@ -124,8 +124,8 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                         //Insere os dados na TB_AGENDAMENTO_CS_ITENS_DANFE, TB_AGENDAMENTO_CS_ITENS_DUE, ou TB_AGENDAMENTO_CS_ITENS_DAT
 
                         int countDANFES = GerenciadorDeEstado<NotaFiscal>.RetornarTodos().Count();
-                        var countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos();
-                        var countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos();
+                        var countDAT = GerenciadorDeEstado<AgendamentoDAT>.RetornarTodos().Count();
+                        var countDUE = GerenciadorDeEstado<AgendamentoDUE>.RetornarTodos().Count();
 
                         if (countDANFES > 0) {
                             foreach (var nota in item.NotasFiscais)
@@ -165,7 +165,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
                             }
                         }
 
-                        if (countDAT != null)
+                        if (countDAT > 0)
                         {
                             foreach (var dat in item.AG_DAT)
                             {
@@ -174,7 +174,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                         }
 
-                        if (countDUE != null)
+                        if (countDUE > 0)
                         {
                             foreach (var due in item.AG_DUE)
                             {
