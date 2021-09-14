@@ -167,7 +167,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                         if (countDAT > 0)
                         {
-                            foreach (var dat in item.AG_DAT)
+                            foreach (var dat in agendamento.AgDatItens)
                             {
                                 InserirDAT(itemId, dat.DAT);
                             }
@@ -176,7 +176,7 @@ namespace Ecoporto.AgendamentoCS.Dados.Repositorios
 
                         if (countDUE > 0)
                         {
-                            foreach (var due in item.AG_DUE)
+                            foreach (var due in agendamento.AgDueItens)
                             {
                                 InserirDUE(itemId, due.DUE);
                             }

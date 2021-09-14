@@ -1274,8 +1274,7 @@ function excluirItemDUE(id, bookingCSItemId) {
     $('#del-modal-due').modal('show');
 }
 
-function excluirItemDAT(id, bookingCSItemId) {
-    alert(id + " " + bookingCSItemId);
+function excluirItemDAT(id, bookingCSItemId) {    
     $('#modal-mensagem-dat').text('Confirm a exclusão da DAT ? ');
     $('#del-modal-dat').attr('data-id', id);
     $('#del-modal-dat').attr('data-bookingCSItemId', bookingCSItemId);
