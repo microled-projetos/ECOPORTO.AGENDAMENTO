@@ -9,7 +9,7 @@
 
         If Request.QueryString("id") IsNot Nothing Then
             ID = Request.QueryString("id")
-            ' ID = 6376710
+            '  ID = 6449415
             CNPJ = Banco.ExecuteScalar("SELECT TIACNPJ FROM INTERNET.TB_INT_ACESSO WHERE TIAID = " & ID)
 
             If Not String.IsNullOrEmpty(CNPJ) Then
