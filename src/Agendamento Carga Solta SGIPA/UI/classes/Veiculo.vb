@@ -361,9 +361,7 @@ Public Class Veiculo
 
     End Function
 
-
     Public Function ObterID(ByVal VeiculoOBJ) As Integer
-
 
         Dim Rst As New ADODB.Recordset
 

@@ -7,7 +7,6 @@ namespace Ecoporto.AgendamentoCS.Models
 {
     public class AgendamentoDAT : Entidade<AgendamentoDAT>
     {
-        public int Id { get; set; }
         public int AUTONUM { get; set; }
         public int AUTONUM_AGENDAMENTO { get; set; }
         public string DAT { get; set; }

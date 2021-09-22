@@ -1,8 +1,6 @@
 ﻿Imports System.Data.OleDb
 Public Class Agendamento
 
-    Inherits System.Web.UI.Page
-
     Private _codigo As String
     Private _motorista As Motorista
     Private _transportadora As Transportadora
@@ -596,36 +594,18 @@ Public Class Agendamento
 
     End Function
 
-
-
     Public Function BuscarPeriodos(ByVal Lote As String, ByVal Transportadora As String, ByVal Veiculo As String) As DataTable
-
 
         Dim Rst As New ADODB.Recordset
         Dim SQL As New StringBuilder
         Dim Servico As String
         Dim Rsu As New ADODB.Recordset
 
-
         If Veiculo = String.Empty Then
             Veiculo = "0"
         End If
         If Transportadora = String.Empty Then
             Transportadora = "0"
-        End If
-        SQL.Append("SELECT ")
-        SQL.Append("    nvl(usuario_ddc,0) DDC ")
-        SQL.Append("FROM ")
-        SQL.Append("    SGIPA.TB_CARGA_SOLTA ")
-        SQL.Append(" WHERE ")
-        SQL.Append("    BL = {0} ")
-
-        Rst.Open(String.Format(SQL.ToString(), Lote), Banco.Conexao, 3, 3)
-
-        If Not Rst.EOF Then
-            If Rst.Fields("DDC").Value.ToString() > "0" Then
-                Return Nothing
-            End If
         End If
 
         SQL.Append("SELECT ")
@@ -662,7 +642,7 @@ Public Class Agendamento
 
             'Não há nenhuma necessidade de na comparação formatar a Data_Max:
             If (Data_Max = Nothing And Not Rst.Fields("DATA_MAX").Value Is DBNull.Value) Or Not Data_Max = Nothing Then
-
+                '(Data_Max é vazia assim como o registro no BD) OU Data_Max NÃO é vazia
                 If Data_Max < Rst.Fields("DATA_MAX").Value Then
                     Data_Max = Rst.Fields("DATA_MAX").Value
                 End If
@@ -717,7 +697,6 @@ Public Class Agendamento
             Rst.Close()
         End If
 
-
         Rst.Open(String.Format("SELECT NVL(FLAG_VIP_DTA,0) as FLAG_VIP_DTA FROM operador.tb_cad_transportadoras WHERE AUTONUM = " & Transportadora & "", Banco.Conexao, 3, 3))
         If Not Rst.EOF Then
             Limite = 0
@@ -728,7 +707,6 @@ Public Class Agendamento
                     Limite = -9999
                     DTA = "0"
                 End If
-
             Else
                 Limite = 0
             End If
@@ -739,6 +717,7 @@ Public Class Agendamento
             Rst.Close()
         End If
         If Banco.BancoEmUso = "ORACLE" Then
+           
             Rst.Open(String.Format("SELECT DATA_INICIAL_AG FROM SGIPA.VW_DATA_INICIAL_AG WHERE PATIO={0}", Patio), Banco.Conexao, 3, 3)
         Else
             Rst.Open(String.Format("SELECT OPERADOR.DBO.TO_CHAR(DATA_INICIAL_AG,'DD/MM/YYYY HH24:MI') DATA_INICIAL_AG FROM SGIPA.DBO.VW_DATA_INICIAL_AG WHERE PATIO={0}", Patio), Banco.Conexao, 3, 3)
@@ -754,39 +733,52 @@ Public Class Agendamento
 
         SQL.Clear()
 
-        SQL.Append("SELECT ")
-        SQL.Append("    A.AUTONUM_GD_RESERVA, ")
-        SQL.Append("    TO_CHAR(A.PERIODO_INICIAL, 'DD/MM/YYYY HH24:MI') PERIODO_INICIAL, ")
-        SQL.Append("    TO_CHAR(A.PERIODO_FINAL, 'DD/MM/YYYY HH24:MI') PERIODO_FINAL, ")
-        If Servico = "A" And Limite = 0 Then
-            SQL.Append("    TO_CHAR(A.LIMITE_MOVIMENTOS - (SELECT COUNT(B.AUTONUM) from SGIPA.TB_AG_CS B inner join operador.tb_cad_transportadoras ct ON B.AUTONUM_TRANSPORTADORA = ct.autonum and nvl(ct.FLAG_VIP_DTA,0) = 0 WHERE B.AUTONUM_GD_RESERVA = A.AUTONUM_GD_RESERVA),'000') AS SALDO, ")
-        Else
-            SQL.Append("    TO_CHAR(A.LIMITE_MOVIMENTOS - (SELECT COUNT(B.AUTONUM) FROM SGIPA.TB_AG_CS B WHERE B.AUTONUM_GD_RESERVA = A.AUTONUM_GD_RESERVA),'000') AS SALDO, ")
-        End If
-        SQL.Append(DTA + "    as FLAG_DTA ")
-        SQL.Append("FROM ")
-        SQL.Append("    OPERADOR.TB_GD_RESERVA A ")
-        SQL.Append("WHERE ")
-        If Servico = "A" And Limite = 0 Then
-            SQL.Append("    A.LIMITE_MOVIMENTOS - (SELECT NVL(COUNT(B.AUTONUM),0) from SGIPA.TB_AG_CS B inner join operador.tb_cad_transportadoras ct ON B.AUTONUM_TRANSPORTADORA = ct.autonum and nvl(ct.FLAG_VIP_DTA,0) = 0 WHERE A.AUTONUM_GD_RESERVA = B.AUTONUM_GD_RESERVA) > " & Limite & " ")
-        Else
-            SQL.Append("    A.LIMITE_MOVIMENTOS - (SELECT NVL(COUNT(B.AUTONUM),0) from SGIPA.TB_AG_CS B WHERE A.AUTONUM_GD_RESERVA = B.AUTONUM_GD_RESERVA) > " & Limite & " ")
-        End If
-        SQL.Append("AND ")
-        SQL.Append("    A.PERIODO_INICIAL > TO_DATE('" & Format(Data_Ref, "dd/MM/yyyy HH:mm") & "','DD/MM/YYYY HH24:MI') ")
-        SQL.Append("AND ")
-        SQL.Append("    A.PERIODO_FINAL <= TO_DATE('" & Data_Max & "', 'DD/MM/YYYY HH24:MI:SS') ")
-        SQL.Append("AND ")
-        SQL.Append("    A.FLAG_VIP <= " & Flag_VIP & " ")
-        SQL.Append("AND ")
+        SQL.AppendLine("SELECT ")
+        SQL.AppendLine("    A.AUTONUM_GD_RESERVA, ")
+        SQL.AppendLine("    TO_CHAR(A.PERIODO_INICIAL, 'DD/MM/YYYY HH24:MI') PERIODO_INICIAL, ")
+        SQL.AppendLine("    TO_CHAR(A.PERIODO_FINAL, 'DD/MM/YYYY HH24:MI') PERIODO_FINAL, ")
+        SQL.AppendLine("    TO_CHAR(A.LIMITE_MOVIMENTOS - (SELECT COUNT(B.AUTONUM) FROM SGIPA.VW_AG_CS_PERIODO B WHERE B.AUTONUM_GD_RESERVA = A.AUTONUM_GD_RESERVA),'000') AS SALDO, ")
+        SQL.AppendLine(DTA + "    as FLAG_DTA ")
+        SQL.AppendLine("FROM ")
+        SQL.AppendLine("    OPERADOR.TB_GD_RESERVA A ")
+        SQL.AppendLine("WHERE ")
+        'SQL.AppendLine("    A.LIMITE_MOVIMENTOS - (SELECT NVL(COUNT(B.AUTONUM),0) FROM SGIPA.VW_AG_CS_PERIODO B WHERE A.AUTONUM_GD_RESERVA = B.AUTONUM_GD_RESERVA) > " & Limite & " ")
+        SQL.AppendLine("   (A.LIMITE_MOVIMENTOS - (SELECT NVL(COUNT(B.AUTONUM),0) FROM SGIPA.VW_AG_CS_PERIODO B WHERE A.AUTONUM_GD_RESERVA = B.AUTONUM_GD_RESERVA) > 0  ")
+        SQL.AppendLine(" ) ")
+        SQL.AppendLine("And ")
+        SQL.AppendLine("    A.PERIODO_INICIAL > TO_DATE('" & Format(Data_Ref, "dd/MM/yyyy HH:mm") & "','DD/MM/YYYY HH24:MI') ")
+        SQL.AppendLine("AND ")
+        SQL.AppendLine("    A.PERIODO_FINAL <= TO_DATE('" & Data_Max & "', 'DD/MM/YYYY HH24:MI:SS') ")
+        SQL.AppendLine("AND ")
+        SQL.AppendLine("    A.FLAG_VIP <= " & Flag_VIP & " ")
+        SQL.AppendLine("AND ")
         'SQL.Append("    A.FLAG_DTA <= " & DTA & " ")
         'SQL.Append("AND ")
-        SQL.Append("    A.PATIO = " & Patio & " ")
-        SQL.Append("AND ")
-        SQL.Append("    A.SERVICO_GATE = '" & Servico & "' ")
-        SQL.Append("ORDER BY ")
-        SQL.Append("    A.PERIODO_INICIAL ")
+        SQL.AppendLine("    A.PATIO = " & Patio & " ")
+        SQL.AppendLine("AND ")
+        SQL.AppendLine("    A.SERVICO_GATE = '" & Servico & "' ")
+        SQL.AppendLine("    UNION ALL  ")
 
+        SQL.AppendLine(" Select  ")
+        SQL.AppendLine(" AUTONUM_GD_RESERVA, ")
+        SQL.AppendLine(" TO_CHAR(PERIODO_INICIAL, 'DD/MM/YYYY HH24:MI') PERIODO_INICIAL, ")
+        SQL.AppendLine(" TO_CHAR(PERIODO_FINAL, 'DD/MM/YYYY HH24:MI') PERIODO_FINAL,  ")
+        SQL.AppendLine(" '001' As SALDO,  ")
+        SQL.AppendLine(DTA + "    as FLAG_DTA ")
+        SQL.AppendLine(" From OPERADOR.TB_GD_RESERVA  ")
+        SQL.AppendLine(" WHERE AUTONUM_GD_RESERVA In  ")
+        SQL.AppendLine(" (SELECT DISTINCT nvl(A.AUTONUM_GD_RESERVA,0) AUTONUM_GD_RESERVA  ")
+        SQL.AppendLine("  From OPERADOR.TB_GD_RESERVA  A  ")
+        SQL.AppendLine("  INNER Join sgipa.tb_ag_cs B ON A.autonum_gd_reserva = B.autonum_gd_reserva  ")
+        SQL.AppendLine(" WHERE Autonum_Veiculo = " & Veiculo & " And Autonum_Transportadora = " & Transportadora & "  ")
+        SQL.AppendLine(" AND   A.periodo_inicial>sysdate+0.5 ")
+        SQL.AppendLine(" AND  A.FLAG_VIP <= " & Flag_VIP & " ")
+        SQL.AppendLine(" AND  A.PATIO = " & Patio & " ")
+        SQL.AppendLine(" AND  A.SERVICO_GATE = '" & Servico & "' ")
+        SQL.AppendLine(" ) ")
+
+        SQL.AppendLine("ORDER BY ")
+        SQL.AppendLine("    2 ")
 
         If Rst.State = 1 Then
             Rst.Close()
@@ -802,19 +794,14 @@ Public Class Agendamento
 
     End Function
 
-
     Public Function VerificarLimiteMovPeriodo(Reserva As String, Veiculo As Integer) As Boolean
-
         'Retorna True: se período é disponível para agendar
         'Retorna False: se período já alcançou o limite de qtde de agendamentos
 
         Dim Rst As New ADODB.Recordset
         Dim SQL As New StringBuilder
 
-
         Dim Limite, QtdePeriodo, QtdeFixa As Integer
-
-
 
         SQL.Append("SELECT ")
         SQL.Append("    LIMITE_MOVIMENTOS ")
@@ -836,7 +823,6 @@ Public Class Agendamento
 
         SQL.Clear()
 
-
         SQL.AppendLine(" Select count(1) As c FROM SGIPA.VW_AG_CS_PERIODO B WHERE B.AUTONUM_GD_RESERVA =" & Reserva & "And Autonum_Veiculo =" & Veiculo & " ")
 
         If Rst.State = 1 Then
@@ -846,20 +832,20 @@ Public Class Agendamento
         Rst.Open(String.Format(SQL.ToString(), Reserva), Banco.Conexao, 3, 3)
         QtdeFixa = Convert.ToInt16(Rst.Fields("c").Value.ToString())
 
+
         SQL.Clear()
 
-        'Pesquisa para saber a quantidade de movimentos já cadastradas para tal reserva
-        SQL.Append("SELECT ")
-        SQL.Append("    COUNT(AUTONUM_GD_RESERVA) AS QTDE ")
-        SQL.Append("FROM ")
-        SQL.Append("    SGIPA.")
-        If Banco.BancoEmUso <> "ORACLE" Then
-            SQL.Append("DBO.")
-        End If
-        SQL.Append("TB_AG_CS ")
-        SQL.Append("WHERE ")
-        SQL.Append("    AUTONUM_GD_RESERVA = {0} ")
 
+
+
+
+        'Pesquisa para saber a quantidade de movimentos já cadastradas para tal reserva
+        SQL.Append("Select ")
+        SQL.Append("    COUNT(AUTONUM_GD_RESERVA) As QTDE ")
+        SQL.Append(" FROM ")
+        SQL.Append(" (Select AUTONUM_GD_RESERVA  from  SGIPA.TB_AG_CS group by autonum_gd_reserva, autonum_veiculo) ")
+        SQL.Append(" WHERE ")
+        SQL.Append("  AUTONUM_GD_RESERVA = {0} ")
 
         If Rst.State = 1 Then
             Rst.Close()
@@ -883,9 +869,7 @@ Public Class Agendamento
 
 
 
-
     End Function
-
 
     ''' <summary>
     ''' Consulta Lotes Disponíveis para um determinado agendamento
@@ -901,35 +885,28 @@ Public Class Agendamento
         Dim Rst As New ADODB.Recordset
         Dim SQL As New StringBuilder
 
-        SQL.Append("SELECT ")
-
+        SQL.Append("Select ")
         SQL.Append(" LOTE, ")
-            SQL.Append(" DESCR,  ")
-            SQL.Append(" AGENDAR  ")
-            SQL.Append(" FROM VW_CS_DISPONIVEL  ")
-            SQL.Append(" WHERE ")
-            SQL.Append(" TRANSPORTADORA = {0} ")
-
+        SQL.Append(" DESCR,  ")
+        SQL.Append(" AGENDAR  ")
+        SQL.Append(" FROM VW_CS_DISPONIVEL  ")
+        SQL.Append(" WHERE ")
+        SQL.Append(" TRANSPORTADORA = {0} ")
         SQL.Append("  And ")
-            SQL.Append("  (")
-            SQL.Append("  SALDO  > 0")
-
+        SQL.Append("  (")
+        SQL.Append("  SALDO  > 0")
         If Lote <> "-1" Then
-                SQL.Append("  OR LOTE = " & Lote)
- 
-            End If
-            SQL.Append("  )")
+            SQL.Append("  Or LOTE = " & Lote)
+        End If
+        SQL.Append("  )")
 
-            If Empresa = 1 Then 'ECOPORTO 
-
+        If Empresa = 1 Then 'ECOPORTO 
             SQL.Append("    And ")
-                SQL.Append("    PATIO <> 5 ")
-            Else ' ECOPORTO RA
-
-            SQL.Append("    AND ")
- 
+            SQL.Append("    PATIO <> 5 ")
+        Else ' ECOPORTO RA
+            SQL.Append("    And ")
             SQL.Append("    PATIO = 5 ")
-            End If
+        End If
 
         Rst.Open(String.Format(SQL.ToString(), ID, Empresa), Banco.Conexao, 3, 3)
 
@@ -946,35 +923,26 @@ Public Class Agendamento
         Dim Rst As New ADODB.Recordset
         Dim SQL As New StringBuilder
 
-
-        SQL.Append("SELECT ")
-
+        SQL.Append("Select ")
         SQL.Append(" LOTE, ")
         SQL.Append(" DESCR,  ")
         SQL.Append(" AGENDAR  ")
         SQL.Append(" FROM VW_CS_DISPONIVEL  ")
         SQL.Append(" WHERE ")
         SQL.Append(" TRANSPORTADORA = {0} ")
-
         SQL.Append("  And ")
         SQL.Append("  (")
         SQL.Append("  SALDO  > 0")
-
-
         If Lote <> "-1" Then
-            SQL.Append("  OR LOTE = " & Lote)
-
-            End If
+            SQL.Append("  Or LOTE = " & Lote)
+        End If
         SQL.Append("  )")
 
         If Empresa = 1 Then 'ECOPORTO 
-
             SQL.Append("    And ")
             SQL.Append("    PATIO <> 5 ")
-
         Else ' ECOPORTO RA
-            SQL.Append("    AND ")
- 
+            SQL.Append("    And ")
             SQL.Append("    PATIO = 5 ")
         End If
 
@@ -983,13 +951,13 @@ Public Class Agendamento
     End Function
 
 
+
     Public Function ConsultarLoteDocumentoDoAgendamento(ByVal Lote As String) As String
 
         Dim Rst As New ADODB.Recordset
         Dim SQL As New StringBuilder
 
-        SQL.Append("SELECT DISTINCT ")
-
+        SQL.Append("Select DISTINCT ")
         SQL.Append("    lote, ")
         SQL.Append("    'Num. Doc: ' ")
         SQL.Append("     || tipo_documento ")
@@ -1107,6 +1075,8 @@ Public Class Agendamento
             SQL.Append("    AUTONUM = {1} ")
 
             Rst.Open(String.Format(SQL.ToString(), Lote, CodAgendamento), Banco.Conexao, 3, 3)
+
+            SQL.Clear()
 
             SQL.Append("SELECT ")
             SQL.Append("    nvl(usuario_ddc,0) DDC ")

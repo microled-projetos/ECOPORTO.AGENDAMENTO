@@ -20,7 +20,7 @@
             color: black;
             font-weight: bold;
             background-color: #EEE8AA;
-            font-family: Arial;
+            font-family: arial;
             font-size: 10pt;
             border: solid 1px black;
         }
@@ -101,7 +101,6 @@
                                                                 </asp:ListSearchExtender>
 
                                                                 <asp:HiddenField ID="hddnCbCavaloCarreta" runat="server" />
-
 
                                                             </td>
                                                             <td align="right" width="90px">Placa Carreta:
@@ -280,11 +279,7 @@
                                                     <asp:TextBox ID="txtPackingList" runat="server" Enabled="False" Font-Names="Verdana" Font-Size="12px" MaxLength="150" Width="98%"></asp:TextBox>
                                                 </td>
                                                 <td align="right">
-
-                                                    <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Excluir" Visible="false" Width="100%" />
-
                                                     <asp:Button ID="btnExcluirProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" Font-Names="Verdana" Font-Size="9px" Height="18px" OnClientClick="return confirm('Deseja excluir as Notas Fiscais deste agendamento?');" Text="Exclur" Visible="false" Width="100%" />
-
                                                 </td>
                                                 <td align="right">
                                                     <asp:Button ID="btnAdicProduto" runat="server" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CommandName="ADICIONAR" Font-Names="Verdana" Font-Size="9px" Height="18px" Text="Adicionar" Width="100%" />
@@ -487,6 +482,54 @@
                     </tr>
 
                 </table>
+                <asp:Label ID="lblCodigoPatio" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblCodigoAgendamento" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblCodigoBooking" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblCodigoMotorista" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblCodigoVeiculo" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblCodigoProtocolo" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblCodigoNF" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblQuantidadeSelecionadaNF" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblM3SelecionadaNF" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="lblPesoSelecionadaNF" runat="server" Visible="False"></asp:Label>
+                <asp:Label ID="LblResp" runat="server" Visible="False"></asp:Label>
+                <asp:HiddenField ID="AccordionIndex" runat="server" Value="0" />
+         
+
+        <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="False">
+            <ContentTemplate>
+                <asp:Button runat="server" Text="btnAuxiliar" ID="btnAuxiliar" Style="display: none;"/>
+                <asp:ModalPopupExtender ID="mpePergunta" runat="server"  DropShadow="true" PopupControlID="pnlPergunta" TargetControlID="btnAuxiliar" CancelControlID="btnAuxiliar" BehaviorID="pPergunta"></asp:ModalPopupExtender>
+                <asp:Panel ID="pnlPergunta" runat="server" Style="display: none;background-color:white">
+					    <div class=" modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content" style="margin-left:10px; margin-right:10px" >
+								    <br/><br/>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">ATENÇÃO!</h5>
+                                </div>
+                                <div class="modal-body"> |
+									    <br/><br/>
+								    <h1>Deseja seguir com a alteração da placa/motorista de todas as reservas identificadas no Periodo?</h1>
+								    </div>
+							    </div>
+						    </div>
+				    <br/><br/>
+				    <div class="modal-footer">
+				    <asp:Button runat="server" Text="Não" ID="btnNao"/>
+					    <asp:Button runat="server" Text="Sim" ID="btnSim"/>
+					    </div>
+					    <br/><br/>
+                </asp:Panel>
+								                                            
+
+				    </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="btnAuxiliar" />
+			    <asp:AsyncPostBackTrigger ControlID="btnNao" />
+			    <asp:AsyncPostBackTrigger ControlID="btnSim" />
+            </Triggers>
+        </asp:UpdatePanel>
             </center>
         </form>
     </asp:Panel>
