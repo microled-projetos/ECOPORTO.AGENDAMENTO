@@ -2013,7 +2013,8 @@ Public Class AgendarCS
                         Exit Sub
                     End If
 
-                    If Val(Me.lblCodigoPeriodo.Text) > 0 Then
+                    If Val(Me.lblCodigoPeriodo.Text) > 0 And (CodPer <> Val(Me.lblCodigoPeriodo.Text)) Then
+
                         If Val(Me.lblCodigoAgendamento.Text) > 0 Then
                             Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
                             If ValidarSaldoRestante(totalq) = False Then
@@ -2145,7 +2146,8 @@ Public Class AgendarCS
                         Me.lblCodigoVeiculo.Text = Banco.ExecuteScalar("SELECT AUTONUM FROM OPERADOR.TB_AG_VEICULOS WHERE UPPER(PLACA_CAVALO) = '" & Me.cbCavalo.Text & "' AND UPPER(PLACA_CARRETA) = '" & Me.cbCarreta.Text & "' AND ID_TRANSPORTADORA = " & Session("SIS_AUTONUM_TRANSPORTADORA").ToString())
                         Me.lblCodigoProtocolo.Text = Banco.ExecuteScalar("SELECT REDEX.SEQ_AGENDAMENTO_WEB_PROT_" & Now.Year & ".NEXTVAL FROM DUAL")
 
-                        If Val(Me.lblCodigoPeriodo.Text) > 0 Then
+                        If Val(Me.lblCodigoPeriodo.Text) > 0 And (CodPer <> Val(Me.lblCodigoPeriodo.Text)) Then
+
                             Dim totalq = Banco.ExecuteScalar("Select  sum(qtde) From redex.TB_AGENDAMENTO_WEB_CS_NF where AUTONUM_AGENDAMENTO =" & Me.lblCodigoAgendamento.Text)
 
                             If ValidarSaldoRestante(totalq) = False Then

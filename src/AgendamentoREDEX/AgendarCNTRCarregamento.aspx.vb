@@ -31,8 +31,8 @@ Public Class AgendarCNTRCarregamento
                 SQL.Append("    OPERADOR.TB_AG_MOTORISTAS B ON A.AUTONUM_MOTORISTA = B.AUTONUM ")
                 SQL.Append("INNER JOIN ")
                 SQL.Append("    OPERADOR.TB_AG_VEICULOS C ON A.AUTONUM_VEICULO = C.AUTONUM ")
-                SQL.Append("INNER JOIN ")
-                SQL.Append("    OPERADOR.TB_GD_RESERVA E ON A.AUTONUM_GD_RESERVA = E.AUTONUM_GD_RESERVA ")
+                SQL.Append("left JOIN ")
+                SQL.Append("    REDEX.TB_GD_RESERVA E ON A.AUTONUM_GD_RESERVA = E.AUTONUM_GD_RESERVA ")
                 SQL.Append("WHERE A.AUTONUM = " & Request.QueryString("id").ToString())
 
                 Dim Ds As New DataTable
