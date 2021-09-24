@@ -101,7 +101,7 @@ Public Class Documento
         SqlDta.Append(" INNER JOIN ")
         SqlDta.Append("    TB_CNTR_BL D ON C.CNTR = D.AUTONUM ")
         SqlDta.Append(" WHERE  ")
-        SqlDta.Append("    B.AUTONUM_AGENDAMENTO IS NULL AND A.AUTONUM IN (1, 6) AND D.AUTONUM = " & Cntr & " ")
+        SqlDta.Append("    NVL(B.AUTONUM_AGENDAMENTO,0)=0 AND A.AUTONUM IN (1, 6) AND D.AUTONUM = " & Cntr & " ")
 
         Dim dsDta As New DataTable
 
@@ -207,7 +207,7 @@ Public Class Documento
         SQL.Append("   AND ")
         SQL.Append("        E.TRANSPORTADORA = " & CodigoTransportadora)
         SQL.Append("   AND ")
-        SQL.Append("        A.AUTONUM_AGENDAMENTO IS NULL ")
+        SQL.Append("        nvl(A.AUTONUM_AGENDAMENTO,0)=0 ")
         SQL.Append("   AND ")
         SQL.Append("        A.AUTONUM_AGENDAMENTO_DOC <> 7 AND A.AUTONUM_AGENDAMENTO_DOC <> 8 AND A.AUTONUM_AGENDAMENTO_DOC <> 9 ")
 
@@ -342,7 +342,7 @@ Public Class Documento
                     SGIPA.TB_AV_IMAGEM A 
                 LEFT JOIN
                     (
-                        SELECT DISTINCT LOTE, AUTONUM_AGENDAMENTO_DOC FROM SGIPA.TB_AV_IMAGEM WHERE AUTONUM_AGENDAMENTO IS NULL
+                        SELECT DISTINCT LOTE, AUTONUM_AGENDAMENTO_DOC FROM SGIPA.TB_AV_IMAGEM WHERE NVL(AUTONUM_AGENDAMENTO,0)
                     ) B ON A.LOTE = B.LOTE
                 WHERE 
                     A.AUTONUM_AGENDAMENTO = " & CodigoConteiner & "

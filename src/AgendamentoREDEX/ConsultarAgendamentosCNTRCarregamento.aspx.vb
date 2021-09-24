@@ -26,7 +26,7 @@
         SQL.Append("    CNH, ")
         SQL.Append("    VEICULO, ")
         SQL.Append("    RESERVA, ")
-        SQL.Append("    saldo, ")
+        SQL.Append("    NAVIO_VIAGEM, ")
         SQL.Append("    EXPORTADOR, ")
         SQL.Append("    DEAD_LINE, ")
         SQL.Append("    PORTO_DESTINO, ")
