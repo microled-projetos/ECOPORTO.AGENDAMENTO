@@ -373,9 +373,7 @@ function obterPeriodos() {
         toastr.error(data.statusText, 'Agendamento');
     });
 }
-
-function validarDanfe(campo) {
-
+function validarDanfe(campo) {    
     $('#pnlAlertaDanfe')
         .text('').hide();
 
@@ -399,8 +397,7 @@ function validarDanfe(campo) {
         if (texto.substring(25, 34) === '000000000') {
             retorno = 'DANFE inválida';
         }
-    }
-
+    }    
     return retorno;
 }
 
@@ -1064,7 +1061,7 @@ $('#btnAdicionarDanfe').click(function () {
             .removeClass('invisivel');
         return;
     }
-
+    
     var retorno = validarDanfe($('#Danfe').val());
 
     if (retorno !== '') {
@@ -1161,31 +1158,48 @@ function loadFile() {
         file = input.files[0];
         fr = new FileReader();
         fr.onload = receivedText;
-        fr.readAsText(file);
+        fr.readAsText(file);       
     }
 
     function receivedText() {
         //console.log(fr.result);
+        
         var doc = parser.parseFromString(fr.result, "text/xml");
-        //document.getElementById("xmlDanfeCompleta").innerHTML = fr.result;
+        
+        //document.getElementById("xmlDanfeCompleta").innerHTML = fr.result;        
+        
         $('#xml').val(fr.result);
-        console.log(fr.result);
+        
+        console.log(doc.childNodes[0]);        
+        
         shownode(doc.childNodes[0]);
+        
     }
 }
 //lendo os dados do xml
-function shownode(node) {
+function shownode(node) {    
 
-    var nfe = node.getElementsByTagName('chNFe')[0].innerHTML;
+
+
+    
+    var nfe = node.getElementsByTagName('chNFe')[0].innerHTML;    
     var numero = node.getElementsByTagName('cNF')[0].innerHTML;
     var serie = node.getElementsByTagName('serie')[0].innerHTML;
     var emissor = node.getElementsByTagName('CNPJ')[0].innerHTML;
     var data = node.getElementsByTagName('dhEmi')[0].innerHTML;
     var cfop = node.getElementsByTagName('CFOP')[0].innerHTML;
     var valor = node.getElementsByTagName('vNF')[0].innerHTML;
-    var qtd = node.getElementsByTagName('indTot')[0].innerHTML;
-    var pesob = node.getElementsByTagName('pesoB')[0].innerHTML;
+    var qtd = node.getElementsByTagName('indTot')[0].innerHTML;   
     
+    
+    //if (node.getElementsByTagName('pesoB') != 'undefined') {
+    //    pesob = node.getElementsByTagName('pesoB')[0].innerHTML;
+    //    alert(pesob);
+    //}
+    //else {
+    //    alert('re');
+    //}
+
     $('#CFOP').val(cfop);
     $('#Danfe').hide();
     $('#Danfe').val(nfe);
@@ -1195,7 +1209,11 @@ function shownode(node) {
     $('#valor').html(valor);
     $('#emisso').html(emissor);
     $('#qtd').html(qtd);
+    var pesob = 0;
     $('#pesobruto').html(pesob);
+    pesob = node.getElementsByTagName('pesoB')[0].innerHTML;
+    $('#pesobruto').html(pesob);
+    
 }
 if (typeof (DOMParser) == 'undefined') {
     DOMParser = function () { }
