@@ -103,11 +103,13 @@ Public Class Documento
         SQL.Append("INNER JOIN ")
         SQL.Append("    TB_AV_ONLINE_TRANSP D ON C.AUTONUM = D.TB_AV_ONLINE ")
         SQL.Append("WHERE ")
+
         SQL.Append("    A.LOTE = " & Lote & " AND NVL(A.AUTONUM_AGENDAMENTO, 0) = 0 ")
         SQL.Append("AND ")
         SQL.Append("    D.TRANSPORTADORA = " & CodigoTransportadora)
         SQL.Append(" AND ")
         SQL.Append("    NVL(A.AUTONUM_AGENDAMENTO, 0) = 0 ")
+
         SQL.Append(" AND ")
         SQL.Append("    A.AUTONUM_AGENDAMENTO_DOC <> 7 AND A.AUTONUM_AGENDAMENTO_DOC <> 8 AND A.AUTONUM_AGENDAMENTO_DOC <> 9 ")
 
