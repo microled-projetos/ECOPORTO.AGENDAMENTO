@@ -813,7 +813,7 @@ $('#btnAdicionarDanfe').click(function () {
             .removeClass('invisivel');
         return;
     }
-
+    alert($('#Danfe').val()); 
     var retorno = validarDanfe($('#Danfe').val());
 
     if (retorno !== '') {
@@ -923,6 +923,7 @@ function shownode(node) {
     var valor = node.getElementsByTagName('vNF')[0].innerHTML;
     var qtd = node.getElementsByTagName('indTot')[0].innerHTML;
     var pesob = node.getElementsByTagName('pesoB')[0].innerHTML;
+
 
     $('#CFOP').val(cfop);
     $('#Danfe').hide();
@@ -1462,6 +1463,8 @@ function vincularDanfes(bookingId, sigla, id) {
 
     $('#pnlDadosDanfes').removeClass('invisivel');
     $('#pnlUploads').removeClass('invisivel');
+
+    alert($('#Id').val());
 
     $('#Danfe').focus();
 }

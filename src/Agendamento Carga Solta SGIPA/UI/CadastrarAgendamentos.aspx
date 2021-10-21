@@ -508,7 +508,7 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title">ATENÇÃO!</h5>
                                 </div>
-                                <div class="modal-body"> |
+                                <div class="modal-body">
 									    <br/><br/>
 								    <h1>Deseja seguir com a alteração da placa/motorista de todas as reservas identificadas no Periodo?</h1>
 								    </div>
