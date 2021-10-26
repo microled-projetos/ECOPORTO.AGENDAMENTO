@@ -205,6 +205,8 @@ function consultarReserva(reserva) {
 
     limpar();
 
+  
+
     $('#pnlItensReserva').html('');
 
     if (reserva === '') {
@@ -213,6 +215,7 @@ function consultarReserva(reserva) {
 
         return;
     }
+
 
     $.get(urlBase + 'Agendamento/ObterDetalhesReserva?reserva=' + reserva, function (resultado) {
 
@@ -231,10 +234,13 @@ function consultarReserva(reserva) {
             obterItensReserva($('#Reserva').val(), $('#ViagemId').val());
             validarAgendamentoSemSaldo($('#Reserva').val(), $('#ViagemId').val());
 
-            desabilitarCamposDanfe();
+         
+
+            
+           desabilitarCamposDanfe();
             desabilitarCamposDAT();
             desabilitarCamposDUE();
-
+           
             $('#pnlReserva').removeClass('invisivel');
         }
     }).fail(function (data) {
@@ -243,9 +249,12 @@ function consultarReserva(reserva) {
             .html(data.statusText)
             .removeClass('invisivel');
 
+
+
+
         limpar();
     });
-
+  
     $('#btnConcluir')
         .prop('disabled', false);
 }
@@ -253,7 +262,7 @@ function consultarReserva(reserva) {
 function limpar() {
 
     limparCamposDanfe();
-    limparCamposItem();
+   // limparCamposItem();
 }
 
 function limparCamposDanfe() {
@@ -283,10 +292,10 @@ function limparCamposDanfe() {
     //desabilitarCamposDanfe();
 }
 
-function limparCamposItem() {
-    $('#QuantidadeItemReserva').val('');
-    $('#Chassis').val('');
-}
+//function limparCamposItem() {
+ //   $('#QuantidadeItemReserva').val('');
+ //   $('#Chassis').val('');
+//} eu comentei para teste retorna assim que finalizar
 
 function obterItensReserva(reserva, viagemId) {
 
@@ -334,7 +343,7 @@ function validarAgendamentoSemSaldo(reserva, viagemId) {
 $('#ItemReservaId').change(function () {
 
     obterDetalhesItem();
-    limparCamposItem();
+  //  limparCamposItem();
 });
 
 function validarQuantidade(id, target) {
@@ -477,7 +486,7 @@ $('#btnAdicionarItemReserva').click(function () {
 
         obterPeriodos();
 
-        limparCamposItem();
+       // limparCamposItem();
 
     }).fail(function (data) {
 
@@ -504,6 +513,9 @@ $('#btnAdicionarItemReserva').click(function () {
             .removeClass('disabled');
 
     });
+
+    $('#btnAlterarItemReserva').hide();//criei
+    $('#btnAdicionarItemReserva').hide();//criei
 });
 
 $('#btnAlterarItemReserva').click(function () {
@@ -519,8 +531,8 @@ $('#btnAlterarItemReserva').click(function () {
         return;
     }
 
-    $('#btnAlterarItemReserva')
-        .html('<i class="fa fa-spinner fa-spin"></i>')
+   $('#btnAlterarItemReserva')
+       .html('<i class="fa fa-spinner fa-spin"></i>')
         .addClass('disabled');
 
     var obj = {
@@ -541,7 +553,7 @@ $('#btnAlterarItemReserva').click(function () {
 
         obterPeriodos();
 
-        limparCamposItem();
+      //  limparCamposItem();
 
     }).fail(function (data) {
 
@@ -565,7 +577,7 @@ $('#btnAlterarItemReserva').click(function () {
 
         $('#btnAlterarItemReserva').html('<i class="fas fa-save"></i>').removeClass('disabled');
         $('#btnAlterarItemReserva').hide();
-        $('#btnAdicionarItemReserva').show();
+        $('#btnAdicionarItemReserva').hide();//show para hide
     });
 });
 function excluirItemReserva(id, bookingCsItemId) {
@@ -623,7 +635,7 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
         .addClass('invisivel');
     event.preventDefault();
    
-    limparCamposItem();
+  //  limparCamposItem();
 
     $.get(urlBase + 'Agendamento/ObterItemReservaPorId?bookingCsItemId=' + bookingCsItemId, function (resultado) {
 
@@ -688,14 +700,14 @@ function selecionarItem(bookingCsItemId, qtde, chassis) {
                 obterDanfesPorItem(bookingCsItemId);
                 obterUploadsPorItem(bookingCsItemId);
                 //mexendo
-                habilitarCamposDanfe();
-                habilitarCamposDAT();
-                habilitarCamposDUE();
+               habilitarCamposDanfe();
+              habilitarCamposDAT();
+               habilitarCamposDUE();
 
                 $('#Chassis').attr('readonly', false);
                 $('#danfe_pesquisada').focus();
 
-                $('#btnAdicionarItemReserva').show();
+                $('#btnAdicionarItemReserva').hide();//show para hide
                 $('#btnAlterarItemReserva').hide();
 
             }).fail(function (data) {
@@ -715,7 +727,7 @@ function selecionarItemAlt(bookingCsItemId, qtde, chassis, id) {
         .addClass('invisivel');
     event.preventDefault();
 
-    limparCamposItem();
+  //  limparCamposItem();
 
     $.get(urlBase + 'Agendamento/ObterItemReservaPorId?bookingCsItemId=' + bookingCsItemId, function (resultado) {
 
@@ -797,17 +809,21 @@ function selecionarItemAlt(bookingCsItemId, qtde, chassis, id) {
 
 function habilitarCamposDanfe() {
 
+  
     $('#Danfe').prop('disabled', false);
     $('#CFOP').prop('disabled', false);
     $('#XmlDanfeCompleta').prop('disabled', false);
     $('#fileinput').prop('disabled', false);
     $('#btnAdicionarDanfe').removeClass('disabled');
     $('#danfe_pesquisada').prop('disabled', false);
-
+    $('#due').prop('disabled', false);
+    $('#dat').prop('disabled', false);
+    $('#nfe').prop('disabled', false);
 }
 
 function desabilitarCamposDanfe() {
 
+    
     $('#Danfe').prop('disabled', true);
     $('#fileinput').prop('disabled', true)
     $('#CFOP').prop('disabled', true);
@@ -815,6 +831,10 @@ function desabilitarCamposDanfe() {
     $('#CFOP').prop('disabled', true);
     $('#btnAdicionarDanfe').addClass('disabled');
     $('#danfe_pesquisada').prop('disabled', true);
+    $('#due').prop('disabled', true);
+    $('#dat').prop('disabled', true);
+    $('#nfe').prop('disabled', true);
+
 }
 
 function habilitarCamposDUE() {
@@ -824,6 +844,9 @@ function habilitarCamposDUE() {
 function desabilitarCamposDUE() {
     $('#txtDUE').prop('disabled', true);
     $('#btnAdicionarDUE').addClass('disabled');
+    
+  
+   
 }
 function habilitarCamposDAT() {
     $('#txtDAT').prop('disabled', false);
@@ -832,6 +855,7 @@ function habilitarCamposDAT() {
 function desabilitarCamposDAT() {
     $('#txtDAT').prop('disabled', true);
     $('#btnAdicionarDAT').addClass('disabled');
+    
 }
 
 
