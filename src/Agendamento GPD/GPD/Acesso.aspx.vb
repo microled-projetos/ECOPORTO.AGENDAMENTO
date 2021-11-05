@@ -4,14 +4,17 @@
     Dim Login As New Login
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Dim id As String
 
         If Not Page.IsPostBack Then
-            If Request.QueryString("ID") IsNot Nothing Then
+            '    id = 6682855
+            id = Request.QueryString("ID")
+            If id IsNot Nothing Then
 
-                If Login.EfetuarLogin(Request.QueryString("ID")) IsNot Nothing Then
+                If Login.EfetuarLogin(id) IsNot Nothing Then
 
                     Dim Usuario As Usuario
-                    Usuario = Login.EfetuarLogin(Request.QueryString("ID"))
+                    Usuario = Login.EfetuarLogin(id)
                     'Login.DeletarAcesso(Request.QueryString("ID"))
 
                     Session("SIS_ID") = Usuario.Codigo
