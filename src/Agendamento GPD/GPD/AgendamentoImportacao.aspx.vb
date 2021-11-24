@@ -46,7 +46,7 @@ Public Class AgendamentoImportacao
                         lblTipoDoc.Text = Request.QueryString("doc").ToString()
                     End If
 
-                    If Request.QueryString("patio") IsNot Nothing Then
+                    If Request.QueryString("patio") IsNot Nothing Then Thenc
                         lblPatio.Text = Request.QueryString("patio").ToString()
                     End If
 

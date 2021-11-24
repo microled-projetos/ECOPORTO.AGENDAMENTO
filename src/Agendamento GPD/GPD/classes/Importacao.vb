@@ -702,7 +702,7 @@ Public Class Importacao
                 Data_Ref = Now
             End If
             DTA = "0"
-            If PeriodoOBJ.pDTA.Contains("DTA") Then
+            If Tipo_Doc = "8" Or Tipo_Doc = "9" Then
                 Limite = 0
                 Servico = "B"
             Else
