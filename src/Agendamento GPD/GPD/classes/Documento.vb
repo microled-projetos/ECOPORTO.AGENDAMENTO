@@ -342,11 +342,7 @@ Public Class Documento
                     SGIPA.TB_AV_IMAGEM A 
                 LEFT JOIN
                     (
-<<<<<<< HEAD
                         SELECT DISTINCT LOTE, AUTONUM_AGENDAMENTO_DOC FROM SGIPA.TB_AV_IMAGEM WHERE NVL(AUTONUM_AGENDAMENTO, 0) = 0
-=======
-                        SELECT DISTINCT LOTE, AUTONUM_AGENDAMENTO_DOC FROM SGIPA.TB_AV_IMAGEM WHERE NVL(AUTONUM_AGENDAMENTO,0)
->>>>>>> 4d240f28485ef1df1d1b543ed36ec26d061de105
                     ) B ON A.LOTE = B.LOTE
                 WHERE 
                     A.AUTONUM_AGENDAMENTO = " & CodigoConteiner & "
