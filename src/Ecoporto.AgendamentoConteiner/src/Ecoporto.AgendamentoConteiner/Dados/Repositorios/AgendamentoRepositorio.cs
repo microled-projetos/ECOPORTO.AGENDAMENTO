@@ -77,7 +77,7 @@ namespace Ecoporto.AgendamentoConteiner.Dados.Repositorios
                     parametros.Add(name: "DueDesembaracada", value: agendamento.DueDesembaracada.ToInt(), direction: ParameterDirection.Input);
                     parametros.Add(name: "Id", value: agendamento.Id, direction: ParameterDirection.Input);
 
-                    con.Execute(@"UPDATE OPERADOR.TB_AGENDAMENTO_CNTR SET FLAG_DUE_DESEMBARACADA = :DueDesembaracada, AUTONUM_PERIODO = :PeriodoId, EMAIL_REGISTRO = :EmailRegistro, PROTOCOLO = OPERADOR.SEQ_PROTOCOLO_AG_GERAL.NEXTVAL, ANO_PROTOCOLO = :AnoProtocolo WHERE AUTONUM = :Id", parametros, transaction);
+                    con.Execute(@"UPDATE OPERADOR.TB_AGENDAMENTO_CNTR SET CTE=:CTE,FLAG_DUE_DESEMBARACADA = :DueDesembaracada, AUTONUM_PERIODO = :PeriodoId, EMAIL_REGISTRO = :EmailRegistro, PROTOCOLO = OPERADOR.SEQ_PROTOCOLO_AG_GERAL.NEXTVAL, ANO_PROTOCOLO = :AnoProtocolo WHERE AUTONUM = :Id", parametros, transaction);
 
                     con.Execute(@"DELETE FROM OPERADOR.TB_AG_CNTR_ITENS_DANFES WHERE AUTONUM_AGENDAMENTO_ITEM_CNTR IN (SELECT AUTONUM FROM OPERADOR.TB_AGENDAMENTO_CNTR_ITEM_CNTR WHERE AUTONUM_AGENDAMENTO = :Id)", parametros, transaction);
                     con.Execute(@"DELETE FROM OPERADOR.TB_AGENDAMENTO_CNTR_ITEM_CNTR WHERE AUTONUM_AGENDAMENTO = :Id", parametros, transaction);
